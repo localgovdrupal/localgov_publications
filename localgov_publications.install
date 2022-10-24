@@ -1,0 +1,12 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function localgov_publications_install() {
+  $config = \Drupal::configFactory()->getEditable('book.settings');
+  $allowed_types = $config->get('allowed_types');
+  $allowed_types[] = 'publication';
+  $config->set('allowed_types', $allowed_types);
+  $config->save();
+}

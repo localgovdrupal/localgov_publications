@@ -1,0 +1,5 @@
+services:
+  localgov_publications.route_subscriber:
+    class: Drupal\localgov_publications\EventSubscriber\LocalgovPublicationsRouteSubscriber
+    tags:
+      - { name: event_subscriber }
