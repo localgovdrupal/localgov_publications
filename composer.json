@@ -1,0 +1,8 @@
+{
+    "name": "localgovdrupal/localgov_publications",
+    "description": "HTML publications for the LocalGovDrupal distribution.",
+    "type": "drupal-module",
+    "homepage": "https://github.com/localgovdrupal/localgov_publications",
+    "license": "GPL-2.0-or-later",
+    "minimum-stability": "dev"
+}
