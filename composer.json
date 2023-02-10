@@ -4,5 +4,14 @@
     "type": "drupal-module",
     "homepage": "https://github.com/localgovdrupal/localgov_publications",
     "license": "GPL-2.0-or-later",
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "require-dev": {
+        "drupal/coder": "*"
+    },
+    "scripts": {
+        "phpcs": "phpcs",
+        "test": [
+            "@phpcs"
+        ]
+    }
 }
