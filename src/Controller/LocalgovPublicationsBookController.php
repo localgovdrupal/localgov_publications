@@ -17,10 +17,12 @@ class LocalgovPublicationsBookController extends BookController {
   public function build() {
     $rows = [];
 
-    $headers = [t('Book'), t('Operations')];
+    $headers = [$this->t('Book'), $this->t('Operations')];
     // Add any recognized books to the table list.
     foreach ($this->bookManager->getAllBooks() as $book) {
-      if ($book['type'] === 'publication') { continue; }
+      if ($book['type'] === 'publication') {
+        continue;
+      }
       /** @var \Drupal\Core\Url $url */
       $url = $book['url'];
       if (isset($book['options'])) {
@@ -31,7 +33,7 @@ class LocalgovPublicationsBookController extends BookController {
       ];
       $links = [];
       $links['edit'] = [
-        'title' => t('Edit order and titles'),
+        'title' => $this->t('Edit order and titles'),
         'url' => Url::fromRoute('book.admin_edit', ['node' => $book['nid']]),
       ];
       $row[] = [
@@ -46,7 +48,7 @@ class LocalgovPublicationsBookController extends BookController {
       '#type' => 'table',
       '#header' => $headers,
       '#rows' => $rows,
-      '#empty' => t('No books available.'),
+      '#empty' => $this->t('No books available.'),
     ];
   }
 
