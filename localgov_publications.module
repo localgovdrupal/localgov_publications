@@ -2,5 +2,19 @@
 
 /**
  * @file
- * Primary module hooks for LocalGov Publications module.
+ * Module file for the LocalGov Publications module.
  */
+
+use Drupal\user\Entity\Role;
+
+/**
+ * Implements hook_install().
+ */
+function localgov_publications_modules_installed($modules, $is_syncing) {
+  if (!$is_syncing && in_array('localgov_publications', $modules)) {
+    // Add permission to use the publications text format this module provides.
+    $role_object = Role::load('authenticated');
+    $role_object->grantPermission('use text format publications');
+    $role_object->save();
+  }
+}
