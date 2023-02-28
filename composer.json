@@ -5,6 +5,12 @@
     "homepage": "https://github.com/localgovdrupal/localgov_publications",
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        }
+    ],
     "require": {
         "drupal/auto_heading_ids": "^2.0@beta"
     },
