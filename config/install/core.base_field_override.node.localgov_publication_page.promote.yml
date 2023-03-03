@@ -1,0 +1,22 @@
+uuid: a188cd55-3ff3-4b8e-8836-103329515dae
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.localgov_publication_page
+id: node.localgov_publication_page.promote
+field_name: promote
+entity_type: node
+bundle: localgov_publication_page
+label: 'Promoted to front page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
