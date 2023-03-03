@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.publication.field_localgov_publication_conte
+    - field.field.node.publication.localgov_publication_content
     - node.type.publication
   module:
     - entity_reference_revisions
@@ -12,19 +12,18 @@ targetEntityType: node
 bundle: publication
 mode: default
 content:
-  field_localgov_publication_conte:
+  localgov_publication_content:
     type: entity_reference_revisions_entity_view
-    label: hidden
+    label: above
     settings:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 101
+    weight: 0
     region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 100
+    weight: 1
     region: content
-hidden:
-  search_api_excerpt: true
+hidden: {  }

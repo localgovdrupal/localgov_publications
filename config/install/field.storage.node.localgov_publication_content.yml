@@ -5,8 +5,8 @@ dependencies:
     - entity_reference_revisions
     - node
     - paragraphs
-id: node.field_localgov_publication_conte
-field_name: field_localgov_publication_conte
+id: node.localgov_publication_content
+field_name: localgov_publication_content
 entity_type: node
 type: entity_reference_revisions
 settings:

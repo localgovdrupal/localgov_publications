@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_localgov_publication_conte
+    - field.storage.node.localgov_publication_content
     - node.type.publication
     - paragraphs.paragraphs_type.from_library
     - paragraphs.paragraphs_type.localgov_contact
@@ -12,11 +12,11 @@ dependencies:
     - paragraphs.paragraphs_type.topic_list_builder
   module:
     - entity_reference_revisions
-id: node.publication.field_localgov_publication_conte
-field_name: field_localgov_publication_conte
+id: node.publication.localgov_publication_content
+field_name: localgov_publication_content
 entity_type: node
 bundle: publication
-label: localgov_publication_content
+label: 'Publication content'
 description: ''
 required: false
 translatable: false
