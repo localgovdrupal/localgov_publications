@@ -1,3 +1,4 @@
+uuid: 48ae6853-6665-44b5-b240-0e0b14ebd673
 langcode: en
 status: true
 dependencies:
@@ -6,6 +7,8 @@ dependencies:
     - node
   theme:
     - localgov_scarfolk
+_core:
+  default_config_hash: IX1ssbaAKtJIKPLw4YFQGWBb4S4wBidc-BFF3rirzFg
 id: localgov_publications_toc_block
 theme: localgov_scarfolk
 region: sidebar_first
@@ -26,4 +29,5 @@ visibility:
     context_mapping:
       node: '@node.node_route_context:node'
     bundles:
+      localgov_publication_page: localgov_publication_page
       publication: publication
