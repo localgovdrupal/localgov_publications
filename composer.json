@@ -9,13 +9,32 @@
         {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "ckeditor/fakeobjects",
+                "version": "4.20.2",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://download.ckeditor.com/fakeobjects/releases/fakeobjects_4.20.2.zip",
+                    "type": "zip"
+                }
+            }
         }
     ],
     "require": {
-        "drupal/auto_heading_ids": "^2.0@beta"
+        "drupal/auto_heading_ids": "^2.0@beta",
+        "ckeditor/fakeobjects": "^4.20",
+        "drupal/footnotes": "^3.0"
     },
     "require-dev": {
         "drupal/coder": "*"
+    },
+    "extra": {
+        "installer-paths": {
+            "web/libraries/{$name}": ["type:drupal-library"]
+        }
     },
     "scripts": {
         "phpcs": "phpcs",
