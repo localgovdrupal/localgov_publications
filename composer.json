@@ -25,7 +25,7 @@
     ],
     "require": {
         "drupal/auto_heading_ids": "^2.0@beta",
-        "ckeditor/fakeobjects": "^4.20",
+        "ckeditor/fakeobjects": "4.20.2",
         "drupal/footnotes": "^3.0"
     },
     "require-dev": {
