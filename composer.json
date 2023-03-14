@@ -12,10 +12,17 @@
         }
     ],
     "require": {
-        "drupal/auto_heading_ids": "^2.0@beta"
+        "drupal/auto_heading_ids": "^2.0@beta",
+        "drupal-ckeditor-libraries-group/fakeobjects": "^4.0",
+        "drupal/footnotes": "^3.0"
     },
     "require-dev": {
         "drupal/coder": "*"
+    },
+    "extra": {
+        "installer-paths": {
+            "web/libraries/{$name}": ["type:drupal-library"]
+        }
     },
     "scripts": {
         "phpcs": "phpcs",
