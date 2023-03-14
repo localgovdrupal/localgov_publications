@@ -48,6 +48,7 @@ settings:
           name: Tools
           items:
             - Source
+            - footnotes
         -
           name: Tables
           items:

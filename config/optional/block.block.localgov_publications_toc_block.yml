@@ -26,4 +26,5 @@ visibility:
     context_mapping:
       node: '@node.node_route_context:node'
     bundles:
+      localgov_publication_page: localgov_publication_page
       publication: publication
