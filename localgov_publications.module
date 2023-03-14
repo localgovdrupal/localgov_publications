@@ -8,6 +8,18 @@
 use Drupal\user\Entity\Role;
 
 /**
+ * Implements hook_theme().
+ */
+function localgov_publications_theme($existing, $type, $theme, $path) {
+  return [
+    'paragraph__localgov_numbered_text' => [
+      'template' => 'paragraph--localgov-numbered-text',
+      'base hook' => 'paragraph',
+    ],
+  ];
+}
+
+/**
  * Implements hook_install().
  */
 function localgov_publications_modules_installed($modules, $is_syncing) {

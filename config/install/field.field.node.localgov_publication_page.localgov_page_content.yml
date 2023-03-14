@@ -2,8 +2,8 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.localgov_publication_content
-    - node.type.publication
+    - field.storage.node.localgov_page_content
+    - node.type.localgov_publication_page
     - paragraphs.paragraphs_type.from_library
     - paragraphs.paragraphs_type.localgov_contact
     - paragraphs.paragraphs_type.localgov_image
@@ -13,11 +13,11 @@ dependencies:
     - paragraphs.paragraphs_type.topic_list_builder
   module:
     - entity_reference_revisions
-id: node.publication.localgov_publication_content
-field_name: localgov_publication_content
+id: node.localgov_publication_page.localgov_page_content
+field_name: localgov_page_content
 entity_type: node
-bundle: publication
-label: 'Publication content'
+bundle: localgov_publication_page
+label: 'Page content'
 description: ''
 required: false
 translatable: false
