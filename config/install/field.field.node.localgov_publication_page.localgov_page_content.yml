@@ -4,12 +4,9 @@ dependencies:
   config:
     - field.storage.node.localgov_page_content
     - node.type.localgov_publication_page
-    - paragraphs.paragraphs_type.from_library
-    - paragraphs.paragraphs_type.localgov_contact
     - paragraphs.paragraphs_type.localgov_image
-    - paragraphs.paragraphs_type.localgov_link
+    - paragraphs.paragraphs_type.localgov_numbered_text
     - paragraphs.paragraphs_type.localgov_text
-    - paragraphs.paragraphs_type.topic_list_builder
   module:
     - entity_reference_revisions
 id: node.localgov_publication_page.localgov_page_content
@@ -26,30 +23,30 @@ settings:
   handler: 'default:paragraph'
   handler_settings:
     target_bundles:
-      from_library: from_library
-      localgov_contact: localgov_contact
       localgov_image: localgov_image
-      localgov_link: localgov_link
       localgov_text: localgov_text
-      topic_list_builder: topic_list_builder
+      localgov_numbered_text: localgov_numbered_text
     negate: 0
     target_bundles_drag_drop:
       from_library:
         weight: 7
-        enabled: true
+        enabled: false
       localgov_contact:
         weight: 8
-        enabled: true
+        enabled: false
       localgov_image:
         weight: 9
         enabled: true
       localgov_link:
         weight: 10
+        enabled: false
+      localgov_numbered_text:
+        weight: 12
         enabled: true
       localgov_text:
         weight: 11
         enabled: true
       topic_list_builder:
         weight: 12
-        enabled: true
+        enabled: false
 field_type: entity_reference_revisions
