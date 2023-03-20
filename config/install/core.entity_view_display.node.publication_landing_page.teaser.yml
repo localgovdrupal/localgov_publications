@@ -1,4 +1,3 @@
-uuid: 68411def-1636-4fcc-84da-9107e8f2f5cc
 langcode: en
 status: true
 dependencies:
@@ -7,6 +6,7 @@ dependencies:
     - field.field.node.publication_landing_page.body
     - field.field.node.publication_landing_page.field_localgov_services_landing
     - field.field.node.publication_landing_page.localgov_documents
+    - field.field.node.publication_landing_page.localgov_pub_landing_content
     - field.field.node.publication_landing_page.localgov_published_date
     - field.field.node.publication_landing_page.localgov_updated_date
     - node.type.publication_landing_page
@@ -34,5 +34,6 @@ content:
 hidden:
   field_localgov_services_landing: true
   localgov_documents: true
+  localgov_pub_landing_content: true
   localgov_published_date: true
   localgov_updated_date: true
