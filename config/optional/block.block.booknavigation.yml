@@ -1,0 +1,21 @@
+uuid: ee6556e6-cfa8-4546-b61d-1025462a277e
+langcode: en
+status: true
+dependencies:
+  module:
+    - book
+  theme:
+    - localgov_scarfolk
+id: booknavigation
+theme: localgov_scarfolk
+region: sidebar_first
+weight: 0
+provider: null
+plugin: book_navigation
+settings:
+  id: book_navigation
+  label: 'Book navigation'
+  label_display: '0'
+  provider: book
+  block_mode: 'all pages'
+visibility: {  }
