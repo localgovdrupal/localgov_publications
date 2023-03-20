@@ -45,9 +45,6 @@ settings:
       localgov_numbered_text:
         weight: 12
         enabled: true
-      localgov_numbered_text:
-        weight: 12
-        enabled: true
       localgov_text:
         weight: 11
         enabled: true
