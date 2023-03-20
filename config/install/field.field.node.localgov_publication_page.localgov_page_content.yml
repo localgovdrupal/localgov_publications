@@ -5,6 +5,7 @@ dependencies:
     - field.storage.node.localgov_page_content
     - node.type.localgov_publication_page
     - paragraphs.paragraphs_type.localgov_image
+    - paragraphs.paragraphs_type.localgov_link
     - paragraphs.paragraphs_type.localgov_numbered_text
     - paragraphs.paragraphs_type.localgov_text
   module:
@@ -26,6 +27,7 @@ settings:
       localgov_image: localgov_image
       localgov_text: localgov_text
       localgov_numbered_text: localgov_numbered_text
+      topic_list_builder: topic_list_builder
     negate: 0
     target_bundles_drag_drop:
       from_library:
