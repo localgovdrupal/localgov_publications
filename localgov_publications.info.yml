@@ -8,3 +8,5 @@ dependencies:
   - auto_heading_ids:auto_heading_ids
   - drupal:book
   - drupal:views
+  - footnotes:footnotes
+  - localgov_paragraphs:localgov_paragraphs

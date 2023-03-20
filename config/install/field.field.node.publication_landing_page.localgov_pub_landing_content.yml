@@ -2,19 +2,18 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.localgov_publication_content
-    - node.type.publication
+    - field.storage.node.localgov_pub_landing_content
+    - node.type.publication_landing_page
     - paragraphs.paragraphs_type.localgov_image
-    - paragraphs.paragraphs_type.localgov_link
     - paragraphs.paragraphs_type.localgov_numbered_text
     - paragraphs.paragraphs_type.localgov_text
   module:
     - entity_reference_revisions
-id: node.publication.localgov_publication_content
-field_name: localgov_publication_content
+id: node.publication_landing_page.localgov_pub_landing_content
+field_name: localgov_pub_landing_content
 entity_type: node
-bundle: publication
-label: 'Publication content'
+bundle: publication_landing_page
+label: 'Publication landing page content'
 description: ''
 required: false
 translatable: false
@@ -25,30 +24,29 @@ settings:
   handler_settings:
     target_bundles:
       localgov_image: localgov_image
-      localgov_text: localgov_text
       localgov_numbered_text: localgov_numbered_text
-      topic_list_builder: topic_list_builder
+      localgov_text: localgov_text
     negate: 0
     target_bundles_drag_drop:
       from_library:
-        weight: 7
-        enabled: false
-      localgov_contact:
         weight: 8
         enabled: false
-      localgov_image:
+      localgov_contact:
         weight: 9
+        enabled: false
+      localgov_image:
+        weight: 10
         enabled: true
       localgov_link:
-        weight: 10
+        weight: 11
         enabled: false
       localgov_numbered_text:
         weight: 12
         enabled: true
       localgov_text:
-        weight: 11
+        weight: 13
         enabled: true
       topic_list_builder:
-        weight: 12
+        weight: 14
         enabled: false
 field_type: entity_reference_revisions

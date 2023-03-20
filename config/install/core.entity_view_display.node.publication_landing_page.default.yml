@@ -1,4 +1,3 @@
-uuid: 49e5fff3-f0fe-4bd0-86f9-b86141d241b5
 langcode: en
 status: true
 dependencies:
@@ -6,11 +5,13 @@ dependencies:
     - field.field.node.publication_landing_page.body
     - field.field.node.publication_landing_page.field_localgov_services_landing
     - field.field.node.publication_landing_page.localgov_documents
+    - field.field.node.publication_landing_page.localgov_pub_landing_content
     - field.field.node.publication_landing_page.localgov_published_date
     - field.field.node.publication_landing_page.localgov_updated_date
     - node.type.publication_landing_page
   module:
     - datetime
+    - entity_reference_revisions
     - text
     - user
 id: node.publication_landing_page.default
@@ -45,6 +46,15 @@ content:
       link: true
     third_party_settings: {  }
     weight: 105
+    region: content
+  localgov_pub_landing_content:
+    type: entity_reference_revisions_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 106
     region: content
   localgov_published_date:
     type: datetime_default
