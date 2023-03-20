@@ -1,0 +1,9 @@
+.book-navigation--publication {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+}
+
+.book-navigation--publication .next-link {
+  margin-left: auto;
+}

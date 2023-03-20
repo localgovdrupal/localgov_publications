@@ -1,0 +1,4 @@
+localgov-publications:
+  css:
+    theme:
+      css/localgov-publications.css: {}
