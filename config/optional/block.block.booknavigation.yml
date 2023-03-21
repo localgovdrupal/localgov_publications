@@ -17,5 +17,5 @@ settings:
   label: 'Book navigation'
   label_display: '0'
   provider: book
-  block_mode: 'all pages'
+  block_mode: 'book pages'
 visibility: {  }
