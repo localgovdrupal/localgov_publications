@@ -12,6 +12,10 @@ use Drupal\user\Entity\Role;
  */
 function localgov_publications_theme($existing, $type, $theme, $path) {
   return [
+    'book_navigation__publication' => [
+      'template' => 'book-navigation--publication',
+      'base hook' => 'book_navigation__publication',
+    ],
     'paragraph__localgov_numbered_text' => [
       'template' => 'paragraph--localgov-numbered-text',
       'base hook' => 'paragraph',
@@ -29,4 +33,21 @@ function localgov_publications_modules_installed($modules, $is_syncing) {
     $role_object->grantPermission('use text format publications');
     $role_object->save();
   }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function localgov_publications_theme_suggestions_book_navigation(array $variables) {
+  $suggestions = [];
+
+  // Only add theme suggestion on publication pages and publication landing pages.
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if ($node->getType() === 'localgov_publication_page' ||
+      $node->getType() === 'publication_landing_page') {
+    $original = $variables['theme_hook_original'] . '__';
+    $suggestions[] = $original . 'publication';
+  }
+
+  return $suggestions;
 }
