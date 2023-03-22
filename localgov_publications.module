@@ -41,7 +41,7 @@ function localgov_publications_modules_installed($modules, $is_syncing) {
 function localgov_publications_theme_suggestions_book_navigation(array $variables) {
   $suggestions = [];
 
-  // Only add theme suggestion on publication pages and publication landing pages.
+  // Only add suggestion on publication pages and publication landing pages.
   $node = \Drupal::routeMatch()->getParameter('node');
   if ($node->getType() === 'localgov_publication_page' ||
       $node->getType() === 'publication_landing_page') {
