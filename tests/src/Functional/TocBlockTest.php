@@ -30,6 +30,9 @@ class TocBlockTest extends BrowserTestBase {
     'localgov_publications',
   ];
 
+  /**
+   * Data provider for testing the ToC Block.
+   */
   public function contentProvider() {
     yield [
       'content' => '<h2 id="heading-1">Heading 1</h2><p>Content 1.</p><h2 id="heading-2">Heading 2</h2><p>Content 2.</p>',
@@ -45,6 +48,7 @@ class TocBlockTest extends BrowserTestBase {
 
   /**
    * Test the block displays with content.
+   *
    * @dataProvider contentProvider
    */
   public function testTocBlockDisplays(string $content, bool $display, array $expectedIDs) {
@@ -72,4 +76,5 @@ class TocBlockTest extends BrowserTestBase {
       $this->assertSession()->responseContains($expectedID);
     }
   }
+
 }

@@ -5,10 +5,9 @@ namespace Drupal\localgov_publications\Plugin\Block;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Link;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\RendererInterface;
-use Drupal\Core\Url;
+use Drupal\localgov_publications\Service\HeadingFinderInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -47,6 +46,13 @@ class TocBlock extends BlockBase implements ContainerFactoryPluginInterface {
   protected $entityTypeManager;
 
   /**
+   * The heading finder.
+   *
+   * @var \Drupal\localgov_publications\Service\HeadingFinderInterface
+   */
+  protected $headingFinder;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
@@ -55,17 +61,19 @@ class TocBlock extends BlockBase implements ContainerFactoryPluginInterface {
       $plugin_id,
       $plugin_definition,
       $container->get('renderer'),
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('localgov_publications.heading_finder')
     );
   }
 
   /**
    * Table of contents block constructor.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, RendererInterface $renderer, EntityTypeManagerInterface $entityTypeManager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RendererInterface $renderer, EntityTypeManagerInterface $entityTypeManager, HeadingFinderInterface $headingFinder) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->renderer = $renderer;
     $this->entityTypeManager = $entityTypeManager;
+    $this->headingFinder = $headingFinder;
   }
 
   /**
@@ -75,17 +83,14 @@ class TocBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getContextValue('node');
-
-    $view_builder = $this->entityTypeManager->getViewBuilder('node');
-    $build = $view_builder->view($node, 'full');
+    $build = $this->entityTypeManager->getViewBuilder('node')->view($node, 'full');
 
     // Call this so the render we're about to do has the same IDs as the page.
     // If we don't, they get deduplicated and are different.
     Html::resetSeenIds();
 
-    $output = $this->renderer->renderRoot($build);
-    $nodeHtml = $output->__toString();
-    $links = $this->extractLinks($nodeHtml);
+    $nodeHtml = $this->renderer->renderRoot($build)->__toString();
+    $links = $this->headingFinder->searchMarkup($nodeHtml);
 
     if (empty($links)) {
       return [];
@@ -96,34 +101,6 @@ class TocBlock extends BlockBase implements ContainerFactoryPluginInterface {
       '#list_type' => 'ul',
       '#items' => $links,
     ];
-  }
-
-  /**
-   * Extract links from markup.
-   *
-   * This'll probably get split out into a pluggable thing.
-   *
-   * @param string $nodeHtml
-   *   HTML to scan for links.
-   *
-   * @return array
-   *   Array of found links.
-   */
-  public function extractLinks(string $nodeHtml): array {
-
-    $links = [];
-
-    // This regex here is too prescriptive. We should parse this some more to
-    // extract the ID more reliably.
-    if (preg_match_all('#<h2 id="([^"]+)">([^<]+)</h2>#', $nodeHtml, $matches)) {
-      foreach ($matches[0] as $key => $value) {
-        $fragment = $matches[1][$key];
-        $text = $matches[2][$key];
-        $links[] = Link::fromTextAndUrl($text, Url::fromUserInput('#' . $fragment));
-      }
-    }
-
-    return $links;
   }
 
 }
