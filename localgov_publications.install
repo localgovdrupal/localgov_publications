@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Install, update and uninstall functions for the LocalGov Publications module.
+ */
+
+/**
  * Implements hook_install().
  */
 function localgov_publications_install() {

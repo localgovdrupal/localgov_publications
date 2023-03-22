@@ -6,7 +6,7 @@ dependencies:
     - node
   theme:
     - localgov_scarfolk
-id: localgov_publications_toc_block
+id: localgov_scarfolk_localgov_publications_toc_block
 theme: localgov_scarfolk
 region: sidebar_first
 weight: 0

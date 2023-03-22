@@ -85,8 +85,11 @@ class TocBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
     $output = $this->renderer->renderRoot($build);
     $nodeHtml = $output->__toString();
-
     $links = $this->extractLinks($nodeHtml);
+
+    if (empty($links)) {
+      return [];
+    }
 
     return [
       '#theme' => 'item_list',
