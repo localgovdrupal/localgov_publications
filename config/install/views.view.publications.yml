@@ -2,15 +2,15 @@ langcode: en
 status: true
 dependencies:
   config:
-    - node.type.publication
+    - node.type.localgov_publication_page
     - system.menu.admin
   module:
     - node
     - user
-id: publication_admin
-label: 'Publication admin'
+id: publications
+label: Publications
 module: views
-description: 'Manage your site''s publications'
+description: ''
 tag: ''
 base_table: node_field_data
 base_field: nid
@@ -21,7 +21,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: Publication
+      title: Publications
       fields:
         title:
           id: title
@@ -199,10 +199,15 @@ display:
           entity_field: type
           plugin_id: bundle
           value:
-            publication: publication
+            localgov_publication_page: localgov_publication_page
+          group: 1
           expose:
             operator_limit_selection: false
             operator_list: {  }
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
       style:
         type: table
       row:
@@ -228,14 +233,14 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
-  page_1:
-    id: page_1
+  publications_admin:
+    id: publications_admin
     display_title: Page
     display_plugin: page
     position: 1
     display_options:
       display_extenders: {  }
-      path: admin/structure/publication
+      path: admin/structure/publications
       menu:
         type: normal
         title: Publications
