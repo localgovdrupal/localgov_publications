@@ -34,7 +34,7 @@ class AdminTest extends BrowserTestBase {
    * Test that publications are not listed on the Book overview page.
    */
   public function testPublicationsAreNotListedOnBookOverview() {
-
+    $bookAdministrator = $this->createUser(['administer book outlines']);
     $this->createNode([
       'type' => 'localgov_publication_page',
       'title' => 'Test publication page',
@@ -51,10 +51,11 @@ class AdminTest extends BrowserTestBase {
         'bid' => 'new',
       ],
     ]);
+    $this->drupalLogin($bookAdministrator);
     $this->drupalGet('/admin/structure/book');
 
-    $this->assertSession()->linkExists('Test publication page');
-    $this->assertSession()->linkNotExists('Test book');
+    $this->assertSession()->linkNotExists('Test publication page');
+    $this->assertSession()->linkExists('Test book');
   }
 
 }
