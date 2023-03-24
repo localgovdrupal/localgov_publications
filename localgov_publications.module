@@ -91,12 +91,12 @@ function localgov_publications_form_alter(&$form, FormStateInterface $form_state
   // Change the "Create new book".
   if (!empty($form['book']['bid']['#options'][$node->id()])) {
     $form['book']['bid']['#options'][$node->id()] = t(
-      '- Create a new publication - ',
+      '- Create a new publication -',
     );
   }
   elseif (!empty($form['book']['bid']['#options']['new'])) {
     $form['book']['bid']['#options']['new'] = t(
-      '- Create a new publication - ',
+      '- Create a new publication -',
     );
   }
 
