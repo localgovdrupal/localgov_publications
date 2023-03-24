@@ -145,7 +145,9 @@ function localgov_publications_node_links_alter(array &$links, NodeInterface $en
   }
 
   // Create URL from publication add route.
-  $url = Url::fromRoute('node.add')
-    ->setRouteParameter('node_type', 'localgov_publication_page');
-  $links['book']['#links']['book_add_child']['url'] = $url;
+  if (!empty($links['book']['#links']['book_add_child']['url'])) {
+    $url = Url::fromRoute('node.add')
+      ->setRouteParameter('node_type', 'localgov_publication_page');
+    $links['book']['#links']['book_add_child']['url'] = $url;
+  }
 }
