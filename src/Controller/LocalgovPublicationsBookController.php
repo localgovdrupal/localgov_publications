@@ -20,7 +20,7 @@ class LocalgovPublicationsBookController extends BookController {
     $headers = [$this->t('Book'), $this->t('Operations')];
     // Add any recognized books to the table list.
     foreach ($this->bookManager->getAllBooks() as $book) {
-      if ($book['type'] === 'publication') {
+      if ($book['type'] === 'localgov_publication_page') {
         continue;
       }
       /** @var \Drupal\Core\Url $url */
