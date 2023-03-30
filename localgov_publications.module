@@ -6,6 +6,8 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\node\NodeInterface;
 use Drupal\user\Entity\Role;
 
 /**
@@ -37,6 +39,13 @@ function localgov_publications_modules_installed($modules, $is_syncing) {
 }
 
 /**
+ * Is the given type one of the publication node types?
+ */
+function localgov_publications_is_publication_type(string $type): bool {
+  return $type === 'localgov_publication_page' || $type === 'publication_landing_page';
+}
+
+/**
  * Implements hook_theme_suggestions_HOOK().
  */
 function localgov_publications_theme_suggestions_book_navigation(array $variables) {
@@ -44,8 +53,7 @@ function localgov_publications_theme_suggestions_book_navigation(array $variable
 
   // Only add suggestion on publication pages and publication landing pages.
   $node = \Drupal::routeMatch()->getParameter('node');
-  if ($node->getType() === 'localgov_publication_page' ||
-      $node->getType() === 'publication_landing_page') {
+  if (localgov_publications_is_publication_type($node->getType())) {
     $original = $variables['theme_hook_original'] . '__';
     $suggestions[] = $original . 'publication';
   }
@@ -126,5 +134,19 @@ function localgov_publications_form_alter(&$form, FormStateInterface $form_state
         ['@maxdepth' => $form['book']['parent_depth_limit']['#value']],
       );
       break;
+  }
+}
+
+/**
+ * Implements hook_node_links_alter().
+ *
+ * If book module has added the "Add child page" link, and we're on a
+ * publication type page, alter the link, so it creates a
+ * localgov_publication_page, instead of the default book type.
+ */
+function localgov_publications_node_links_alter(array &$links, NodeInterface $node, array &$context) {
+
+  if (localgov_publications_is_publication_type($node->getType()) && !empty($links['book']['#links']['book_add_child'])) {
+    $links['book']['#links']['book_add_child']['url'] = Url::fromRoute('node.add', ['node_type' => 'localgov_publication_page'], ['query' => ['parent' => $node->id()]]);
   }
 }
