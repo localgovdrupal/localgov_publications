@@ -12,6 +12,7 @@
         }
     ],
     "require": {
+        "cweagans/composer-patches": "^1.6",
         "drupal/auto_heading_ids": "^2.0@beta",
         "drupal-ckeditor-libraries-group/fakeobjects": "^4.0",
         "drupal/footnotes": "^3.0"
