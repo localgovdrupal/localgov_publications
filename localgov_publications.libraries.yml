@@ -1,9 +1,9 @@
 localgov-publications:
+  css:
+    theme:
+      css/localgov-publications.css: {}
   js:
     js/localgov-publications.js: {}
-  css:
-    base:
-      css/localgov-publications: {}
   dependencies:
     - core/jquery
     - core/drupal
