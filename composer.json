@@ -12,7 +12,6 @@
         }
     ],
     "require": {
-        "cweagans/composer-patches": "^1.7",
         "drupal/auto_heading_ids": "^2.0@beta",
         "drupal-ckeditor-libraries-group/fakeobjects": "^4.0",
         "drupal/footnotes": "^3.0"
@@ -24,7 +23,9 @@
         "enable-patching": true,
         "composer-exit-on-patch-failure": true,
         "patches": {
-            "All footnotes available as block for Layout Builder / Paragraph / ...": "https://www.drupal.org/files/issues/2023-03-23/footnotes-3098138-72.patch"
+            "drupal/footnotes": {
+                "All footnotes available as block for Layout Builder / Paragraph / ...": "https://www.drupal.org/files/issues/2023-03-23/footnotes-3098138-72.patch"
+            }
         },
         "installer-paths": {
             "web/libraries/{$name}": ["type:drupal-library"]
@@ -38,8 +39,7 @@
     },
     "config": {
         "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true,
-            "cweagans/composer-patches": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     }
 }
