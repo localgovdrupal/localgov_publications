@@ -5,6 +5,7 @@
  * Module file for the LocalGov Publications module.
  */
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\Role;
@@ -58,6 +59,82 @@ function localgov_publications_theme_suggestions_book_navigation(array $variable
   }
 
   return $suggestions;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function localgov_publications_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $forms_to_alter = [
+    'node_publication_landing_page_form',
+    'node_publication_landing_page_edit_form',
+    'node_localgov_publication_page_form',
+    'node_localgov_publication_page_edit_form',
+  ];
+
+  if (!in_array($form_id, $forms_to_alter)) {
+    return;
+  }
+
+  // Get the node.
+  $node = $form_state->getFormObject()->getEntity();
+
+  // Attach JS.
+  if ($form['book']['#attached']['library'][0] == 'book/drupal.book') {
+    unset($form['book']['#attached']['library']);
+    $form['book']['#attached']['library'][0] = 'localgov_publications/localgov-publications';
+  }
+
+  // Get form state values.
+  $book_values = $form_state->getValue('book');
+
+  // Alter the book outline form title.
+  $form['book']['#title'] = t('Publication outline');
+
+  // Alter the select element.
+  $form['book']['bid']['#title'] = t('Publication');
+
+  // Change the "Create new book".
+  if (!empty($form['book']['bid']['#options'][$node->id()])) {
+    $form['book']['bid']['#options'][$node->id()] = t(
+      '- Create a new publication -',
+    );
+  }
+  elseif (!empty($form['book']['bid']['#options']['new'])) {
+    $form['book']['bid']['#options']['new'] = t(
+      '- Create a new publication -',
+    );
+  }
+
+  $form['book']['bid']['#description'] = t(
+    'Your page will be part of the selected publication',
+  );
+
+  // Alter "No book selected".
+  if (empty($book_values)) {
+    $form['book']['pid']['#prefix'] =
+      '<div id="edit-book-plid-wrapper"><em>No publication selected.</em>';
+  }
+
+  switch ($book_values['bid']) {
+    case '0':
+      $form['book']['pid']['#prefix'] =
+        '<div id="edit-book-plid-wrapper"><em>No publication selected.</em>';
+      break;
+
+    case 'new':
+    case $node->id():
+      $form['book']['pid']['#prefix'] =
+        '<div id="edit-book-plid-wrapper"><em>This will be the top-level page in this publication.</em>';
+      break;
+
+    default:
+      $form['book']['pid']['#description'] = t(
+        'The parent page in the publication. The maximum depth for a publication and all child pages is @maxdepth. Some pages in the selected publication may not be available as parents if selecting them would exceed this limit.',
+        ['@maxdepth' => $form['book']['parent_depth_limit']['#value']],
+      );
+      break;
+  }
 }
 
 /**
