@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - footnotes
+    - node
+  theme:
+    - localgov_scarfolk
+id: footnotesgroup
+theme: localgov_scarfolk
+region: content
+weight: -7
+provider: null
+plugin: footnotes_group
+settings:
+  id: footnotes_group
+  label: 'Footnotes Group'
+  label_display: '0'
+  provider: footnotes
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      localgov_publication_page: localgov_publication_page
+      publication_landing_page: publication_landing_page

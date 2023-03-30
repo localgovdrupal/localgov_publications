@@ -112,3 +112,4 @@ filters:
     settings:
       footnotes_collapse: '1'
       footnotes_html: '1'
+      footnotes_footer_disable: '1'
