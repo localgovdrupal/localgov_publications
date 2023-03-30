@@ -20,6 +20,10 @@
         "drupal/coder": "*"
     },
     "extra": {
+        "enable-patching": true,
+        "patches": {
+            "All footnotes available as block for Layout Builder / Paragraph / ...": "https://www.drupal.org/files/issues/2023-03-23/footnotes-3098138-72.patch"
+        },
         "installer-paths": {
             "web/libraries/{$name}": ["type:drupal-library"]
         }
