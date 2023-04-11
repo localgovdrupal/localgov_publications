@@ -2,12 +2,12 @@
 
 namespace Drupal\Tests\localgov_publications\Functional;
 
-use Drupal\Tests\node\Traits\NodeCreationTrait;
-use Drupal\Tests\BrowserTestBase;
 use Drupal\node\NodeInterface;
+use Drupal\Tests\BrowserTestBase;
+use Drupal\Tests\node\Traits\NodeCreationTrait;
 
 /**
- * Tests LocalGov Publications pages.
+ * Tests LocalGov Publications page.
  *
  * @group localgov_publications
  */
