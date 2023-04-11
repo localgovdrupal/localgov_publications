@@ -2,9 +2,8 @@
 
 namespace Drupal\Tests\localgov_publications\Functional;
 
-use Drupal\node\NodeInterface;
-use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
+use Drupal\Tests\BrowserTestBase;
 
 /**
  * Tests LocalGov Publications page.
@@ -75,4 +74,5 @@ class PublicationPageTest extends BrowserTestBase {
     $this->assertSession()->pageTextContains('field_localgov_services_landing');
     $this->assertSession()->pageTextContains('localgov_updated_date');
   }
+
 }

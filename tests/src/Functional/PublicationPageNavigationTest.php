@@ -6,6 +6,9 @@ use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\node\NodeInterface;
 
+/**
+ * Publication navigation tests.
+ */
 class PublicationPageNavigationTest extends BrowserTestBase {
 
   use NodeCreationTrait;
@@ -82,4 +85,5 @@ class PublicationPageNavigationTest extends BrowserTestBase {
     $this->assertSession()->responseContains('<a href="/node/1" rel="prev" title="Go to previous page"><b>‹ Previous: </b> Publication parent page</a>');
     $this->assertSession()->responseContains('<a href="/node/3" rel="next" title="Go to next page">Next: Publication child page two <b>›</b></a>');
   }
+
 }
