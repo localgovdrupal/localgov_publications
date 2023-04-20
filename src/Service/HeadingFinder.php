@@ -21,12 +21,13 @@ class HeadingFinder implements HeadingFinderInterface {
     // Look for headings in the text.
     if (preg_match_all('#<h2([^>]+)>([^<]+)</h2>#', $markup, $matches)) {
 
-      // Format the results into $headings
-      // under the 'attributes' and 'text' keys.
+      // Format the results into $headings under the 'attributes' and 'text'
+      // keys. As we scanned rendered and escaped markup, we'll need to decode
+      // the title to avoid double escaping.
       foreach ($matches[1] as $key => $value) {
         $headings[] = [
           'attributes' => $value,
-          'text' => $matches[2][$key],
+          'text' => html_entity_decode($matches[2][$key]),
         ];
       }
     }
