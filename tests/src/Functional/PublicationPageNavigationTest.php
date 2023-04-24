@@ -40,10 +40,10 @@ class PublicationPageNavigationTest extends BrowserTestBase {
     // Create a text paragraph.
     $text_paragraph = Paragraph::create([
       'type' => 'localgov_text',
-      'localgov_text' => array(
-        "value"  =>  '<p>Content</p>',
-        "format" => "wysiwyg"
-      ),
+      'localgov_text' => [
+        "value" => '<p>Content</p>',
+        "format" => "wysiwyg",
+      ],
     ]);
     $text_paragraph->save();
 
