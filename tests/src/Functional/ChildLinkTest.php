@@ -42,8 +42,8 @@ class ChildLinkTest extends BrowserTestBase {
     $text_paragraph = Paragraph::create([
       'type' => 'localgov_text',
       'localgov_text' => [
-        "value" => '<p>Content</p>',
-        "format" => "wysiwyg",
+        'value' => '<p>Content</p>',
+        'format' => 'wysiwyg',
       ],
     ]);
     $text_paragraph->save();
