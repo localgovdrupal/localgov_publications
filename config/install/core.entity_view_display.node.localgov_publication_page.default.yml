@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.localgov_publication_page.body
     - field.field.node.localgov_publication_page.field_localgov_services_landing
     - field.field.node.localgov_publication_page.localgov_page_content
     - field.field.node.localgov_publication_page.localgov_published_date
@@ -15,10 +16,17 @@ targetEntityType: node
 bundle: localgov_publication_page
 mode: default
 content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 1
+    weight: 4
     region: content
   localgov_page_content:
     type: entity_reference_revisions_entity_view
