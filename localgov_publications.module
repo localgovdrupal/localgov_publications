@@ -5,10 +5,13 @@
  * Module file for the LocalGov Publications module.
  */
 
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Url;
+use Drupal\Core\Access\AccessResult;
 use Drupal\node\NodeInterface;
+use Drupal\block\Entity\Block;
 use Drupal\user\Entity\Role;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_theme().
@@ -22,6 +25,13 @@ function localgov_publications_theme($existing, $type, $theme, $path) {
     'paragraph__localgov_numbered_text' => [
       'template' => 'paragraph--localgov-numbered-text',
       'base hook' => 'paragraph',
+    ],
+    'localgov_publication_page_header_block' => [
+      'variables' => [
+        'title' => NULL,
+        'published_date' => NULL,
+        'last_updated_date' => NULL,
+      ],
     ],
   ];
 }
@@ -59,6 +69,18 @@ function localgov_publications_theme_suggestions_book_navigation(array $variable
   }
 
   return $suggestions;
+}
+
+/**
+ * Implements hook_block_access().
+ */
+function localgov_publications_block_access(Block $block, $operation, AccountInterface $account) {
+  if ($block->getPluginId() == 'localgov_page_header_block' && $operation == 'view') {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    if (!empty($node) && $node instanceof NodeInterface && $node->getType() == 'localgov_publication_page') {
+      return AccessResult::forbiddenIf(true)->addCacheableDependency($block);
+    }
+  }
 }
 
 /**
