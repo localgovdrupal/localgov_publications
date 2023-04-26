@@ -59,6 +59,10 @@ class PublicationPageHeaderBlock extends BlockBase implements ContainerFactoryPl
    * {@inheritdoc}
    */
   public function build() {
+    $build = [
+      '#theme' => 'localgov_publication_page_header_block',
+    ];
+
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getContextValue('node');
 
@@ -78,13 +82,20 @@ class PublicationPageHeaderBlock extends BlockBase implements ContainerFactoryPl
         $last_updated_date = $top_parent_node->get('localgov_updated_date')->value;
       }
 
-      return [
-        '#theme' => 'localgov_publication_page_header_block',
-        '#title' => $title,
-        '#published_date' => date_format(date_create($published_date), "j F Y"),
-        '#last_updated_date' => date_format(date_create($last_updated_date), "j F Y"),
-      ];
+      $build['#title'] = $title;
+
+      // Add published date, if available.
+      if (!empty($published_date)) {
+        $build['#published_date'] = date_format(date_create($published_date), "j F Y");
+      }
+
+      // Add last updated date, if available.
+      if (!empty($last_updated_date)) {
+        $build['#last_updated_date'] = date_format(date_create($last_updated_date), "j F Y");
+      }
     }
+
+    return $build;
   }
 
 }
