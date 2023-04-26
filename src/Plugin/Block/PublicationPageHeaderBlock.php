@@ -63,26 +63,28 @@ class PublicationPageHeaderBlock extends BlockBase implements ContainerFactoryPl
     $node = $this->getContextValue('node');
 
     // Check if this node is the top level for this publication.
-    if ($node->book['pid'] === '0') {
-      // Top level parent page.
-      $title = $node->getTitle();
-      $published_date = $node->get('localgov_published_date')->value;
-      $last_updated_date = $node->get('localgov_updated_date')->value;
-    }
-    else {
-      // Get the top level parent page.
-      $top_parent_node = $this->entityTypeManager->getStorage('node')->load($node->book['bid']);
-      $title = $top_parent_node->getTitle();
-      $published_date = $top_parent_node->get('localgov_published_date')->value;
-      $last_updated_date = $top_parent_node->get('localgov_updated_date')->value;
-    }
+    if (!empty($node->book)) {
+      if ($node->book['pid'] === '0') {
+        // Top level parent page.
+        $title = $node->getTitle();
+        $published_date = $node->get('localgov_published_date')->value;
+        $last_updated_date = $node->get('localgov_updated_date')->value;
+      }
+      else {
+        // Get the top level parent page.
+        $top_parent_node = $this->entityTypeManager->getStorage('node')->load($node->book['bid']);
+        $title = $top_parent_node->getTitle();
+        $published_date = $top_parent_node->get('localgov_published_date')->value;
+        $last_updated_date = $top_parent_node->get('localgov_updated_date')->value;
+      }
 
-    return [
-      '#theme' => 'localgov_publication_page_header_block',
-      '#title' => $title,
-      '#published_date' => date_format(date_create($published_date), "j F Y"),
-      '#last_updated_date' => date_format(date_create($last_updated_date), "j F Y"),
-    ];
+      return [
+        '#theme' => 'localgov_publication_page_header_block',
+        '#title' => $title,
+        '#published_date' => date_format(date_create($published_date), "j F Y"),
+        '#last_updated_date' => date_format(date_create($last_updated_date), "j F Y"),
+      ];
+    }
   }
 
 }
