@@ -1,3 +1,4 @@
+uuid: 2a492c4e-a3a0-47af-9853-c6049db4d92d
 langcode: en
 status: true
 dependencies:
@@ -5,11 +6,11 @@ dependencies:
     - localgov_publications
     - node
   theme:
-    - localgov_scarfolk
-id: publicationspageheaderblock.
-theme: localgov_scarfolk
+    - localgov_base
+id: localgov_base_localgov_publications_page_header_block
+theme: localgov_base
 region: content_top
-weight: -7
+weight: -6
 provider: null
 plugin: localgov_publications_page_header_block
 settings:
