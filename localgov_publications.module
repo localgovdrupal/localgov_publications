@@ -78,7 +78,7 @@ function localgov_publications_block_access(Block $block, $operation, AccountInt
   if ($block->getPluginId() == 'localgov_page_header_block' && $operation == 'view') {
     $node = \Drupal::routeMatch()->getParameter('node');
     if (!empty($node) && $node instanceof NodeInterface && $node->getType() == 'localgov_publication_page') {
-      return AccessResult::forbiddenIf(true)->addCacheableDependency($block);
+      return AccessResult::forbiddenIf(TRUE)->addCacheableDependency($block);
     }
   }
 }
