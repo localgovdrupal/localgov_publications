@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: publication_landing_page
+label: 'Publication landing page'
+type: 'canonical_entities:node'
+pattern: 'publications/[node:title]'
+selection_criteria:
+  0962c418-3256-4ca2-9ca0-85919a1f9715:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 0962c418-3256-4ca2-9ca0-85919a1f9715
+    context_mapping:
+      node: node
+    bundles:
+      publication_landing_page: publication_landing_page
+selection_logic: and
+weight: -5
+relationships: {  }
