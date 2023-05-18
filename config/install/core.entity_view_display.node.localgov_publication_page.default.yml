@@ -3,7 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.node.localgov_publication_page.body
-    - field.field.node.localgov_publication_page.localgov_services_landing
+    - field.field.node.localgov_publication_page.field_localgov_services_landing
     - field.field.node.localgov_publication_page.localgov_page_content
     - field.field.node.localgov_publication_page.localgov_published_date
     - field.field.node.localgov_publication_page.localgov_updated_date
@@ -24,7 +24,7 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
-  localgov_services_landing:
+  field_localgov_services_landing:
     type: entity_reference_label
     label: hidden
     settings:
