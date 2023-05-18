@@ -2,9 +2,10 @@
 
 namespace Drupal\Tests\localgov_publications\Functional;
 
-use Drupal\node\NodeInterface;
-use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
+use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\Tests\BrowserTestBase;
+use Drupal\node\NodeInterface;
 
 /**
  * Functional tests for the TocBlock.
@@ -53,15 +54,25 @@ class TocBlockTest extends BrowserTestBase {
    */
   public function testTocBlockDisplays(string $content, bool $display, array $expectedIDs) {
 
-    $this->createNode([
-      'type' => 'localgov_publication_page',
-      'title' => 'Test publication page',
-      'body' => [
-        'summary' => $content,
+    // Create a text paragraph.
+    $text_paragraph = Paragraph::create([
+      'type' => 'localgov_text',
+      'localgov_text' => [
         'value' => $content,
         'format' => 'wysiwyg',
       ],
+    ]);
+    $text_paragraph->save();
+
+    $this->createNode([
+      'type' => 'localgov_publication_page',
+      'title' => 'Test publication page',
+      'localgov_page_content' => [
+        'target_id' => $text_paragraph->id(),
+        'target_revision_id' => $text_paragraph->getRevisionId(),
+      ],
       'status' => NodeInterface::PUBLISHED,
+      'book' => ['bid' => '0'],
     ]);
     $this->drupalGet('/node/1');
 
