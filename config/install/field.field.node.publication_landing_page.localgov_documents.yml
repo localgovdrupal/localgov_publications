@@ -1,4 +1,3 @@
-uuid: ffe1c2c2-cb78-41db-b880-c34c4afc153b
 langcode: en
 status: true
 dependencies:
@@ -16,6 +15,10 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:node'
-  handler_settings: {  }
+  handler: views
+  handler_settings:
+    view:
+      view_name: documents
+      display_name: documents_entity_reference
+      arguments: {  }
 field_type: entity_reference
