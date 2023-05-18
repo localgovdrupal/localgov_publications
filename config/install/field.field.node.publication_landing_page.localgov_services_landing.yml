@@ -3,11 +3,11 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_localgov_services_landing
+    - field.storage.node.localgov_services_landing
     - node.type.localgov_services_landing
     - node.type.publication_landing_page
-id: node.publication_landing_page.field_localgov_services_landing
-field_name: field_localgov_services_landing
+id: node.publication_landing_page.localgov_services_landing
+field_name: localgov_services_landing
 entity_type: node
 bundle: publication_landing_page
 label: 'Related service'

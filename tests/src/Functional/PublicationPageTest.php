@@ -71,7 +71,7 @@ class PublicationPageTest extends BrowserTestBase {
     $this->assertSession()->pageTextContains('body');
     $this->assertSession()->pageTextContains('localgov_page_content');
     $this->assertSession()->pageTextContains('localgov_published_date');
-    $this->assertSession()->pageTextContains('field_localgov_services_landing');
+    $this->assertSession()->pageTextContains('localgov_services_landing');
     $this->assertSession()->pageTextContains('localgov_updated_date');
   }
 

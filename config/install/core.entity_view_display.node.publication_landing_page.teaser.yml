@@ -4,7 +4,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.publication_landing_page.body
-    - field.field.node.publication_landing_page.field_localgov_services_landing
+    - field.field.node.publication_landing_page.localgov_services_landing
     - field.field.node.publication_landing_page.localgov_documents
     - field.field.node.publication_landing_page.localgov_pub_landing_content
     - field.field.node.publication_landing_page.localgov_published_date
@@ -32,7 +32,7 @@ content:
     weight: 100
     region: content
 hidden:
-  field_localgov_services_landing: true
+  localgov_services_landing: true
   localgov_documents: true
   localgov_pub_landing_content: true
   localgov_published_date: true

@@ -3,7 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.node.publication_landing_page.body
-    - field.field.node.publication_landing_page.field_localgov_services_landing
+    - field.field.node.publication_landing_page.localgov_services_landing
     - field.field.node.publication_landing_page.localgov_publication
     - field.field.node.publication_landing_page.localgov_documents
     - field.field.node.publication_landing_page.localgov_pub_landing_content
@@ -36,7 +36,7 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_localgov_services_landing:
+  localgov_services_landing:
     type: entity_reference_autocomplete
     weight: 124
     region: content
