@@ -134,7 +134,7 @@ class UrlAliasTest extends BrowserTestBase {
       'type' => 'publication_landing_page',
       'title' => 'Test publication landing page',
       'status' => NodeInterface::PUBLISHED,
-      'field_publication' => [
+      'localgov_publication' => [
         ['target_id' => $node_parent->id()],
       ],
       'book' => [

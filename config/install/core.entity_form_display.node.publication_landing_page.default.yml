@@ -4,7 +4,7 @@ dependencies:
   config:
     - field.field.node.publication_landing_page.body
     - field.field.node.publication_landing_page.field_localgov_services_landing
-    - field.field.node.publication_landing_page.field_publication
+    - field.field.node.publication_landing_page.localgov_publication
     - field.field.node.publication_landing_page.localgov_documents
     - field.field.node.publication_landing_page.localgov_pub_landing_content
     - field.field.node.publication_landing_page.localgov_published_date
@@ -46,7 +46,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  field_publication:
+  localgov_publication:
     type: entity_reference_autocomplete
     weight: 13
     region: content
