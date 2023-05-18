@@ -1,0 +1,25 @@
+uuid: 9343b886-209d-4a95-8c40-a1499ad2665b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.localgov_publication
+    - node.type.publication_landing_page
+id: node.publication_landing_page.localgov_publication
+field_name: localgov_publication
+entity_type: node
+bundle: publication_landing_page
+label: Publication
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: publication_entity_reference_widget
+      display_name: entity_reference_1
+      arguments: {  }
+field_type: entity_reference
