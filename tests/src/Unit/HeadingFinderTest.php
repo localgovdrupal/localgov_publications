@@ -51,6 +51,13 @@ class HeadingFinderTest extends UnitTestCase {
       'markup' => '<p>Content 1.</p><p>Content 2.</p>',
       'expectedLinks' => [],
     ];
+    // Check HTML entities are handled correctly.
+    yield [
+      'markup' => '<h2 id="hammersmith-fulham">Hammersmith &amp; Fulham</h2><p>Hammersmith &amp; Fulham is a London borough in West London.</p>',
+      'expectedLinks' => [
+        new Link('Hammersmith & Fulham', Url::fromUri('base:<none>', ['fragment' => 'hammersmith-fulham'])),
+      ],
+    ];
   }
 
   /**

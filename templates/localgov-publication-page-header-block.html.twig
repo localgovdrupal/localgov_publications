@@ -1,0 +1,42 @@
+{#
+/**
+* @file
+* Default theme implementation of localgov_header_block.
+*
+* @see template_preprocess_block()
+*
+* @ingroup themeable
+*/
+#}
+
+{% if not localgov_base_remove_css %}
+  {{ attach_library('localgov_base/page-title-block') }}
+{% endif %}
+
+{%
+  set classes = [
+  'lgd-page-title-block'
+]
+%}
+
+{% if title or lede['#value'] %}
+  <div{{ attributes.addClass(classes) }}>
+
+    {% if title %}
+      <h1 class="lgd-page-title-block__title">{{ title }}</h1>
+    {% endif %}
+
+    {% if published_date %}
+      <div><span>Published: </span>{{ published_date }}</div>
+    {% endif %}
+
+    {% if last_updated_date %}
+      <div><span>Last updated: </span>{{ last_updated_date }}</div>
+    {% endif %}
+
+    {% if lede['#value'] %}
+      <p class="lgd-page-title-block__subheader">{{ lede['#value'] }}</p>
+    {% endif %}
+
+  </div>
+{% endif %}
