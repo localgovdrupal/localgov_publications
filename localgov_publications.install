@@ -14,4 +14,8 @@ function localgov_publications_install() {
   $allowed_types[] = 'publication';
   $config->set('allowed_types', $allowed_types);
   $config->save();
+  $path_auto_config = \Drupal::configFactory()->getEditable('pathauto.settings');
+  $safe_tokens = $path_auto_config->get('safe_tokens');
+  $safe_tokens[] = 'publication-landing-page-alias';
+  $path_auto_config->set('safe_tokens', $safe_tokens)->save();
 }

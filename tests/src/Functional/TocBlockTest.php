@@ -62,6 +62,7 @@ class TocBlockTest extends BrowserTestBase {
         'format' => 'wysiwyg',
       ],
       'status' => NodeInterface::PUBLISHED,
+      'book' => ['bid' => '0'],
     ]);
     $this->drupalGet('/node/1');
 
