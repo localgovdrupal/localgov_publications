@@ -2,9 +2,10 @@
 
 namespace Drupal\Tests\localgov_publications\Functional;
 
-use Drupal\node\NodeInterface;
-use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
+use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\Tests\BrowserTestBase;
+use Drupal\node\NodeInterface;
 
 /**
  * Functional tests for our link modifications.
@@ -37,13 +38,22 @@ class ChildLinkTest extends BrowserTestBase {
 
     $adminUser = $this->drupalCreateUser([], NULL, TRUE);
 
+    // Create a text paragraph.
+    $text_paragraph = Paragraph::create([
+      'type' => 'localgov_text',
+      'localgov_text' => [
+        'value' => '<p>Content</p>',
+        'format' => 'wysiwyg',
+      ],
+    ]);
+    $text_paragraph->save();
+
     $node = $this->createNode([
       'type' => 'localgov_publication_page',
       'title' => 'Test publication page',
-      'body' => [
-        'summary' => '<p>Content</p>',
-        'value' => '<p>Content</p>',
-        'format' => 'wysiwyg',
+      'localgov_page_content' => [
+        'target_id' => $text_paragraph->id(),
+        'target_revision_id' => $text_paragraph->getRevisionId(),
       ],
       'book' => [
         'bid' => 'new',
