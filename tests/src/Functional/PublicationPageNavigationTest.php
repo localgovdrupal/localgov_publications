@@ -94,4 +94,25 @@ class PublicationPageNavigationTest extends BrowserTestBase {
     $this->assertSession()->responseContains('<a href="/node/3" rel="next" title="Go to next page">Next: Publication child page two <b>›</b></a>');
   }
 
+  /**
+   * Test the 'book navigation' block is not displayed on single page books.
+   */
+  public function testBookNavigationIsNotDisplayed() {
+    $node_parent = $this->createNode([
+      'type' => 'localgov_publication_page',
+      'title' => 'Publication parent page',
+      'body' => [
+        'summary' => '<p>Content</p>',
+        'value' => '<p>Content</p>',
+        'format' => 'wysiwyg',
+      ],
+      'book' => [
+        'bid' => 'new',
+      ],
+      'status' => NodeInterface::PUBLISHED,
+    ]);
+    $this->drupalGet('/node/' . $node_parent->id());
+    $this->assertSession()->elementNotExists('css', '#block-booknavigation');
+  }
+
 }

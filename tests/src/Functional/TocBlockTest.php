@@ -72,6 +72,7 @@ class TocBlockTest extends BrowserTestBase {
         'target_revision_id' => $text_paragraph->getRevisionId(),
       ],
       'status' => NodeInterface::PUBLISHED,
+      'book' => ['bid' => '0'],
     ]);
     $this->drupalGet('/node/1');
 

@@ -10,5 +10,6 @@ dependencies:
   - drupal:menu_ui
   - drupal:views
   - footnotes:footnotes
+  - pathauto:pathauto
   - localgov_paragraphs:localgov_paragraphs
   - localgov_services:localgov_services
