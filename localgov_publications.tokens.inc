@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Provides tokens for publications related data.
+ */
+
 use Drupal\Core\Render\BubbleableMetadata;
 
 /**
