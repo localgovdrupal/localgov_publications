@@ -83,7 +83,6 @@ function localgov_publications_block_access(Block $block, $operation, AccountInt
   }
 }
 
-
 /**
  * Implements hook_form_FORM_ID_alter() for book_admin_edit.
  */
