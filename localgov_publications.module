@@ -116,38 +116,26 @@ function localgov_publications_form_alter(&$form, FormStateInterface $form_state
   // Alter the select element.
   $form['book']['bid']['#title'] = t('Publication');
 
-  // Change the "Create new book".
-  if (!empty($form['book']['bid']['#options'][$node->id()])) {
-    $form['book']['bid']['#options'][$node->id()] = t(
-      '- Create a new publication -',
-    );
-  }
-  elseif (!empty($form['book']['bid']['#options']['new'])) {
-    $form['book']['bid']['#options']['new'] = t(
-      '- Create a new publication -',
-    );
+  // Change "Create new book" to "Create a new publication".
+  if (!empty($form['book']['bid']['#options']['new'])) {
+    $form['book']['bid']['#options']['new'] = t('- Create a new publication -');
   }
 
-  $form['book']['bid']['#description'] = t(
-    'Your page will be part of the selected publication',
-  );
+  $form['book']['bid']['#description'] = t('Your page will be part of the selected publication');
 
   // Alter "No book selected".
   if (empty($book_values)) {
-    $form['book']['pid']['#prefix'] =
-      '<div id="edit-book-plid-wrapper"><em>No publication selected.</em>';
+    $form['book']['pid']['#prefix'] = '<div id="edit-book-plid-wrapper"><em>No publication selected.</em>';
   }
   else {
     switch ($book_values['bid']) {
       case '0':
-        $form['book']['pid']['#prefix'] =
-          '<div id="edit-book-plid-wrapper"><em>No publication selected.</em>';
+        $form['book']['pid']['#prefix'] = '<div id="edit-book-plid-wrapper"><em>No publication selected.</em>';
         break;
 
       case 'new':
       case $node->id():
-        $form['book']['pid']['#prefix'] =
-          '<div id="edit-book-plid-wrapper"><em>This will be the top-level page in this publication.</em>';
+        $form['book']['pid']['#prefix'] = '<div id="edit-book-plid-wrapper"><em>This will be the top-level page in this publication.</em>';
         break;
 
       default:
