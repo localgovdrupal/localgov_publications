@@ -52,7 +52,7 @@ class AdminTest extends BrowserTestBase {
       ],
     ]);
     $this->drupalLogin($bookAdministrator);
-    $this->drupalGet('/admin/structure/book');
+    $this->drupalGet('/admin/structure/publications');
 
     $this->assertSession()->linkNotExists('Test publication page');
     $this->assertSession()->linkExists('Test book');
