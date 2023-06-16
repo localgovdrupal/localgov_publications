@@ -2,10 +2,10 @@
 
 namespace Drupal\Tests\localgov_publications\Functional;
 
-use Drupal\Tests\node\Traits\NodeCreationTrait;
-use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Tests\BrowserTestBase;
+use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\node\NodeInterface;
+use Drupal\paragraphs\Entity\Paragraph;
 
 /**
  * Functional tests for the TocBlock.
