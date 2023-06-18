@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\localgov_publications\Functional;
 
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
@@ -31,10 +32,15 @@ class PublicationPageHeadingBlockTest extends BrowserTestBase {
   ];
 
   /**
-   * Test the 'next page' link on a publication.
+   * Test the heading block displays correct information.
    */
   public function testHeadingBlockIsConsistent() {
-    $adminUser = $this->drupalCreateUser([], NULL, TRUE);
+
+    $adminUser = $this->drupalCreateUser([
+      'bypass node access',
+      'administer nodes',
+      'administer node fields',
+    ]);
 
     $node_parent = $this->createNode([
       'type' => 'localgov_publication_page',
@@ -105,6 +111,9 @@ class PublicationPageHeadingBlockTest extends BrowserTestBase {
     $this->assertSession()->responseContains('<h1 class="lgd-page-title-block__title">Publication parent page</h1>');
     $this->assertSession()->responseContains('<div><span>Published: </span>16 April 2023</div>');
     $this->assertSession()->responseContains('<div><span>Last updated: </span>20 April 2023</div>');
+
+    // Reload the node so it's fully populated.
+    $node_parent = Node::load($node_parent->id());
 
     // Update the 'Last updated' date on the parent page.
     $node_parent->localgov_updated_date->setValue(date('Y-m-d', mktime(0, 0, 0, 4, 21, 2023)));
