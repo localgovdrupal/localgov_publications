@@ -105,6 +105,18 @@ class PublicationPageHeadingBlockTest extends BrowserTestBase {
     $this->assertSession()->responseContains('<h1 class="lgd-page-title-block__title">Publication parent page</h1>');
     $this->assertSession()->responseContains('<div><span>Published: </span>16 April 2023</div>');
     $this->assertSession()->responseContains('<div><span>Last updated: </span>20 April 2023</div>');
+
+    // Update the 'Last updated' date on the parent page.
+    $node_parent->localgov_updated_date->setValue(date('Y-m-d', mktime(0, 0, 0, 4, 21, 2023));
+    $node_parent->save();
+
+    // Check date updated on the parent page.
+    $this->drupalGet('/node/' . $node_parent->id());
+    $this->assertSession()->responseContains('<div><span>Last updated: </span>21 April 2023</div>');
+
+    // Check date updated on a child page.
+    $this->drupalGet('/node/' . $node_child_one->id());
+    $this->assertSession()->responseContains('<div><span>Last updated: </span>21 April 2023</div>');
   }
 
 }
