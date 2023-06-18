@@ -107,7 +107,7 @@ class PublicationPageHeadingBlockTest extends BrowserTestBase {
     $this->assertSession()->responseContains('<div><span>Last updated: </span>20 April 2023</div>');
 
     // Update the 'Last updated' date on the parent page.
-    $node_parent->localgov_updated_date->setValue(date('Y-m-d', mktime(0, 0, 0, 4, 21, 2023));
+    $node_parent->localgov_updated_date->setValue(date('Y-m-d', mktime(0, 0, 0, 4, 21, 2023)));
     $node_parent->save();
 
     // Check date updated on the parent page.
