@@ -5,3 +5,6 @@ services:
       - { name: event_subscriber }
   localgov_publications.heading_finder:
     class: Drupal\localgov_publications\Service\HeadingFinder
+  localgov_publications.publication_manager:
+    class: Drupal\localgov_publications\Service\PublicationManager
+    arguments: ['@entity_type.manager']

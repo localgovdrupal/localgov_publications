@@ -5,13 +5,13 @@
  * Module file for the LocalGov Publications module.
  */
 
-use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Access\AccessResult;
-use Drupal\node\NodeInterface;
 use Drupal\block\Entity\Block;
-use Drupal\user\Entity\Role;
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
+use Drupal\node\NodeInterface;
+use Drupal\user\Entity\Role;
 
 /**
  * Implements hook_theme().
