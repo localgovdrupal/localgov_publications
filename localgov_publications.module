@@ -84,6 +84,18 @@ function localgov_publications_block_access(Block $block, $operation, AccountInt
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter() for book_admin_edit.
+ */
+function localgov_publications_form_book_admin_edit_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+  // If we're on the route this module uses for this form, change some wording.
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  if ($route_name === 'publication.admin_edit') {
+    $form['save']['#value'] = t('Save publication pages');
+  }
+}
+
+/**
  * Implements hook_form_alter().
  */
 function localgov_publications_form_alter(&$form, FormStateInterface $form_state, $form_id) {

@@ -1,0 +1,9 @@
+publication.admin_edit:
+  path: '/admin/structure/publications/{node}'
+  defaults:
+    _form: '\Drupal\book\Form\BookAdminEditForm'
+    _title: 'Re-order publication pages and change titles'
+  requirements:
+    _permission: 'administer book outlines'
+    _entity_access: 'node.view'
+    node: \d+
