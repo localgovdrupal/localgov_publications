@@ -33,11 +33,16 @@ function localgov_publications_theme($existing, $type, $theme, $path) {
         'last_updated_date' => NULL,
       ],
     ],
+    'localgov_publications_node_title' => [
+      'variables' => [
+        'title' => NULL,
+      ],
+    ]
   ];
 }
 
 /**
- * Implements hook_install().
+ * Implements hook_modules_installed().
  */
 function localgov_publications_modules_installed($modules, $is_syncing) {
   if (!$is_syncing && in_array('localgov_publications', $modules)) {
@@ -64,8 +69,7 @@ function localgov_publications_theme_suggestions_book_navigation(array $variable
   // Only add suggestion on publication pages and publication landing pages.
   $node = \Drupal::routeMatch()->getParameter('node');
   if (localgov_publications_is_publication_type($node->getType())) {
-    $original = $variables['theme_hook_original'] . '__';
-    $suggestions[] = $original . 'publication';
+    $suggestions[] = $variables['theme_hook_original'] . '__' . 'publication';
   }
 
   return $suggestions;
@@ -172,4 +176,37 @@ function localgov_publications_node_links_alter(array &$links, NodeInterface $no
   if (localgov_publications_is_publication_type($node->getType()) && !empty($links['book']['#links']['book_add_child'])) {
     $links['book']['#links']['book_add_child']['url'] = Url::fromRoute('node.add', ['node_type' => 'localgov_publication_page'], ['query' => ['parent' => $node->id()]]);
   }
+}
+
+/**
+ * Implements hook_ENTITY_view for node.
+ */
+function localgov_publications_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, string $view_mode) {
+
+  if (!$entity instanceof NodeInterface) {
+    return;
+  }
+
+  if ($view_mode !== 'full') {
+    return;
+  }
+
+  if (!localgov_publications_is_publication_type($entity->getType())) {
+    return;
+  }
+
+  // If this node isn't in a publication, don't do anything.
+  if (!isset($entity->book)) {
+    return;
+  }
+
+  // If this node is top level in the publication, don't do anything.
+  if ($entity->book['pid'] === '0') {
+    return;
+  }
+
+  $build['localgov_publications_node_title'] = [
+    '#theme' => 'localgov_publications_node_title',
+    '#title' => $entity->getTitle(),
+  ];
 }
