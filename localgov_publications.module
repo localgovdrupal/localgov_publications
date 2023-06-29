@@ -37,7 +37,7 @@ function localgov_publications_theme($existing, $type, $theme, $path) {
       'variables' => [
         'title' => NULL,
       ],
-    ]
+    ],
   ];
 }
 
@@ -179,7 +179,7 @@ function localgov_publications_node_links_alter(array &$links, NodeInterface $no
 }
 
 /**
- * Implements hook_ENTITY_view for node.
+ * Implements hook_ENTITY_view() for node.
  */
 function localgov_publications_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, string $view_mode) {
 
