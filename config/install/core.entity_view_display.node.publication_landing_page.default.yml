@@ -1,19 +1,47 @@
+uuid: 2efc9da3-488f-465d-a1a5-8e26f0d7be6f
 langcode: en
 status: true
 dependencies:
   config:
     - field.field.node.publication_landing_page.body
     - field.field.node.publication_landing_page.field_localgov_services_landing
+    - field.field.node.publication_landing_page.localgov_publications_banner
     - field.field.node.publication_landing_page.localgov_documents
     - field.field.node.publication_landing_page.localgov_pub_landing_content
+    - field.field.node.publication_landing_page.localgov_publication
     - field.field.node.publication_landing_page.localgov_published_date
     - field.field.node.publication_landing_page.localgov_updated_date
     - node.type.publication_landing_page
   module:
     - datetime
     - entity_reference_revisions
+    - field_group
     - text
     - user
+third_party_settings:
+  field_group:
+    group_documents:
+      children:
+        - localgov_publication
+        - localgov_documents
+      label: Documents
+      parent_name: ''
+      region: content
+      weight: 8
+      format_type: html_element
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        element: div
+        show_label: true
+        label_element: h2
+        label_element_classes: ''
+        attributes: ''
+        effect: none
+        speed: fast
+_core:
+  default_config_hash: RM_zT9iCQrqHinKr5Qb-2KVT8QuWOILOsneJ1A7Cz6U
 id: node.publication_landing_page.default
 targetEntityType: node
 bundle: publication_landing_page
@@ -24,54 +52,72 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 101
+    weight: 1
     region: content
   field_localgov_services_landing:
     type: entity_reference_label
-    label: above
+    label: inline
     settings:
       link: true
     third_party_settings: {  }
-    weight: 104
+    weight: 5
     region: content
-  links:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 100
-    region: content
-  localgov_documents:
-    type: entity_reference_label
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    weight: 105
-    region: content
-  localgov_pub_landing_content:
+  localgov_publications_banner:
     type: entity_reference_revisions_entity_view
-    label: above
+    label: hidden
     settings:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 106
+    weight: 9
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  localgov_documents:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  localgov_pub_landing_content:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  localgov_publication:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 4
     region: content
   localgov_published_date:
     type: datetime_default
-    label: above
+    label: inline
     settings:
       timezone_override: ''
-      format_type: medium
+      format_type: long
     third_party_settings: {  }
-    weight: 102
+    weight: 2
     region: content
   localgov_updated_date:
     type: datetime_default
-    label: above
+    label: inline
     settings:
       timezone_override: ''
-      format_type: medium
+      format_type: long
     third_party_settings: {  }
-    weight: 103
+    weight: 3
     region: content
 hidden: {  }
