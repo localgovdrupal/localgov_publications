@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.localgov_publications_banner.field_publications_text
+    - field.field.paragraph.localgov_publications_banner.localgov_publications_text
     - field.field.paragraph.localgov_publications_banner.localgov_image
     - field.field.paragraph.localgov_publications_banner.localgov_title
     - field.field.paragraph.localgov_publications_banner.localgov_url
@@ -16,7 +16,7 @@ targetEntityType: paragraph
 bundle: localgov_publications_banner
 mode: default
 content:
-  field_publications_text:
+  localgov_publications_text:
     type: string_textarea
     weight: 2
     region: content
