@@ -13,30 +13,27 @@
   {{ attach_library('localgov_base/page-title-block') }}
 {% endif %}
 
-{%
-  set classes = [
-  'lgd-page-title-block'
-]
-%}
+{% set classes = ['lgd-page-title-block'] %}
 
-{% if title or lede['#value'] %}
-  <div{{ attributes.addClass(classes) }}>
+<div{{ attributes.addClass(classes) }}>
 
-    {% if title %}
-      <h1 class="lgd-page-title-block__title">{{ title }}</h1>
+  <h1 class="lgd-page-title-block__title">
+    <span role="text">{{ title }}
+      {% if node_title %}
+        <span class="nhsuk-caption-xl nhsuk-caption--bottom">
+          <span class="nhsuk-u-visually-hidden"> - </span>
+          {{ node_title }}
+        </span>
+      </span>
     {% endif %}
+  </h1>
 
-    {% if published_date %}
-      <div><span>Published: </span>{{ published_date }}</div>
-    {% endif %}
+  {% if published_date %}
+    <div><span>Published: </span>{{ published_date }}</div>
+  {% endif %}
 
-    {% if last_updated_date %}
-      <div><span>Last updated: </span>{{ last_updated_date }}</div>
-    {% endif %}
+  {% if last_updated_date %}
+    <div><span>Last updated: </span>{{ last_updated_date }}</div>
+  {% endif %}
 
-    {% if lede['#value'] %}
-      <p class="lgd-page-title-block__subheader">{{ lede['#value'] }}</p>
-    {% endif %}
-
-  </div>
-{% endif %}
+</div>
