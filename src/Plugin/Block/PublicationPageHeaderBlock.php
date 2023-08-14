@@ -70,6 +70,10 @@ class PublicationPageHeaderBlock extends BlockBase implements ContainerFactoryPl
       '#title' => $topLevelNode->getTitle(),
     ];
 
+    if ($node->id() !== $topLevelNode->id()) {
+      $build['#node_title'] = $node->getTitle();
+    }
+
     // Add published date, if available.
     $published_date = $topLevelNode->get('localgov_published_date')->value;
     if (!empty($published_date)) {
