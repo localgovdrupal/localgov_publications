@@ -1,4 +1,3 @@
-uuid: 74f04fdf-da60-4507-a578-6121d85287eb
 langcode: en
 status: true
 dependencies:
@@ -15,8 +14,6 @@ dependencies:
   module:
     - text
     - user
-_core:
-  default_config_hash: MF3sk51DnuX3iCriSWy570H2w3fkBe_zCPZ5eoXwgOs
 id: node.publication_landing_page.teaser
 targetEntityType: node
 bundle: publication_landing_page

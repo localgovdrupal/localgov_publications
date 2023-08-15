@@ -1,4 +1,3 @@
-uuid: c4c5d1b2-61e0-48e6-870b-c6385fed3917
 langcode: en
 status: true
 dependencies:
@@ -39,8 +38,6 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-_core:
-  default_config_hash: RM_zT9iCQrqHinKr5Qb-2KVT8QuWOILOsneJ1A7Cz6U
 id: node.publication_landing_page.full
 targetEntityType: node
 bundle: publication_landing_page
