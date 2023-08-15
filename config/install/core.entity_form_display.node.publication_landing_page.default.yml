@@ -102,8 +102,6 @@ third_party_settings:
         formatter: closed
         description: 'The Publication this landing page is about might come in different formats, add them all here. '
         required_fields: true
-_core:
-  default_config_hash: 5sI-1PYR8qtgHj0RF0QyPnxiJ0cby_594wGzhCWH9xY
 id: node.publication_landing_page.default
 targetEntityType: node
 bundle: publication_landing_page
