@@ -1,18 +1,19 @@
+uuid: c4c5d1b2-61e0-48e6-870b-c6385fed3917
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.full
     - field.field.node.publication_landing_page.body
     - field.field.node.publication_landing_page.field_localgov_services_landing
+    - field.field.node.publication_landing_page.localgov_publications_banner
     - field.field.node.publication_landing_page.localgov_documents
     - field.field.node.publication_landing_page.localgov_publication
-    - field.field.node.publication_landing_page.localgov_publications_banner
     - field.field.node.publication_landing_page.localgov_published_date
     - field.field.node.publication_landing_page.localgov_updated_date
     - node.type.publication_landing_page
   module:
     - datetime
-    - entity_reference_revisions
     - field_group
     - text
     - user
@@ -25,7 +26,7 @@ third_party_settings:
       label: Documents
       parent_name: ''
       region: content
-      weight: 6
+      weight: 4
       format_type: html_element
       format_settings:
         classes: ''
@@ -38,17 +39,19 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-id: node.publication_landing_page.default
+_core:
+  default_config_hash: RM_zT9iCQrqHinKr5Qb-2KVT8QuWOILOsneJ1A7Cz6U
+id: node.publication_landing_page.full
 targetEntityType: node
 bundle: publication_landing_page
-mode: default
+mode: full
 content:
   body:
     type: text_default
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 1
+    weight: 5
     region: content
   field_localgov_services_landing:
     type: entity_reference_label
@@ -56,7 +59,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 4
+    weight: 3
     region: content
   links:
     settings: {  }
@@ -69,15 +72,6 @@ content:
     settings:
       view_mode: default
       link: false
-    third_party_settings: {  }
-    weight: 5
-    region: content
-  localgov_pub_landing_content:
-    type: entity_reference_revisions_entity_view
-    label: hidden
-    settings:
-      view_mode: default
-      link: ''
     third_party_settings: {  }
     weight: 5
     region: content
@@ -96,7 +90,7 @@ content:
       timezone_override: ''
       format_type: long
     third_party_settings: {  }
-    weight: 2
+    weight: 1
     region: content
   localgov_updated_date:
     type: datetime_default
@@ -105,7 +99,7 @@ content:
       timezone_override: ''
       format_type: long
     third_party_settings: {  }
-    weight: 3
+    weight: 2
     region: content
 hidden:
   localgov_publications_banner: true
