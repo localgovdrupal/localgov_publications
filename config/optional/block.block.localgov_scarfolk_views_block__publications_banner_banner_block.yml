@@ -7,7 +7,7 @@ dependencies:
     - views
   theme:
     - localgov_scarfolk
-id: views_block__publications_banner_banner_block
+id: localgov_scarfolk_views_block__publications_banner_banner_block
 theme: localgov_scarfolk
 region: banner
 weight: 0
