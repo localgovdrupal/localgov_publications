@@ -33,8 +33,18 @@ function localgov_publications_theme($existing, $type, $theme, $path) {
         'last_updated_date' => NULL,
       ],
     ],
+    'paragraph__localgov_publications_banner' => [
+      'template' => 'paragraph--localgov-publications-banner',
+      'base hook' => 'paragraph',
+    ],
+
+    'media__document__publication' => [
+      'template' => 'media--document--publication',
+      'base hook' => 'media',
+    ],
   ];
 }
+
 
 /**
  * Implements hook_install().

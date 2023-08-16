@@ -4,9 +4,9 @@ dependencies:
   config:
     - field.field.node.publication_landing_page.body
     - field.field.node.publication_landing_page.field_localgov_services_landing
+    - field.field.node.publication_landing_page.localgov_publications_banner
     - field.field.node.publication_landing_page.localgov_documents
     - field.field.node.publication_landing_page.localgov_publication
-    - field.field.node.publication_landing_page.localgov_publications_banner
     - field.field.node.publication_landing_page.localgov_published_date
     - field.field.node.publication_landing_page.localgov_updated_date
     - node.type.publication_landing_page
@@ -25,7 +25,7 @@ third_party_settings:
       label: Documents
       parent_name: ''
       region: content
-      weight: 6
+      weight: 8
       format_type: html_element
       format_settings:
         classes: ''
@@ -56,7 +56,16 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 4
+    weight: 5
+    region: content
+  localgov_publications_banner:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 9
     region: content
   links:
     settings: {  }
@@ -64,20 +73,10 @@ content:
     weight: 0
     region: content
   localgov_documents:
-    type: entity_reference_entity_view
+    type: entity_reference_label
     label: hidden
     settings:
-      view_mode: default
-      link: false
-    third_party_settings: {  }
-    weight: 5
-    region: content
-  localgov_pub_landing_content:
-    type: entity_reference_revisions_entity_view
-    label: hidden
-    settings:
-      view_mode: default
-      link: ''
+      link: true
     third_party_settings: {  }
     weight: 5
     region: content
@@ -107,5 +106,4 @@ content:
     third_party_settings: {  }
     weight: 3
     region: content
-hidden:
-  localgov_publications_banner: true
+hidden: {  }
