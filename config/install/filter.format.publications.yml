@@ -112,4 +112,4 @@ filters:
     settings:
       footnotes_collapse: '1'
       footnotes_html: '1'
-      footnotes_css: true
+      footnotes_css: '1'
