@@ -29,6 +29,7 @@ function localgov_publications_tokens_alter(array &$replacements, array $context
     }
     $query = \Drupal::entityQuery('node');
     $query->condition('localgov_publication', $bid);
+    $query->accessCheck(FALSE);
     $result = $query->execute();
     if (!empty($result)) {
       $landingPageNid = reset($result);
