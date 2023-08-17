@@ -96,21 +96,23 @@ class PublicationPageHeadingBlockTest extends BrowserTestBase {
 
     // Top level parent page.
     $this->drupalGet('/node/' . $node_parent->id());
-    $this->assertSession()->responseContains('<h1 class="lgd-page-title-block__title">Publication parent page</h1>');
-    $this->assertSession()->responseContains('<div><span>Published: </span>16 April 2023</div>');
-    $this->assertSession()->responseContains('<div><span>Last updated: </span>20 April 2023</div>');
+    $this->assertSession()->responseContains('Publication parent page');
+    $this->assertSession()->responseContains('<span>Published: </span>16 April 2023');
+    $this->assertSession()->responseContains('<span>Last updated: </span>20 April 2023');
 
     // Child page one.
     $this->drupalGet('/node/' . $node_child_one->id());
-    $this->assertSession()->responseContains('<h1 class="lgd-page-title-block__title">Publication parent page</h1>');
-    $this->assertSession()->responseContains('<div><span>Published: </span>16 April 2023</div>');
-    $this->assertSession()->responseContains('<div><span>Last updated: </span>20 April 2023</div>');
+    $this->assertSession()->responseContains('Publication parent page');
+    $this->assertSession()->responseContains('Publication child page one');
+    $this->assertSession()->responseContains('<span>Published: </span>16 April 2023');
+    $this->assertSession()->responseContains('<span>Last updated: </span>20 April 2023');
 
     // Child page two.
     $this->drupalGet('/node/' . $node_child_two->id());
-    $this->assertSession()->responseContains('<h1 class="lgd-page-title-block__title">Publication parent page</h1>');
-    $this->assertSession()->responseContains('<div><span>Published: </span>16 April 2023</div>');
-    $this->assertSession()->responseContains('<div><span>Last updated: </span>20 April 2023</div>');
+    $this->assertSession()->responseContains('Publication parent page');
+    $this->assertSession()->responseContains('Publication child page two');
+    $this->assertSession()->responseContains('<span>Published: </span>16 April 2023');
+    $this->assertSession()->responseContains('<span>Last updated: </span>20 April 2023');
 
     // Reload the node so it's fully populated.
     $node_parent = Node::load($node_parent->id());
