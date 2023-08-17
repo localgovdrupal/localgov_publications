@@ -1,0 +1,49 @@
+{#
+/**
+ * @file
+ * Theme override to present a media item.
+ *
+ * Available variables:
+ * - media: The media item, with limited access to object properties and
+ *   methods. Only method names starting with "get", "has", or "is" and
+ *   a few common methods such as "id", "label", and "bundle" are available.
+ *   For example:
+ *   - entity.getEntityTypeId() will return the entity type ID.
+ *   - entity.hasField('field_example') returns TRUE if the entity includes
+ *     field_example. (This does not indicate the presence of a value in this
+ *     field.)
+ *   Calling other methods, such as entity.delete(), will result in
+ *   an exception.
+ *   See \Drupal\Core\Entity\EntityInterface for a full list of methods.
+ * - name: Name of the media item.
+ * - content: Media content.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+ * - view_mode: View mode; for example, "teaser" or "full".
+ * - attributes: HTML attributes for the containing element.
+ * - title_attributes: Same as attributes, except applied to the main title
+ *   tag that appears in the template.
+ *
+ * @see template_preprocess_media()
+ */
+#}
+
+{%
+  set classes = [
+    'publication-document',
+    'publication-document--pdf'
+  ]
+%}
+
+<div{{ attributes.addClass(classes) }}>
+  {{ title_suffix.contextual_links }}
+  <svg class="publication-document__thumbnail-image publication-document__thumbnail-image--document" version="1.1" viewBox="0 0 99 140" width="99" height="140" aria-hidden="true">
+    <path d="M12 12h75v27H12zM12 59h9v9h-9zM12 77h9v9h-9zM12 95h9v9h-9zM12 113h9v9h-9zM30 59h57v9H30zM30 77h39v9H30zM30 95h57v9H30zM30 113h48v9H30z" stroke-width="0"></path>
+  </svg>
+  <div>
+    {{ content }}
+    {{ 'This file may not be suitable for users of assistive technology.'|t }}
+  </div>
+</div>
