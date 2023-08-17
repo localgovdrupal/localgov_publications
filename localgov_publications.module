@@ -28,7 +28,8 @@ function localgov_publications_theme($existing, $type, $theme, $path) {
     ],
     'localgov_publication_page_header_block' => [
       'variables' => [
-        'title' => NULL,
+        'title' => '',
+        'node_title' => '',
         'published_date' => NULL,
         'last_updated_date' => NULL,
       ],
@@ -37,7 +38,7 @@ function localgov_publications_theme($existing, $type, $theme, $path) {
 }
 
 /**
- * Implements hook_install().
+ * Implements hook_modules_installed().
  */
 function localgov_publications_modules_installed($modules, $is_syncing) {
   if (!$is_syncing && in_array('localgov_publications', $modules)) {
@@ -64,8 +65,7 @@ function localgov_publications_theme_suggestions_book_navigation(array $variable
   // Only add suggestion on publication pages and publication landing pages.
   $node = \Drupal::routeMatch()->getParameter('node');
   if (localgov_publications_is_publication_type($node->getType())) {
-    $original = $variables['theme_hook_original'] . '__';
-    $suggestions[] = $original . 'publication';
+    $suggestions[] = $variables['theme_hook_original'] . '__' . 'publication';
   }
 
   return $suggestions;
