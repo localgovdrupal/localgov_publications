@@ -37,14 +37,12 @@ function localgov_publications_theme($existing, $type, $theme, $path) {
       'template' => 'paragraph--localgov-publications-banner',
       'base hook' => 'paragraph',
     ],
-
     'media__document__publication' => [
       'template' => 'media--document--publication',
       'base hook' => 'media',
     ],
   ];
 }
-
 
 /**
  * Implements hook_install().
