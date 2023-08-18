@@ -70,21 +70,6 @@ third_party_settings:
         formatter: closed
         description: ''
         required_fields: true
-    group_page_builder:
-      children:
-        - localgov_pub_landing_content
-      label: 'Page builder'
-      region: content
-      parent_name: group_tabs
-      weight: 19
-      format_type: tab
-      format_settings:
-        classes: ''
-        show_empty_fields: false
-        id: ''
-        formatter: closed
-        description: ''
-        required_fields: true
     group_documents:
       children:
         - localgov_documents
