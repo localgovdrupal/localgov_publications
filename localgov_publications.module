@@ -41,6 +41,10 @@ function localgov_publications_theme($existing, $type, $theme, $path) {
       'template' => 'media--document--publication',
       'base hook' => 'media',
     ],
+    'field__localgov_publication' => [
+      'template' => 'publication-html-reference',
+      'base hook' => 'field',
+    ],
   ];
 }
 

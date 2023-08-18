@@ -8,3 +8,8 @@ localgov-publications:
     - core/jquery
     - core/drupal
     - core/drupal.form
+
+localgov-publications-icons:
+  css:
+    theme:
+      css/localgov-publications-icons.css: {}
