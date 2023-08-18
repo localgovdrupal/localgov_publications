@@ -5,9 +5,9 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.field.node.publication_landing_page.body
     - field.field.node.publication_landing_page.field_localgov_services_landing
-    - field.field.node.publication_landing_page.localgov_publications_banner
     - field.field.node.publication_landing_page.localgov_documents
     - field.field.node.publication_landing_page.localgov_publication
+    - field.field.node.publication_landing_page.localgov_publications_banner
     - field.field.node.publication_landing_page.localgov_published_date
     - field.field.node.publication_landing_page.localgov_updated_date
     - node.type.publication_landing_page
@@ -34,8 +34,8 @@ content:
     region: content
 hidden:
   field_localgov_services_landing: true
-  localgov_publications_banner: true
   localgov_documents: true
   localgov_publication: true
+  localgov_publications_banner: true
   localgov_published_date: true
   localgov_updated_date: true
