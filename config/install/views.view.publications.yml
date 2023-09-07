@@ -87,7 +87,7 @@ display:
             alter_text: false
             text: 'Edit order and titles'
             make_link: false
-            path: 'admin/structure/book/  {{ nid__value }}'
+            path: 'admin/structure/publications/{{ nid__value }}'
             absolute: false
             external: false
             replace_spaces: false
@@ -151,7 +151,7 @@ display:
             alter_text: true
             text: 'Edit order and titles'
             make_link: true
-            path: 'admin/structure/book/{{ nid }}'
+            path: 'admin/structure/publications/{{ nid }}'
             absolute: false
             external: false
             replace_spaces: false

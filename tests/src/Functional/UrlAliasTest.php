@@ -3,8 +3,8 @@
 namespace Drupal\Tests\localgov_publications\Functional;
 
 use Drupal\node\NodeInterface;
-use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\Tests\BrowserTestBase;
+use Drupal\Tests\node\Traits\NodeCreationTrait;
 
 /**
  * Tests the URL aliases.

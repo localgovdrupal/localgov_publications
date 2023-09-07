@@ -2,10 +2,11 @@
 
 namespace Drupal\localgov_publications\Plugin\Block;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\localgov_publications\Service\PublicationManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a page header block for publications.
@@ -29,11 +30,11 @@ use Drupal\Core\Block\BlockBase;
 class PublicationPageHeaderBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * The entity type manager.
+   * Publication manager.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @var \Drupal\localgov_publications\Service\PublicationManager
    */
-  protected $entityTypeManager;
+  protected $publicationManager;
 
   /**
    * {@inheritdoc}
@@ -43,59 +44,60 @@ class PublicationPageHeaderBlock extends BlockBase implements ContainerFactoryPl
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('entity_type.manager')
+      $container->get('localgov_publications.publication_manager')
     );
   }
 
   /**
-   * Table of contents block constructor.
+   * Constructor.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entityTypeManager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, PublicationManager $publicationManager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->entityTypeManager = $entityTypeManager;
+    $this->publicationManager = $publicationManager;
   }
 
   /**
    * {@inheritdoc}
    */
   public function build() {
-    $build = [
-      '#theme' => 'localgov_publication_page_header_block',
-    ];
 
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getContextValue('node');
+    $topLevelNode = $this->publicationManager->getTopLevel($node);
 
-    // Check if this node is the top level for this publication.
-    if (!empty($node->book)) {
-      if ($node->book['pid'] === '0') {
-        // Top level parent page.
-        $title = $node->getTitle();
-        $published_date = $node->get('localgov_published_date')->value;
-        $last_updated_date = $node->get('localgov_updated_date')->value;
-      }
-      else {
-        // Get the top level parent page.
-        $top_parent_node = $this->entityTypeManager->getStorage('node')->load($node->book['bid']);
-        $title = $top_parent_node->getTitle();
-        $published_date = $top_parent_node->get('localgov_published_date')->value;
-        $last_updated_date = $top_parent_node->get('localgov_updated_date')->value;
-      }
+    $build = [
+      '#theme' => 'localgov_publication_page_header_block',
+      '#title' => $topLevelNode->getTitle(),
+    ];
 
-      $build['#title'] = $title;
-
-      // Add published date, if available.
-      if (!empty($published_date)) {
-        $build['#published_date'] = date_format(date_create($published_date), "j F Y");
-      }
-
-      // Add last updated date, if available.
-      if (!empty($last_updated_date)) {
-        $build['#last_updated_date'] = date_format(date_create($last_updated_date), "j F Y");
-      }
+    if ($node->id() !== $topLevelNode->id()) {
+      $build['#node_title'] = $node->getTitle();
     }
 
+    // Add published date, if available.
+    $published_date = $topLevelNode->get('localgov_published_date')->value;
+    if (!empty($published_date)) {
+      $build['#published_date'] = $this->formatDate($published_date);
+    }
+
+    // Add last updated date, if available.
+    $last_updated_date = $topLevelNode->get('localgov_updated_date')->value;
+    if (!empty($last_updated_date)) {
+      $build['#last_updated_date'] = $this->formatDate($last_updated_date);
+    }
+
+    $cache = CacheableMetadata::createFromObject($node);
+    $cache->addCacheableDependency($topLevelNode);
+    $cache->applyTo($build);
+
     return $build;
+  }
+
+  /**
+   * Formats a date for display.
+   */
+  protected function formatDate(string $date): string {
+    return date_format(date_create($date), "j F Y");
   }
 
 }

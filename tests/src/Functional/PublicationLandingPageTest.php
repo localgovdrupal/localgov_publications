@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\localgov_publications\Functional;
 
-use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\Tests\BrowserTestBase;
+use Drupal\Tests\node\Traits\NodeCreationTrait;
 
 /**
  * Tests LocalGov Publications landing page.
@@ -46,7 +46,7 @@ class PublicationLandingPageTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->adminUser = $this->drupalCreateUser([

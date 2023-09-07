@@ -26,6 +26,27 @@ composer require localgovdrupal/localgov_publications:^1.0.0-alpha1
 
 Please do install and test with real publication content and report any issues to Github at https://github.com/localgovdrupal/localgov_publications/issues
 
+## Testing on Gitpod
+
+You should be able to spin up a Gitpod install of LocalGov Drupal by:
+
+1. [Create an account on gitpod.io](https://gitpod.io/login), if you haven't already.
+2. Follow this link to [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/localgovdrupal/localgov_project) 
+
+Once Gitpod is fired up, you should have a command line in VSCode where you can execute commands to download and enable Localgov Pulications.
+
+```
+ddev composer require localgovdrupal/localgov_publications:^1.0.0-alpha1
+ddev drush en localgov_publications
+```
+Then you might want to use drush to generate a one time login link with
+
+```
+ddev drush uli
+```
+
+Control click the link to open in a new tab and you can start to test creating publication content. 
+
 ## Maintainers 
 
 This project is currently maintained by: 
