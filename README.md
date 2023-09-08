@@ -53,4 +53,5 @@ This project is currently maintained by:
 
  - Finn Leiws https://github.com/finnlewis
  - Justine Pockock https://github.com/justinepocock
- - You!? let me know :)
+ - Rupert Jabelman https://github.com/rupertj
+ - You!? let us know :)
