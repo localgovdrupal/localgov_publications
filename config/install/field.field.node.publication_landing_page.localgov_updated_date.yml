@@ -1,4 +1,3 @@
-uuid: 19361c58-4c62-40a2-922f-865f91037095
 langcode: en
 status: true
 dependencies:
@@ -11,8 +10,8 @@ id: node.publication_landing_page.localgov_updated_date
 field_name: localgov_updated_date
 entity_type: node
 bundle: publication_landing_page
-label: 'Updated date'
-description: ''
+label: 'Last Updated'
+description: 'When was this document last updated? '
 required: false
 translatable: true
 default_value: {  }

@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.storage.node.localgov_documents
+    - media.type.document
     - node.type.publication_landing_page
 id: node.publication_landing_page.localgov_documents
 field_name: localgov_documents
@@ -15,10 +16,13 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: views
+  handler: 'default:media'
   handler_settings:
-    view:
-      view_name: documents
-      display_name: documents_entity_reference
-      arguments: {  }
+    target_bundles:
+      document: document
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
 field_type: entity_reference

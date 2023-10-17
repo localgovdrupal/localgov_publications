@@ -1,4 +1,3 @@
-uuid: 1faba8ce-dd62-4f8d-8741-719091afb736
 langcode: en
 status: true
 dependencies:
@@ -11,8 +10,8 @@ id: node.publication_landing_page.localgov_published_date
 field_name: localgov_published_date
 entity_type: node
 bundle: publication_landing_page
-label: 'Published date'
-description: ''
+label: Published
+description: 'When was this publication published?'
 required: false
 translatable: true
 default_value: {  }
