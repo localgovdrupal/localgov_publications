@@ -10,6 +10,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
+use Drupal\localgov_roles\RolesHelper;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\Role;
 
@@ -59,6 +60,35 @@ function localgov_publications_modules_installed($modules, $is_syncing) {
     $role_object->grantPermission('use text format publications');
     $role_object->save();
   }
+}
+
+/**
+ * Implements hook_localgov_role_default().
+ */
+function localgov_publications_localgov_roles_default() {
+  return [
+    RolesHelper::EDITOR_ROLE => [
+      'add content to books',
+      'administer book outlines',
+      'create new books',
+      'create localgov_publication_page content',
+      'create publication_landing_page content',
+      'delete any localgov_publication_page content',
+      'delete any publication_landing_page content',
+      'delete localgov_publication_page revisions',
+      'delete publication_landing_page revisions',
+      'delete own localgov_publication_page content',
+      'delete own publication_landing_page content',
+      'edit any localgov_publication_page content',
+      'edit any publication_landing_page content',
+      'edit own localgov_publication_page content',
+      'edit own publication_landing_page content',
+      'revert localgov_publication_page revisions',
+      'revert publication_landing_page revisions',
+      'view localgov_publication_page revisions',
+      'view publication_landing_page revisions',
+    ],
+  ];
 }
 
 /**
