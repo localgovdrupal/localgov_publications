@@ -3,7 +3,7 @@ status: true
 dependencies:
   module:
     - node
-id: localgov_publication_landing_page
+id: localgov_publication_cover_page
 label: 'Publication landing page'
 type: 'canonical_entities:node'
 pattern: 'publications/[node:title]'
@@ -15,7 +15,7 @@ selection_criteria:
     context_mapping:
       node: node
     bundles:
-      localgov_publication_landing_page: localgov_publication_landing_page
+      localgov_publication_cover_page: localgov_publication_cover_page
 selection_logic: and
 weight: -5
 relationships: {  }

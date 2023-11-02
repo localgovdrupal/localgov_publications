@@ -66,7 +66,7 @@ class PublicationLandingPageTest extends BrowserTestBase {
     $this->drupalLogin($this->adminUser);
 
     // Check publication page fields.
-    $this->drupalGet('/admin/structure/types/manage/localgov_publication_landing_page/fields');
+    $this->drupalGet('/admin/structure/types/manage/localgov_publication_cover_page/fields');
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('body');
     $this->assertSession()->pageTextContains('localgov_documents');

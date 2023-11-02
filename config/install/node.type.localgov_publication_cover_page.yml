@@ -9,7 +9,7 @@ third_party_settings:
       - main
     parent: 'main:'
 name: 'Publication landing page'
-type: localgov_publication_landing_page
+type: localgov_publication_cover_page
 description: ''
 help: ''
 new_revision: true

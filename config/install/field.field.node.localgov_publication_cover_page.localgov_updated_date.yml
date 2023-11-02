@@ -3,13 +3,13 @@ status: true
 dependencies:
   config:
     - field.storage.node.localgov_updated_date
-    - node.type.localgov_publication_landing_page
+    - node.type.localgov_publication_cover_page
   module:
     - datetime
-id: node.localgov_publication_landing_page.localgov_updated_date
+id: node.localgov_publication_cover_page.localgov_updated_date
 field_name: localgov_updated_date
 entity_type: node
-bundle: localgov_publication_landing_page
+bundle: localgov_publication_cover_page
 label: 'Last Updated'
 description: 'When was this document last updated? '
 required: false

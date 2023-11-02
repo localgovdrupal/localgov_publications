@@ -72,21 +72,21 @@ function localgov_publications_localgov_roles_default() {
       'administer book outlines',
       'create new books',
       'create localgov_publication_page content',
-      'create localgov_publication_landing_page content',
+      'create localgov_publication_cover_page content',
       'delete any localgov_publication_page content',
-      'delete any localgov_publication_landing_page content',
+      'delete any localgov_publication_cover_page content',
       'delete localgov_publication_page revisions',
-      'delete localgov_publication_landing_page revisions',
+      'delete localgov_publication_cover_page revisions',
       'delete own localgov_publication_page content',
-      'delete own localgov_publication_landing_page content',
+      'delete own localgov_publication_cover_page content',
       'edit any localgov_publication_page content',
-      'edit any localgov_publication_landing_page content',
+      'edit any localgov_publication_cover_page content',
       'edit own localgov_publication_page content',
-      'edit own localgov_publication_landing_page content',
+      'edit own localgov_publication_cover_page content',
       'revert localgov_publication_page revisions',
-      'revert localgov_publication_landing_page revisions',
+      'revert localgov_publication_cover_page revisions',
       'view localgov_publication_page revisions',
-      'view localgov_publication_landing_page revisions',
+      'view localgov_publication_cover_page revisions',
     ],
   ];
 }
@@ -95,7 +95,7 @@ function localgov_publications_localgov_roles_default() {
  * Is the given type one of the publication node types?
  */
 function localgov_publications_is_publication_type(string $type): bool {
-  return $type === 'localgov_publication_page' || $type === 'localgov_publication_landing_page';
+  return $type === 'localgov_publication_page' || $type === 'localgov_publication_cover_page';
 }
 
 /**
@@ -142,8 +142,8 @@ function localgov_publications_form_book_admin_edit_alter(&$form, FormStateInter
  */
 function localgov_publications_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $forms_to_alter = [
-    'node_localgov_publication_landing_page_form',
-    'node_localgov_publication_landing_page_edit_form',
+    'node_localgov_publication_cover_page_form',
+    'node_localgov_publication_cover_page_edit_form',
     'node_localgov_publication_page_form',
     'node_localgov_publication_page_edit_form',
   ];
