@@ -3,13 +3,13 @@ status: true
 dependencies:
   config:
     - field.storage.node.localgov_published_date
-    - node.type.publication_landing_page
+    - node.type.localgov_publication_landing_page
   module:
     - datetime
-id: node.publication_landing_page.localgov_published_date
+id: node.localgov_publication_landing_page.localgov_published_date
 field_name: localgov_published_date
 entity_type: node
-bundle: publication_landing_page
+bundle: localgov_publication_landing_page
 label: Published
 description: 'When was this publication published?'
 required: false

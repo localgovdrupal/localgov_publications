@@ -44,7 +44,7 @@ class UrlAliasTest extends BrowserTestBase {
    */
   public function testPublicationLandingPageUrlAlias() {
     $this->createNode([
-      'type' => 'publication_landing_page',
+      'type' => 'localgov_publication_landing_page',
       'title' => 'Test publication landing page',
       'status' => NodeInterface::PUBLISHED,
       'book' => [
@@ -131,7 +131,7 @@ class UrlAliasTest extends BrowserTestBase {
     ]);
 
     $this->createNode([
-      'type' => 'publication_landing_page',
+      'type' => 'localgov_publication_landing_page',
       'title' => 'Test publication landing page',
       'status' => NodeInterface::PUBLISHED,
       'localgov_publication' => [

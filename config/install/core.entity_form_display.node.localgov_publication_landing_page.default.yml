@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.publication_landing_page.body
-    - field.field.node.publication_landing_page.field_localgov_services_landing
-    - field.field.node.publication_landing_page.localgov_publications_banner
-    - field.field.node.publication_landing_page.localgov_documents
-    - field.field.node.publication_landing_page.localgov_publication
-    - field.field.node.publication_landing_page.localgov_published_date
-    - field.field.node.publication_landing_page.localgov_updated_date
-    - node.type.publication_landing_page
+    - field.field.node.localgov_publication_landing_page.body
+    - field.field.node.localgov_publication_landing_page.field_localgov_services_landing
+    - field.field.node.localgov_publication_landing_page.localgov_publications_banner
+    - field.field.node.localgov_publication_landing_page.localgov_documents
+    - field.field.node.localgov_publication_landing_page.localgov_publication
+    - field.field.node.localgov_publication_landing_page.localgov_published_date
+    - field.field.node.localgov_publication_landing_page.localgov_updated_date
+    - node.type.localgov_publication_landing_page
   module:
     - datetime
     - field_group
@@ -86,9 +86,9 @@ third_party_settings:
         formatter: closed
         description: 'The Publication this landing page is about might come in different formats, add them all here. '
         required_fields: true
-id: node.publication_landing_page.default
+id: node.localgov_publication_landing_page.default
 targetEntityType: node
-bundle: publication_landing_page
+bundle: localgov_publication_landing_page
 mode: default
 content:
   body:
