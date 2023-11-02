@@ -65,7 +65,7 @@ class PublicationManager {
       ->execute();
 
     if (empty($result)) {
-      return null;
+      return NULL;
     }
 
     $coverPageNid = reset($result);
