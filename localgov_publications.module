@@ -104,7 +104,7 @@ function localgov_publications_is_publication_type(string $type): bool {
 function localgov_publications_theme_suggestions_book_navigation(array $variables) {
   $suggestions = [];
 
-  // Only add suggestion on publication pages and publication landing pages.
+  // Only add suggestion on publication pages and publication cover pages.
   $node = \Drupal::routeMatch()->getParameter('node');
   if (localgov_publications_is_publication_type($node->getType())) {
     $suggestions[] = $variables['theme_hook_original'] . '__' . 'publication';

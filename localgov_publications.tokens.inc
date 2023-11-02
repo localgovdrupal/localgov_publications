@@ -11,9 +11,9 @@ use Drupal\Core\Render\BubbleableMetadata;
  * Implements hook_token_info().
  */
 function localgov_publications_token_info_alter(&$data) {
-  $data['tokens']['node']['publication-landing-page-alias'] = [
-    'name' => t("Landing page path"),
-    'description' => t("The path of the publication landing page."),
+  $data['tokens']['node']['localgov-publication-cover-page-alias'] = [
+    'name' => t("Cover page path"),
+    'description' => t("The path of the publication cover page."),
   ];
 }
 
@@ -21,25 +21,29 @@ function localgov_publications_token_info_alter(&$data) {
  * Implements hook_token_info().
  */
 function localgov_publications_tokens_alter(array &$replacements, array $context, BubbleableMetadata $bubbleable_metadata) {
-  if ($context['type'] == 'node' && !empty($context['data']['node'])) {
-    $node = $context['data']['node'];
-    $bid = $node->book ? $node->book['bid'] : 0;
-    if ($bid === "0") {
-      return;
-    }
-    $query = \Drupal::entityQuery('node');
-    $query->condition('localgov_publication', $bid);
-    $query->accessCheck(FALSE);
-    $result = $query->execute();
-    if (!empty($result)) {
-      $landingPageNid = reset($result);
-      $landingPageNode = \Drupal::entityTypeManager()->getStorage('node')->load($landingPageNid);
-      $bubbleable_metadata->addCacheableDependency($landingPageNode);
-      $alias = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $landingPageNid);
-      if (isset($context['tokens']['publication-landing-page-alias'])) {
-        $replacements[$context['tokens']['publication-landing-page-alias']] = $alias;
-      }
-    }
 
+  if ($context['type'] != 'node' || empty($context['data']['node'])) {
+    return;
   }
+
+  if (!isset($context['tokens']['localgov-publication-cover-page-alias'])) {
+    return;
+  }
+
+  $node = $context['data']['node'];
+  $bid = $node->book ? $node->book['bid'] : 0;
+
+  if (empty($bid)) {
+    return;
+  }
+
+  /** @var \Drupal\localgov_publications\Service\PublicationManager $publicationManager */
+  $publicationManager = \Drupal::service('localgov_publications.publication_manager');
+
+  $coverPage = $publicationManager->getCoverPage($bid);
+
+  $bubbleable_metadata->addCacheableDependency($coverPage);
+  $alias = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $coverPage->id());
+
+  $replacements[$context['tokens']['localgov-publication-cover-page-alias']] = $alias;
 }

@@ -84,7 +84,7 @@ third_party_settings:
         show_empty_fields: false
         id: ''
         formatter: closed
-        description: 'The Publication this landing page is about might come in different formats, add them all here. '
+        description: 'The Publication this cover page is about might come in different formats, add them all here. '
         required_fields: true
 id: node.localgov_publication_cover_page.default
 targetEntityType: node

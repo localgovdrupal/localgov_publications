@@ -6,11 +6,11 @@ use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 
 /**
- * Tests LocalGov Publications landing page.
+ * Tests LocalGov Publications cover page.
  *
  * @group localgov_publications
  */
-class PublicationLandingPageTest extends BrowserTestBase {
+class PublicationCoverPageTest extends BrowserTestBase {
 
   use NodeCreationTrait;
 
@@ -62,7 +62,7 @@ class PublicationLandingPageTest extends BrowserTestBase {
   /**
    * Verifies basic functionality with all modules.
    */
-  public function testPublicationLandingPageFields() {
+  public function testPublicationCoverPageFields() {
     $this->drupalLogin($this->adminUser);
 
     // Check publication page fields.

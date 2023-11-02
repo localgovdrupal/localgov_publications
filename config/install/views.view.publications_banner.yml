@@ -223,7 +223,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      block_description: 'Publications landing page banner'
+      block_description: 'Publications cover page banner'
     cache_metadata:
       max-age: -1
       contexts:

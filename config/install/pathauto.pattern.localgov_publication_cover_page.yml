@@ -4,7 +4,7 @@ dependencies:
   module:
     - node
 id: localgov_publication_cover_page
-label: 'Publication landing page'
+label: 'Publication cover page'
 type: 'canonical_entities:node'
 pattern: 'publications/[node:title]'
 selection_criteria:

@@ -10,7 +10,7 @@ use Drupal\Tests\node\Traits\NodeCreationTrait;
  * Tests the URL aliases.
  *
  * Tests for correctly formed URL aliases on
- * publication pages and publication landing pages.
+ * publication pages and publication cover pages.
  *
  * @group localgov_publications
  */
@@ -40,26 +40,26 @@ class UrlAliasTest extends BrowserTestBase {
   ];
 
   /**
-   * Verifies the publication landing page URL alias.
+   * Verifies the publication cover page URL alias.
    */
-  public function testPublicationLandingPageUrlAlias() {
+  public function testPublicationCoverPageUrlAlias() {
     $this->createNode([
       'type' => 'localgov_publication_cover_page',
-      'title' => 'Test publication landing page',
+      'title' => 'Test publication cover page',
       'status' => NodeInterface::PUBLISHED,
       'book' => [
         'bid' => '0',
       ],
     ]);
-    $this->drupalGet('/publications/test-publication-landing-page');
+    $this->drupalGet('/publications/test-publication-cover-page');
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->responseContains('Test publication landing page');
+    $this->assertSession()->responseContains('Test publication cover page');
   }
 
   /**
-   * Verifies the Publication page URL alias when there is no landing page.
+   * Verifies the Publication page URL alias when there is no cover page.
    */
-  public function testPublicationPageWithoutLandingPageAlias() {
+  public function testPublicationPageWithoutCoverPageAlias() {
     $node_parent = $this->createNode([
       'type' => 'localgov_publication_page',
       'title' => 'Publication parent page',
@@ -96,9 +96,9 @@ class UrlAliasTest extends BrowserTestBase {
   }
 
   /**
-   * Verifies the Publication page URL alias when there is a landing page.
+   * Verifies the Publication page URL alias when there is a cover page.
    */
-  public function testPublicationPageWithLandingPageAlias() {
+  public function testPublicationPageWithCoverPageAlias() {
     $node_parent = $this->createNode([
       'type' => 'localgov_publication_page',
       'title' => 'Publication parent page',
@@ -132,7 +132,7 @@ class UrlAliasTest extends BrowserTestBase {
 
     $this->createNode([
       'type' => 'localgov_publication_cover_page',
-      'title' => 'Test publication landing page',
+      'title' => 'Test publication cover page',
       'status' => NodeInterface::PUBLISHED,
       'localgov_publication' => [
         ['target_id' => $node_parent->id()],
@@ -142,14 +142,14 @@ class UrlAliasTest extends BrowserTestBase {
       ],
     ]);
 
-    // Re-save the publication pages so that the reference from the landing page
+    // Re-save the publication pages so that the reference from the cover page
     // takes effect on the URL aliases.
     $node_parent->save();
     $node_child->save();
 
-    $this->drupalGet('/publications/test-publication-landing-page/publication-parent-page');
+    $this->drupalGet('/publications/test-publication-cover-page/publication-parent-page');
     $this->assertSession()->statusCodeEquals(200);
-    $this->drupalGet('/publications/test-publication-landing-page/publication-parent-page/publication-child-page');
+    $this->drupalGet('/publications/test-publication-cover-page/publication-parent-page/publication-child-page');
     $this->assertSession()->statusCodeEquals(200);
 
   }
