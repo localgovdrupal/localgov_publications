@@ -5,7 +5,7 @@ dependencies:
     - localgov_publications
   theme:
     - localgov_base
-id: publication_navigation
+id: localgov_base_publication_navigation
 theme: localgov_base
 region: sidebar_first
 weight: 0
@@ -16,4 +16,14 @@ settings:
   label: 'Publication navigation'
   label_display: '0'
   provider: localgov_publications
-visibility: {  }
+  context_mapping:
+    node: '@node.node_route_context:node'
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      localgov_publication_page: localgov_publication_page
+      publication: publication
