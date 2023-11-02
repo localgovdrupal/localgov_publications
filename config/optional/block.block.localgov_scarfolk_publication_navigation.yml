@@ -2,19 +2,18 @@ langcode: en
 status: true
 dependencies:
   module:
-    - book
+    - localgov_publications
   theme:
     - localgov_scarfolk
-id: booknavigation
+id: publication_navigation
 theme: localgov_scarfolk
 region: sidebar_first
 weight: 0
 provider: null
-plugin: book_navigation
+plugin: publication_navigation
 settings:
-  id: book_navigation
-  label: 'Book navigation'
+  id: publication_navigation
+  label: 'Publication navigation'
   label_display: '0'
-  provider: book
-  block_mode: 'book pages'
+  provider: localgov_publications
 visibility: {  }

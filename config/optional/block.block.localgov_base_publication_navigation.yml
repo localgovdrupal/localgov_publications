@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - localgov_publications
+  theme:
+    - localgov_base
+id: publication_navigation
+theme: localgov_base
+region: sidebar_first
+weight: 0
+provider: null
+plugin: publication_navigation
+settings:
+  id: publication_navigation
+  label: 'Publication navigation'
+  label_display: '0'
+  provider: localgov_publications
+visibility: {  }
