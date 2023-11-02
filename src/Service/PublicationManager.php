@@ -53,7 +53,6 @@ class PublicationManager {
    *
    * @return ?\Drupal\node\NodeInterface
    *   The cover page node if there is one.
-   *
    */
   public function getCoverPage(int $publicationId) {
 
@@ -66,7 +65,7 @@ class PublicationManager {
       ->execute();
 
     if (empty($result)) {
-      return;
+      return null;
     }
 
     $coverPageNid = reset($result);
