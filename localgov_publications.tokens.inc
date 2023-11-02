@@ -23,7 +23,7 @@ function localgov_publications_token_info_alter(&$data) {
 function localgov_publications_tokens_alter(array &$replacements, array $context, BubbleableMetadata $bubbleable_metadata) {
   if ($context['type'] == 'node' && !empty($context['data']['node'])) {
     $node = $context['data']['node'];
-    $bid = $node->book['bid'];
+    $bid = $node->book ? $node->book['bid'] : 0;
     if ($bid === "0") {
       return;
     }
