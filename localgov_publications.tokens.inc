@@ -41,6 +41,9 @@ function localgov_publications_tokens_alter(array &$replacements, array $context
   $publicationManager = \Drupal::service('localgov_publications.publication_manager');
 
   $coverPage = $publicationManager->getCoverPage($bid);
+  if (!$coverPage) {
+    return;
+  }
 
   $bubbleable_metadata->addCacheableDependency($coverPage);
   $alias = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $coverPage->id());
