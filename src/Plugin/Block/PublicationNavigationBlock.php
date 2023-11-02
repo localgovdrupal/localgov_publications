@@ -2,8 +2,8 @@
 
 namespace Drupal\localgov_publications\Plugin\Block;
 
-use Drupal\Core\Block\BlockBase;
 use Drupal\book\BookManagerInterface;
+use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
