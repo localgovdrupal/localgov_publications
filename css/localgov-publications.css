@@ -1,3 +1,7 @@
+.block-localgov-publications-page-header-block .lgd-page-title-block__title {
+  max-width: initial;
+}
+
 .book-navigation--publication {
   display: flex;
   list-style-type: none;
