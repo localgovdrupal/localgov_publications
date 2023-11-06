@@ -16,6 +16,6 @@ function localgov_publications_install() {
   $config->save();
   $path_auto_config = \Drupal::configFactory()->getEditable('pathauto.settings');
   $safe_tokens = $path_auto_config->get('safe_tokens');
-  $safe_tokens[] = 'publication-landing-page-alias';
+  $safe_tokens[] = 'localgov-publication-cover-page-alias';
   $path_auto_config->set('safe_tokens', $safe_tokens)->save();
 }

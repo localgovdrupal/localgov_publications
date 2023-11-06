@@ -5,8 +5,8 @@ dependencies:
     - entity_reference_revisions
     - node
     - paragraphs
-id: node.localgov_pub_landing_content
-field_name: localgov_pub_landing_content
+id: node.localgov_publications_banner
+field_name: localgov_publications_banner
 entity_type: node
 type: entity_reference_revisions
 settings:

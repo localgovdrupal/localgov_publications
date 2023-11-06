@@ -1,4 +1,3 @@
-uuid: 60552eda-6853-4a78-96aa-d821d915e655
 langcode: en
 status: true
 dependencies:
@@ -9,8 +8,8 @@ third_party_settings:
     available_menus:
       - main
     parent: 'main:'
-name: 'Publication landing page'
-type: publication_landing_page
+name: 'Publication cover page'
+type: localgov_publication_cover_page
 description: ''
 help: ''
 new_revision: true

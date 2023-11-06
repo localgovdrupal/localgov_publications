@@ -3,14 +3,12 @@ status: true
 dependencies:
   module:
     - paragraphs
-id: paragraph.localgov_numbered_text_number
-field_name: localgov_numbered_text_number
+id: paragraph.localgov_publications_text
+field_name: localgov_publications_text
 entity_type: paragraph
-type: string
+type: string_long
 settings:
-  max_length: 255
   case_sensitive: false
-  is_ascii: false
 module: core
 locked: false
 cardinality: 1

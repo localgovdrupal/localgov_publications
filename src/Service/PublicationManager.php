@@ -45,4 +45,31 @@ class PublicationManager {
     return $topLevelNode;
   }
 
+  /**
+   * Given the ID of a publication, returns the cover page node if there is one.
+   *
+   * @var int $publicationId
+   *   The ID of the root node of the publication.
+   *
+   * @return ?\Drupal\node\NodeInterface
+   *   The cover page node if there is one.
+   */
+  public function getCoverPage(int $publicationId) {
+
+    /** @var \Drupal\node\NodeStorageInterface $nodeStorage */
+    $nodeStorage = $this->entityTypeManager->getStorage('node');
+
+    $result = $nodeStorage->getQuery()
+      ->condition('localgov_publication', $publicationId)
+      ->accessCheck(FALSE)
+      ->execute();
+
+    if (empty($result)) {
+      return NULL;
+    }
+
+    $coverPageNid = reset($result);
+    return $nodeStorage->load($coverPageNid);
+  }
+
 }
