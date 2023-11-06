@@ -14,7 +14,7 @@ plugin: publication_navigation
 settings:
   id: publication_navigation
   label: 'Publication navigation'
-  label_display: '0'
+  label_display: visible
   provider: localgov_publications
   context_mapping:
     node: '@node.node_route_context:node'
