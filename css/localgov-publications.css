@@ -2,23 +2,19 @@
   max-width: initial;
 }
 
-.publication-document {
+.book-navigation--publication {
   display: flex;
-  gap: var(--spacing);
-  align-items: center;
-  margin-bottom: var(--vertical-rhythm-spacing);
+  list-style-type: none;
+  padding: 0;
 }
 
-/* lifted directly from Gov.uk */
-.publication-document__thumbnail-image {
+.book-navigation--publication .next-link {
+  margin-left: auto;
+}
+
+/* Leaving this in the module until it passes Alpha. */
+.lgd-page-title-block__publication-title {
+  font-size: var(--page-title-lede-font-size);
+  color: var(--color-grey-dark);
   display: block;
-  width: auto;
-  max-width: 99px;
-  height: 140px;
-  border: rgba(11,12,12,0.1);
-  outline: 5px solid rgba(11,12,12,0.1);
-  background: #fff;
-  box-shadow: 0 2px 2px rgba(11,12,12,0.4);
-  fill: #b1b4b6;
-  stroke: #b1b4b6;
 }
