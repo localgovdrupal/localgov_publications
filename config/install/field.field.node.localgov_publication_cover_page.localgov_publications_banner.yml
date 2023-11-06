@@ -3,14 +3,14 @@ status: true
 dependencies:
   config:
     - field.storage.node.localgov_publications_banner
-    - node.type.publication_landing_page
+    - node.type.localgov_publication_cover_page
     - paragraphs.paragraphs_type.localgov_publications_banner
   module:
     - entity_reference_revisions
-id: node.publication_landing_page.localgov_publications_banner
+id: node.localgov_publication_cover_page.localgov_publications_banner
 field_name: localgov_publications_banner
 entity_type: node
-bundle: publication_landing_page
+bundle: localgov_publication_cover_page
 label: Banner
 description: ''
 required: false

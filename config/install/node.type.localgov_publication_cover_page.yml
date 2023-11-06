@@ -8,8 +8,8 @@ third_party_settings:
     available_menus:
       - main
     parent: 'main:'
-name: 'Publication landing page'
-type: publication_landing_page
+name: 'Publication cover page'
+type: localgov_publication_cover_page
 description: ''
 help: ''
 new_revision: true
