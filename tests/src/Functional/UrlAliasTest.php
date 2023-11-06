@@ -35,7 +35,7 @@ class UrlAliasTest extends BrowserTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'localgov_publications',
   ];
 
