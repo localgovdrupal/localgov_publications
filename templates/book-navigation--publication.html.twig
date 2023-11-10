@@ -40,12 +40,14 @@
       <ul class="book-navigation--publication">
         {% if prev_url %}
           <li class="prev-link">
-            <a href="{{ prev_url }}" rel="prev" title="{{ 'Go to previous page'|t }}"><b>{{ '‹ Previous: '|t }}</b> {{ prev_title }}</a>
+            <p class="book-navigation--publication--link--label">{{ '‹ Previous '|t }}</p>
+            <a href="{{ prev_url }}" rel="prev" title="{{ 'Go to previous page'|t }}"> {{ prev_title }}</a>
           </li>
         {% endif %}
         {% if next_url %}
           <li class="next-link">
-            <a href="{{ next_url }}" rel="next" title="{{ 'Go to next page'|t }}">{{ 'Next: '|t }}{{ next_title }} <b>{{ '›'|t }}</b></a>
+            <p class="book-navigation--publication--link--label">{{ 'Next › '|t }}</p>
+            <a href="{{ next_url }}" rel="next" title="{{ 'Go to next page'|t }}">{{ next_title }}</a>
           </li>
         {% endif %}
       </ul>

@@ -8,6 +8,10 @@
   padding: 0;
 }
 
+.book-navigation--publication--link--label {
+  margin-bottom: 0;
+}
+
 .book-navigation--publication .next-link {
   margin-left: auto;
 }
