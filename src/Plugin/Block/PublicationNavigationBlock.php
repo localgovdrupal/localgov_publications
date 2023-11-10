@@ -76,10 +76,27 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
       $tree = $this->bookManager->bookTreeAllData($node->book['bid'], $node->book);
       $output = $this->bookManager->bookTreeOutput($tree);
       if (!empty($output)) {
+        $this->setActiveClass($output['#items']);
         return $output;
       }
     }
     return [];
+  }
+
+  /**
+   * Sets 'active' class on menu items that are in the active trail.
+   */
+  protected function setActiveClass($items) {
+    foreach ($items as $item) {
+      if (!empty($item['in_active_trail'])) {
+        /** @var \Drupal\Core\Template\Attribute $attributes */
+        $attributes = $item['attributes'];
+        $attributes->addClass('active');
+      }
+      if (!empty($item['below'])) {
+        $this->setActiveClass($item['below']);
+      }
+    }
   }
 
   /**
