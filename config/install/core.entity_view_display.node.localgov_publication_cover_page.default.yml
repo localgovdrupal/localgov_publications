@@ -11,8 +11,6 @@ dependencies:
     - field.field.node.localgov_publication_cover_page.localgov_updated_date
     - node.type.localgov_publication_cover_page
   module:
-    - datetime
-    - entity_reference_revisions
     - field_group
     - text
     - user
@@ -25,7 +23,7 @@ third_party_settings:
       label: Documents
       parent_name: ''
       region: content
-      weight: 6
+      weight: 3
       format_type: html_element
       format_settings:
         classes: ''
@@ -56,7 +54,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 4
+    weight: 2
     region: content
   links:
     settings: {  }
@@ -80,23 +78,7 @@ content:
     third_party_settings: {  }
     weight: 4
     region: content
-  localgov_published_date:
-    type: datetime_default
-    label: inline
-    settings:
-      timezone_override: ''
-      format_type: long
-    third_party_settings: {  }
-    weight: 2
-    region: content
-  localgov_updated_date:
-    type: datetime_default
-    label: inline
-    settings:
-      timezone_override: ''
-      format_type: long
-    third_party_settings: {  }
-    weight: 3
-    region: content
 hidden:
   localgov_publications_banner: true
+  localgov_published_date: true
+  localgov_updated_date: true
