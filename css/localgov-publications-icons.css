@@ -6,6 +6,10 @@
   margin-bottom: var(--vertical-rhythm-spacing);
 }
 
+.publication-document a {
+  font-size: var(--font-size-large);
+}
+
 /* lifted directly from Gov.uk */
 .publication-document__thumbnail-image {
   display: block;
