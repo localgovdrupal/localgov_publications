@@ -3,6 +3,7 @@ status: true
 dependencies:
   module:
     - localgov_publications
+    - node
   theme:
     - localgov_base
 id: localgov_base_publication_navigation
