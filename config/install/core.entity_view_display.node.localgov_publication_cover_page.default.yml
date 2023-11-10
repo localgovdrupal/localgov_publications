@@ -12,7 +12,6 @@ dependencies:
     - node.type.localgov_publication_cover_page
   module:
     - datetime
-    - entity_reference_revisions
     - field_group
     - text
     - user
@@ -25,7 +24,7 @@ third_party_settings:
       label: Documents
       parent_name: ''
       region: content
-      weight: 6
+      weight: 5
       format_type: html_element
       format_settings:
         classes: ''
@@ -48,7 +47,12 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 1
+    weight: 6
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
     region: content
   field_localgov_services_landing:
     type: entity_reference_label
@@ -61,7 +65,7 @@ content:
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 0
+    weight: 1
     region: content
   localgov_documents:
     type: entity_reference_entity_view
