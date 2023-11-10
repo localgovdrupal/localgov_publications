@@ -119,7 +119,7 @@ function localgov_publications_theme_suggestions_book_navigation(array $variable
 function localgov_publications_block_access(Block $block, $operation, AccountInterface $account) {
   if ($block->getPluginId() == 'localgov_page_header_block' && $operation == 'view') {
     $node = \Drupal::routeMatch()->getParameter('node');
-    if (!empty($node) && $node instanceof NodeInterface && $node->getType() == 'localgov_publication_page') {
+    if ($node instanceof NodeInterface && localgov_publications_is_publication_type($node->getType())) {
       return AccessResult::forbiddenIf(TRUE)->addCacheableDependency($block);
     }
   }
