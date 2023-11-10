@@ -14,7 +14,7 @@ mode: publication
 content:
   field_media_document:
     type: file_default
-    label: visually_hidden
+    label: hidden
     settings:
       use_description_as_link_text: true
     third_party_settings: {  }
