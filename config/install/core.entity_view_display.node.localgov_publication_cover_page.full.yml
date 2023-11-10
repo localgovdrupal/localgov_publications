@@ -5,9 +5,9 @@ dependencies:
     - core.entity_view_mode.node.full
     - field.field.node.localgov_publication_cover_page.body
     - field.field.node.localgov_publication_cover_page.field_localgov_services_landing
-    - field.field.node.localgov_publication_cover_page.localgov_publications_banner
     - field.field.node.localgov_publication_cover_page.localgov_documents
     - field.field.node.localgov_publication_cover_page.localgov_publication
+    - field.field.node.localgov_publication_cover_page.localgov_publications_banner
     - field.field.node.localgov_publication_cover_page.localgov_published_date
     - field.field.node.localgov_publication_cover_page.localgov_updated_date
     - node.type.localgov_publication_cover_page
@@ -50,6 +50,11 @@ content:
     third_party_settings: {  }
     weight: 5
     region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
   field_localgov_services_landing:
     type: entity_reference_label
     label: inline
@@ -67,7 +72,7 @@ content:
     type: entity_reference_entity_view
     label: hidden
     settings:
-      view_mode: default
+      view_mode: publication
       link: false
     third_party_settings: {  }
     weight: 5
