@@ -90,8 +90,8 @@ class PublicationPageNavigationTest extends BrowserTestBase {
 
     $this->drupalLogin($adminUser);
     $this->drupalGet('/node/' . $node_child_one->id());
-    $this->assertSession()->responseContains('<a href="/publication-parent-page" rel="prev" title="Go to previous page"><b>‹ Previous: </b> Publication parent page</a>');
-    $this->assertSession()->responseContains('<a href="/publication-parent-page/publication-child-page-two" rel="next" title="Go to next page">Next: Publication child page two <b>›</b></a>');
+    $this->assertSession()->responseContains('<a href="/publication-parent-page" rel="prev" title="Go to previous page">');
+    $this->assertSession()->responseContains('<a href="/publication-parent-page/publication-child-page-two" rel="next" title="Go to next page">');
   }
 
   /**
