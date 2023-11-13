@@ -96,7 +96,7 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
    */
   protected function setActiveClass($items) {
     foreach ($items as $item) {
-      $original_link_id = isset($item['original_link']['nid']) ? $item['original_link']['nid'] : NULL;
+      $original_link_id = $item['original_link']['nid'] ?? NULL;
       if ($original_link_id && ($original_link_id == $this->node->id())) {
         /** @var \Drupal\Core\Template\Attribute $attributes */
         $attributes = $item['attributes'];
