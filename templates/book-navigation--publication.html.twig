@@ -33,9 +33,8 @@
 
 {{ attach_library('localgov_publications/localgov-publications') }}
 
-{% if tree or has_links %}
+{% if has_links %}
   <nav role="navigation" aria-labelledby="book-label-{{ book_id }}">
-    {{ tree }}
     {% if has_links %}
       <ul class="book-navigation--publication">
         {% if prev_url %}
