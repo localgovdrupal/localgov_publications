@@ -36,6 +36,13 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
   protected $bookManager;
 
   /**
+   * Current node.
+   *
+   * @var \Drupal\node\NodeInterface
+   */
+  protected $node;
+
+  /**
    * Constructs a new BookNavigationBlock instance.
    *
    * @param array $configuration
@@ -76,6 +83,7 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
       $tree = $this->bookManager->bookTreeAllData($node->book['bid'], $node->book);
       $output = $this->bookManager->bookTreeOutput($tree);
       if (!empty($output)) {
+        $this->node = $node;
         $this->setActiveClass($output['#items']);
         return $output;
       }
@@ -88,7 +96,8 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
    */
   protected function setActiveClass($items) {
     foreach ($items as $item) {
-      if (!empty($item['in_active_trail'])) {
+      $original_link_id = isset($item['original_link']['nid']) ? $item['original_link']['nid'] : NULL;
+      if ($original_link_id && ($original_link_id == $this->node->id())) {
         /** @var \Drupal\Core\Template\Attribute $attributes */
         $attributes = $item['attributes'];
         $attributes->addClass('active');
