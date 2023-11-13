@@ -11,5 +11,6 @@ dependencies:
   - drupal:views
   - footnotes:footnotes
   - pathauto:pathauto
-  - localgov_paragraphs:localgov_paragraphs
+  - localgov_media:localgov_media
+  - localgov_paragraphs:localgov_paragraphs (>=2.3.2)
   - localgov_services:localgov_services
