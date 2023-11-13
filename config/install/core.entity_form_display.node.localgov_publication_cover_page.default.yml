@@ -3,7 +3,6 @@ status: true
 dependencies:
   config:
     - field.field.node.localgov_publication_cover_page.body
-    - field.field.node.localgov_publication_cover_page.field_localgov_services_landing
     - field.field.node.localgov_publication_cover_page.localgov_publications_banner
     - field.field.node.localgov_publication_cover_page.localgov_documents
     - field.field.node.localgov_publication_cover_page.localgov_publication
@@ -42,7 +41,6 @@ third_party_settings:
         - body
         - localgov_published_date
         - localgov_updated_date
-        - field_localgov_services_landing
       label: Description
       region: content
       parent_name: group_tabs
@@ -106,16 +104,6 @@ content:
     weight: 3
     region: content
     settings: {  }
-    third_party_settings: {  }
-  field_localgov_services_landing:
-    type: entity_reference_autocomplete
-    weight: 7
-    region: content
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
     third_party_settings: {  }
   localgov_publications_banner:
     type: entity_reference_paragraphs

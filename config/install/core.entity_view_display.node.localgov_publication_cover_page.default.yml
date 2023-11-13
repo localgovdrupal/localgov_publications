@@ -3,7 +3,6 @@ status: true
 dependencies:
   config:
     - field.field.node.localgov_publication_cover_page.body
-    - field.field.node.localgov_publication_cover_page.field_localgov_services_landing
     - field.field.node.localgov_publication_cover_page.localgov_documents
     - field.field.node.localgov_publication_cover_page.localgov_publication
     - field.field.node.localgov_publication_cover_page.localgov_publications_banner
@@ -52,14 +51,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 0
-    region: content
-  field_localgov_services_landing:
-    type: entity_reference_label
-    label: inline
-    settings:
-      link: true
-    third_party_settings: {  }
-    weight: 2
     region: content
   links:
     settings: {  }
