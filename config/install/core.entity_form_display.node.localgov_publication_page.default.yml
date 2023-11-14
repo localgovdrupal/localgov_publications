@@ -2,7 +2,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.localgov_publication_page.field_localgov_services_landing
     - field.field.node.localgov_publication_page.localgov_page_content
     - field.field.node.localgov_publication_page.localgov_published_date
     - field.field.node.localgov_publication_page.localgov_updated_date

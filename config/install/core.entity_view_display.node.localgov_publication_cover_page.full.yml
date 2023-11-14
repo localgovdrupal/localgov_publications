@@ -4,7 +4,6 @@ dependencies:
   config:
     - core.entity_view_mode.node.full
     - field.field.node.localgov_publication_cover_page.body
-    - field.field.node.localgov_publication_cover_page.field_localgov_services_landing
     - field.field.node.localgov_publication_cover_page.localgov_documents
     - field.field.node.localgov_publication_cover_page.localgov_publication
     - field.field.node.localgov_publication_cover_page.localgov_publications_banner
@@ -53,14 +52,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: -20
-    region: content
-  field_localgov_services_landing:
-    type: entity_reference_label
-    label: inline
-    settings:
-      link: true
-    third_party_settings: {  }
-    weight: 1
     region: content
   links:
     settings: {  }
