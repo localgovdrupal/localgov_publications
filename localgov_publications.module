@@ -206,7 +206,13 @@ function localgov_publications_form_alter(&$form, FormStateInterface $form_state
   }
 }
 
-function localgov_publications_validate_node_form(&$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+/**
+ * Form validation function.
+ *
+ * Ensures that either 'Create a new publication', or an existing publication
+ * has been chosen from the book field.
+ */
+function localgov_publications_validate_node_form(&$form, FormStateInterface $form_state) {
 
   if ($form_state->hasValue('book')) {
     $book = $form_state->getValue('book');
