@@ -110,6 +110,6 @@ filters:
     status: true
     weight: 0
     settings:
-      footnotes_collapse: '1'
-      footnotes_html: '1'
-      footnotes_css: '1'
+      footnotes_collapse: true
+      footnotes_html: true
+      footnotes_css: true
