@@ -200,6 +200,26 @@ function localgov_publications_form_alter(&$form, FormStateInterface $form_state
         break;
     }
   }
+
+  if ($form_id == 'node_localgov_publication_page_form' || $form_id == 'node_localgov_publication_page_edit_form') {
+    $form['#validate'][] = 'localgov_publications_validate_node_form';
+  }
+}
+
+/**
+ * Form validation function.
+ *
+ * Ensures that either 'Create a new publication', or an existing publication
+ * has been chosen from the book field.
+ */
+function localgov_publications_validate_node_form(&$form, FormStateInterface $form_state) {
+
+  if ($form_state->hasValue('book')) {
+    $book = $form_state->getValue('book');
+    if ($book['bid'] === '0') {
+      $form_state->setErrorByName('book', t("Please choose either 'Create a new publication', or one of your existing publications for this page to be part of."));
+    }
+  }
 }
 
 /**
