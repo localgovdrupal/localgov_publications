@@ -24,6 +24,12 @@
     "extra": {
         "installer-paths": {
             "web/libraries/{$name}": ["type:drupal-library"]
+        },
+        "patches" : {
+            "drupal/footnotes": {
+                "Remove dependency on fakeobjects": "https://www.drupal.org/files/issues/2023-11-01/remove-fakobjects-requirement-3222058-13.patch",
+                "Add footnotes group": "https://git.drupalcode.org/project/footnotes/-/merge_requests/7.diff"
+            }
         }
     },
     "scripts": {
