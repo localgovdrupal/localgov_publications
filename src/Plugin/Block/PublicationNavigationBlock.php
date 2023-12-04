@@ -4,6 +4,7 @@ namespace Drupal\localgov_publications\Plugin\Block;
 
 use Drupal\book\BookManagerInterface;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -43,6 +44,13 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
   protected $node;
 
   /**
+   * Module handler.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  protected $moduleHandler;
+
+  /**
    * Constructs a new BookNavigationBlock instance.
    *
    * @param array $configuration
@@ -54,9 +62,10 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
    * @param \Drupal\book\BookManagerInterface $book_manager
    *   The book manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, BookManagerInterface $book_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, BookManagerInterface $book_manager, ModuleHandlerInterface $module_handler) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->bookManager = $book_manager;
+    $this->moduleHandler = $module_handler;
   }
 
   /**
@@ -67,7 +76,8 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('book.manager')
+      $container->get('book.manager'),
+      $container->get('module_handler')
     );
   }
 
@@ -81,6 +91,7 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
 
     if (!empty($node->book['bid'])) {
       $tree = $this->bookManager->bookTreeAllData($node->book['bid'], $node->book);
+      $this->moduleHandler->alter('localgov_publications_menu_tree', $tree);
       $output = $this->bookManager->bookTreeOutput($tree);
       if (!empty($output)) {
         $this->node = $node;
