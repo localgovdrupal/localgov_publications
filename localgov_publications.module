@@ -241,7 +241,7 @@ function localgov_publications_node_links_alter(array &$links, NodeInterface $no
  */
 function localgov_publications_preprocess_node(&$variables) {
   $view_mode = $variables['elements']['#view_mode'];
-  /** @var NodeInterface $node */
+  /** @var \Drupal\node\NodeInterface $node */
   $node = $variables['elements']['#node'];
 
   if ($view_mode === 'full' && localgov_publications_is_publication_type($node->getType())) {
