@@ -51,5 +51,7 @@ Control click the link to open in a new tab and you can start to test creating p
 
 This project is currently maintained by: 
 
- - Finn Leiws https://github.com/finnlewis
- - You!? let me know :)
+ - Finn Lewis https://github.com/finnlewis
+ - Justine Pocock https://github.com/justinepocock
+ - Rupert Jabelman https://github.com/rupertj
+ - You!? let us know :)

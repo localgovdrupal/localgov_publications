@@ -10,6 +10,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
+use Drupal\localgov_roles\RolesHelper;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\Role;
 
@@ -34,6 +35,18 @@ function localgov_publications_theme($existing, $type, $theme, $path) {
         'last_updated_date' => NULL,
       ],
     ],
+    'paragraph__localgov_publications_banner' => [
+      'template' => 'paragraph--localgov-publications-banner',
+      'base hook' => 'paragraph',
+    ],
+    'media__document__publication' => [
+      'template' => 'media--document--publication',
+      'base hook' => 'media',
+    ],
+    'field__localgov_publication' => [
+      'template' => 'publication-html-reference',
+      'base hook' => 'field',
+    ],
   ];
 }
 
@@ -50,10 +63,39 @@ function localgov_publications_modules_installed($modules, $is_syncing) {
 }
 
 /**
+ * Implements hook_localgov_role_default().
+ */
+function localgov_publications_localgov_roles_default() {
+  return [
+    RolesHelper::EDITOR_ROLE => [
+      'add content to books',
+      'administer book outlines',
+      'create new books',
+      'create localgov_publication_page content',
+      'create localgov_publication_cover_page content',
+      'delete any localgov_publication_page content',
+      'delete any localgov_publication_cover_page content',
+      'delete localgov_publication_page revisions',
+      'delete localgov_publication_cover_page revisions',
+      'delete own localgov_publication_page content',
+      'delete own localgov_publication_cover_page content',
+      'edit any localgov_publication_page content',
+      'edit any localgov_publication_cover_page content',
+      'edit own localgov_publication_page content',
+      'edit own localgov_publication_cover_page content',
+      'revert localgov_publication_page revisions',
+      'revert localgov_publication_cover_page revisions',
+      'view localgov_publication_page revisions',
+      'view localgov_publication_cover_page revisions',
+    ],
+  ];
+}
+
+/**
  * Is the given type one of the publication node types?
  */
 function localgov_publications_is_publication_type(string $type): bool {
-  return $type === 'localgov_publication_page' || $type === 'publication_landing_page';
+  return $type === 'localgov_publication_page' || $type === 'localgov_publication_cover_page';
 }
 
 /**
@@ -62,7 +104,7 @@ function localgov_publications_is_publication_type(string $type): bool {
 function localgov_publications_theme_suggestions_book_navigation(array $variables) {
   $suggestions = [];
 
-  // Only add suggestion on publication pages and publication landing pages.
+  // Only add suggestion on publication pages and publication cover pages.
   $node = \Drupal::routeMatch()->getParameter('node');
   if (localgov_publications_is_publication_type($node->getType())) {
     $suggestions[] = $variables['theme_hook_original'] . '__' . 'publication';
@@ -77,7 +119,7 @@ function localgov_publications_theme_suggestions_book_navigation(array $variable
 function localgov_publications_block_access(Block $block, $operation, AccountInterface $account) {
   if ($block->getPluginId() == 'localgov_page_header_block' && $operation == 'view') {
     $node = \Drupal::routeMatch()->getParameter('node');
-    if (!empty($node) && $node instanceof NodeInterface && $node->getType() == 'localgov_publication_page') {
+    if ($node instanceof NodeInterface && localgov_publications_is_publication_type($node->getType())) {
       return AccessResult::forbiddenIf(TRUE)->addCacheableDependency($block);
     }
   }
@@ -100,8 +142,8 @@ function localgov_publications_form_book_admin_edit_alter(&$form, FormStateInter
  */
 function localgov_publications_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $forms_to_alter = [
-    'node_publication_landing_page_form',
-    'node_publication_landing_page_edit_form',
+    'node_localgov_publication_cover_page_form',
+    'node_localgov_publication_cover_page_edit_form',
     'node_localgov_publication_page_form',
     'node_localgov_publication_page_edit_form',
   ];
@@ -158,6 +200,26 @@ function localgov_publications_form_alter(&$form, FormStateInterface $form_state
         break;
     }
   }
+
+  if ($form_id == 'node_localgov_publication_page_form' || $form_id == 'node_localgov_publication_page_edit_form') {
+    $form['#validate'][] = 'localgov_publications_validate_node_form';
+  }
+}
+
+/**
+ * Form validation function.
+ *
+ * Ensures that either 'Create a new publication', or an existing publication
+ * has been chosen from the book field.
+ */
+function localgov_publications_validate_node_form(&$form, FormStateInterface $form_state) {
+
+  if ($form_state->hasValue('book')) {
+    $book = $form_state->getValue('book');
+    if ($book['bid'] === '0') {
+      $form_state->setErrorByName('book', t("Please choose either 'Create a new publication', or one of your existing publications for this page to be part of."));
+    }
+  }
 }
 
 /**
@@ -171,5 +233,18 @@ function localgov_publications_node_links_alter(array &$links, NodeInterface $no
 
   if (localgov_publications_is_publication_type($node->getType()) && !empty($links['book']['#links']['book_add_child'])) {
     $links['book']['#links']['book_add_child']['url'] = Url::fromRoute('node.add', ['node_type' => 'localgov_publication_page'], ['query' => ['parent' => $node->id()]]);
+  }
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function localgov_publications_preprocess_node(&$variables) {
+  $view_mode = $variables['elements']['#view_mode'];
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $variables['elements']['#node'];
+
+  if ($view_mode === 'full' && localgov_publications_is_publication_type($node->getType())) {
+    $variables['content']['#attached']['library'][] = 'localgov_publications/localgov-publications';
   }
 }

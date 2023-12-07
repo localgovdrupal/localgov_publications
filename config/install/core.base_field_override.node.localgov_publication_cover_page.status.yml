@@ -1,14 +1,13 @@
-uuid: a51b9c56-e723-44c2-84d4-8cddb6cce4ca
 langcode: en
 status: true
 dependencies:
   config:
-    - node.type.publication_landing_page
-id: node.publication_landing_page.promote
-field_name: promote
+    - node.type.localgov_publication_cover_page
+id: node.localgov_publication_cover_page.status
+field_name: status
 entity_type: node
-bundle: publication_landing_page
-label: 'Promoted to front page'
+bundle: localgov_publication_cover_page
+label: Published
 description: ''
 required: false
 translatable: true

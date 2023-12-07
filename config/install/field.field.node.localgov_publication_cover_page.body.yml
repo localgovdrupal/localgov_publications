@@ -1,16 +1,15 @@
-uuid: ddac0611-6b49-41a2-985a-70de70328de6
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.body
-    - node.type.publication_landing_page
+    - node.type.localgov_publication_cover_page
   module:
     - text
-id: node.publication_landing_page.body
+id: node.localgov_publication_cover_page.body
 field_name: body
 entity_type: node
-bundle: publication_landing_page
+bundle: localgov_publication_cover_page
 label: Body
 description: ''
 required: false

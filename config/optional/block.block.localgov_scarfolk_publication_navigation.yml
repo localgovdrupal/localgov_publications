@@ -6,15 +6,15 @@ dependencies:
     - node
   theme:
     - localgov_scarfolk
-id: localgov_scarfolk_localgov_publications_page_header_block
+id: localgov_scarfolk_publication_navigation
 theme: localgov_scarfolk
-region: content_top
-weight: -7
+region: sidebar_first
+weight: 0
 provider: null
-plugin: localgov_publications_page_header_block
+plugin: publication_navigation
 settings:
-  id: localgov_publications_page_header_block
-  label: 'Publications page header block.'
+  id: publication_navigation
+  label: 'Publication navigation'
   label_display: '0'
   provider: localgov_publications
   context_mapping:
@@ -26,5 +26,5 @@ visibility:
     context_mapping:
       node: '@node.node_route_context:node'
     bundles:
-      localgov_publication_cover_page: localgov_publication_cover_page
       localgov_publication_page: localgov_publication_page
+      publication: publication

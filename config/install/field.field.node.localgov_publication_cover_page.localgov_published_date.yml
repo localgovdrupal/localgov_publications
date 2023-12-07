@@ -1,18 +1,17 @@
-uuid: 1faba8ce-dd62-4f8d-8741-719091afb736
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.localgov_published_date
-    - node.type.publication_landing_page
+    - node.type.localgov_publication_cover_page
   module:
     - datetime
-id: node.publication_landing_page.localgov_published_date
+id: node.localgov_publication_cover_page.localgov_published_date
 field_name: localgov_published_date
 entity_type: node
-bundle: publication_landing_page
-label: 'Published date'
-description: ''
+bundle: localgov_publication_cover_page
+label: Published
+description: 'When was this publication published?'
 required: false
 translatable: true
 default_value: {  }
