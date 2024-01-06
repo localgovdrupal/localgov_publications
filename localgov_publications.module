@@ -51,18 +51,6 @@ function localgov_publications_theme($existing, $type, $theme, $path) {
 }
 
 /**
- * Implements hook_modules_installed().
- */
-function localgov_publications_modules_installed($modules, $is_syncing) {
-  if (!$is_syncing && in_array('localgov_publications', $modules)) {
-    // Add permission to use the publications text format this module provides.
-    $role_object = Role::load('authenticated');
-    $role_object->grantPermission('use text format publications');
-    $role_object->save();
-  }
-}
-
-/**
  * Implements hook_localgov_role_default().
  */
 function localgov_publications_localgov_roles_default() {

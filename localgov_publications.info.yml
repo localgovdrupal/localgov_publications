@@ -9,7 +9,6 @@ dependencies:
   - drupal:book
   - drupal:menu_ui
   - drupal:views
-  - footnotes:footnotes
   - pathauto:pathauto
   - localgov_media:localgov_media
   - localgov_paragraphs:localgov_paragraphs
