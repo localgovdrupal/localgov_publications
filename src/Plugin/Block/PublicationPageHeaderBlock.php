@@ -75,15 +75,19 @@ class PublicationPageHeaderBlock extends BlockBase implements ContainerFactoryPl
     }
 
     // Add published date, if available.
-    $published_date = $topLevelNode->get('localgov_published_date')->value;
-    if (!empty($published_date)) {
-      $build['#published_date'] = $this->formatDate($published_date);
+    if ($topLevelNode->hasField('localgov_published_date')) {
+      $published_date = $topLevelNode->get('localgov_published_date')->value;
+      if (!empty($published_date)) {
+        $build['#published_date'] = $this->formatDate($published_date);
+      }
     }
 
     // Add last updated date, if available.
-    $last_updated_date = $topLevelNode->get('localgov_updated_date')->value;
-    if (!empty($last_updated_date)) {
-      $build['#last_updated_date'] = $this->formatDate($last_updated_date);
+    if ($topLevelNode->hasField('localgov_updated_date')) {
+      $last_updated_date = $topLevelNode->get('localgov_updated_date')->value;
+      if (!empty($last_updated_date)) {
+        $build['#last_updated_date'] = $this->formatDate($last_updated_date);
+      }
     }
 
     $cache = CacheableMetadata::createFromObject($node);
