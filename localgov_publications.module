@@ -23,10 +23,6 @@ function localgov_publications_theme($existing, $type, $theme, $path) {
       'template' => 'book-navigation--publication',
       'base hook' => 'book_navigation__publication',
     ],
-    'paragraph__localgov_numbered_text' => [
-      'template' => 'paragraph--localgov-numbered-text',
-      'base hook' => 'paragraph',
-    ],
     'localgov_publication_page_header_block' => [
       'variables' => [
         'title' => '',
