@@ -12,7 +12,6 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\localgov_roles\RolesHelper;
 use Drupal\node\NodeInterface;
-use Drupal\user\Entity\Role;
 
 /**
  * Implements hook_theme().
@@ -44,18 +43,6 @@ function localgov_publications_theme($existing, $type, $theme, $path) {
       'base hook' => 'field',
     ],
   ];
-}
-
-/**
- * Implements hook_modules_installed().
- */
-function localgov_publications_modules_installed($modules, $is_syncing) {
-  if (!$is_syncing && in_array('localgov_publications', $modules)) {
-    // Add permission to use the publications text format this module provides.
-    $role_object = Role::load('authenticated');
-    $role_object->grantPermission('use text format publications');
-    $role_object->save();
-  }
 }
 
 /**
