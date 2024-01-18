@@ -106,6 +106,15 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
       $tree = $this->bookManager->bookTreeAllData($node->book['bid'], $node->book);
       $this->moduleHandler->alter('localgov_publications_menu_tree', $tree);
       $this->themeManager->alter('localgov_publications_menu_tree', $tree);
+
+      // If the top level doesn't have any child pages, (IE this is a single
+      // page publication) don't show the menu block, as there isn't anything
+      // else to navigate to.
+      $top = reset($tree);
+      if (empty($top['below'])) {
+        return [];
+      }
+
       $output = $this->bookManager->bookTreeOutput($tree);
       if (!empty($output)) {
         $this->node = $node;
