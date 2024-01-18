@@ -50,12 +50,12 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
    */
   protected $moduleHandler;
 
-    /**
-     * Theme manager.
-     *
-     * @var \Drupal\Core\Theme\ThemeManagerInterface
-     */
-    protected $themeManager;
+  /**
+   * Theme manager.
+   *
+   * @var \Drupal\Core\Theme\ThemeManagerInterface
+   */
+  protected $themeManager;
 
   /**
    * Constructs a new BookNavigationBlock instance.
