@@ -6,6 +6,7 @@ use Drupal\book\BookManagerInterface;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Theme\ThemeManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
