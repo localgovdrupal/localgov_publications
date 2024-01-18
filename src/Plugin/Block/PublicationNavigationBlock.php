@@ -50,6 +50,13 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
    */
   protected $moduleHandler;
 
+    /**
+     * Theme manager.
+     *
+     * @var \Drupal\Core\Theme\ThemeManagerInterface
+     */
+    protected $themeManager;
+
   /**
    * Constructs a new BookNavigationBlock instance.
    *
@@ -63,11 +70,14 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
    *   The book manager.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler.
+   * @param \Drupal\Core\Theme\ThemeManagerInterface $theme_manager
+   *   The theme manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, BookManagerInterface $book_manager, ModuleHandlerInterface $module_handler) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, BookManagerInterface $book_manager, ModuleHandlerInterface $module_handler, ThemeManagerInterface $theme_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->bookManager = $book_manager;
     $this->moduleHandler = $module_handler;
+    $this->themeManager = $theme_manager;
   }
 
   /**
@@ -79,7 +89,8 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
       $plugin_id,
       $plugin_definition,
       $container->get('book.manager'),
-      $container->get('module_handler')
+      $container->get('module_handler'),
+      $container->get('theme.manager')
     );
   }
 
@@ -94,6 +105,7 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
     if (!empty($node->book['bid'])) {
       $tree = $this->bookManager->bookTreeAllData($node->book['bid'], $node->book);
       $this->moduleHandler->alter('localgov_publications_menu_tree', $tree);
+      $this->themeManager->alter('localgov_publications_menu_tree', $tree);
       $output = $this->bookManager->bookTreeOutput($tree);
       if (!empty($output)) {
         $this->node = $node;
