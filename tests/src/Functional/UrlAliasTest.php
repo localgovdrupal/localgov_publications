@@ -142,16 +142,10 @@ class UrlAliasTest extends BrowserTestBase {
       ],
     ]);
 
-    // Re-save the publication pages so that the reference from the cover page
-    // takes effect on the URL aliases.
-    $node_parent->save();
-    $node_child->save();
-
     $this->drupalGet('/publications/test-publication-cover-page/publication-parent-page');
     $this->assertSession()->statusCodeEquals(200);
     $this->drupalGet('/publications/test-publication-cover-page/publication-parent-page/publication-child-page');
     $this->assertSession()->statusCodeEquals(200);
-
   }
 
 }
