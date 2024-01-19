@@ -14,7 +14,7 @@
     "require": {
         "drupal/auto_heading_ids": "^2.0@beta",
         "localgovdrupal/localgov_core": ">=2.1.10",
-        "localgovdrupal/localgov_paragraphs": ">=2.3.2"
+        "localgovdrupal/localgov_paragraphs": ">=2.4.0"
     },
     "require-dev": {
         "drupal/coder": "*"
