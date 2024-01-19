@@ -278,7 +278,7 @@ function localgov_publications_entity_update(EntityInterface $entity): void {
 /**
  * Updates the path alias of every page in a publication.
  *
- * @param NodeInterface $node
+ * @param \Drupal\node\NodeInterface $node
  *   Cover page node.
  */
 function localgov_publications_update_path_aliases(NodeInterface $node): void {
@@ -287,7 +287,7 @@ function localgov_publications_update_path_aliases(NodeInterface $node): void {
     return;
   }
 
-  /** @var NodeInterface $publication */
+  /** @var \Drupal\node\NodeInterface $publication */
   $publication = $node->get('localgov_publication')->entity;
 
   if (!empty($publication) && isset($publication->book)) {
