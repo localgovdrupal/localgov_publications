@@ -114,7 +114,7 @@ class UrlAliasTest extends BrowserTestBase {
       'status' => NodeInterface::PUBLISHED,
     ]);
 
-    $node_child = $this->createNode([
+    $this->createNode([
       'type' => 'localgov_publication_page',
       'title' => 'Publication child page',
       'body' => [
