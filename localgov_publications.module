@@ -287,20 +287,29 @@ function localgov_publications_update_path_aliases(NodeInterface $node): void {
     return;
   }
 
-  /** @var \Drupal\node\NodeInterface $publication */
-  $publication = $node->get('localgov_publication')->entity;
+  /** @var \Drupal\book\BookManager $bookManager */
+  $bookManager = \Drupal::service('book.manager');
 
-  if (!empty($publication) && isset($publication->book)) {
+  /** @var \Drupal\node\NodeInterface[] $publication */
+  $publications = $node->get('localgov_publication')->referencedEntities();
 
-    // Load every node in the publication.
-    /** @var \Drupal\book\BookManager $bookManager */
-    $bookManager = \Drupal::service('book.manager');
+  $publicationPages = [];
 
-    $bookPages = $bookManager->bookTreeGetFlat($publication->book);
-
-    $nodes = Node::loadMultiple(array_keys($bookPages));
-    foreach ($nodes as $node) {
-      \Drupal::service('pathauto.generator')->updateEntityAlias($node, 'update');
+  foreach ($publications as $publication) {
+    if (isset($publication->book)) {
+      // Find the ID of every node in the publication.
+      $bookPages = $bookManager->bookTreeGetFlat($publication->book);
+      $publicationPages = array_merge($publicationPages, array_keys($bookPages));
     }
+  }
+
+  if (empty($publicationPages)) {
+    return;
+  }
+
+  $nodes = Node::loadMultiple($publicationPages);
+  $pathAutoGenerator = \Drupal::service('pathauto.generator');
+  foreach ($nodes as $node) {
+    $pathAutoGenerator->updateEntityAlias($node, 'update');
   }
 }
