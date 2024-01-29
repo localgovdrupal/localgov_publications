@@ -3,7 +3,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.field.node.localgov_publication_page.localgov_page_content
+    - field.field.node.localgov_publication_page.localgov_publication_content
     - field.field.node.localgov_publication_page.localgov_published_date
     - field.field.node.localgov_publication_page.localgov_updated_date
     - node.type.localgov_publication_page
@@ -20,6 +20,6 @@ content:
     weight: 100
     region: content
 hidden:
-  localgov_page_content: true
+  localgov_publication_content: true
   localgov_published_date: true
   localgov_updated_date: true

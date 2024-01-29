@@ -2,8 +2,8 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.localgov_publications_banner.localgov_publications_text
     - field.field.paragraph.localgov_publications_banner.localgov_image
+    - field.field.paragraph.localgov_publications_banner.localgov_publications_text
     - field.field.paragraph.localgov_publications_banner.localgov_title
     - field.field.paragraph.localgov_publications_banner.localgov_url
     - paragraphs.paragraphs_type.localgov_publications_banner
@@ -15,14 +15,6 @@ targetEntityType: paragraph
 bundle: localgov_publications_banner
 mode: default
 content:
-  localgov_publications_text:
-    type: string_textarea
-    weight: 2
-    region: content
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
   localgov_image:
     type: media_library_widget
     weight: 0
@@ -32,6 +24,14 @@ content:
     third_party_settings:
       media_library_edit:
         show_edit: '1'
+  localgov_publications_text:
+    type: string_textarea
+    weight: 2
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
   localgov_title:
     type: string_textfield
     weight: 1
