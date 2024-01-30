@@ -10,6 +10,7 @@ dependencies:
   - drupal:menu_ui
   - drupal:views
   - pathauto:pathauto
+  - layout_paragraphs:layout_paragraphs
   - localgov_media:localgov_media
   - localgov_paragraphs:localgov_paragraphs
   - localgov_services:localgov_services
