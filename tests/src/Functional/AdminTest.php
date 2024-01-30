@@ -27,6 +27,7 @@ class AdminTest extends BrowserTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'layout_paragraphs',
     'localgov_publications',
   ];
 
