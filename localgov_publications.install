@@ -11,7 +11,7 @@
 function localgov_publications_install() {
   $config = \Drupal::configFactory()->getEditable('book.settings');
   $allowed_types = $config->get('allowed_types');
-  $allowed_types[] = 'publication';
+  $allowed_types[] = 'localgov_publication_page';
   $config->set('allowed_types', $allowed_types);
   $config->save();
   $path_auto_config = \Drupal::configFactory()->getEditable('pathauto.settings');
