@@ -1,11 +1,11 @@
 <?php
 
-use Drupal\filter\Entity\FilterFormat;
-
 /**
  * @file
  * Install, update and uninstall functions for the LocalGov Publications module.
  */
+
+use Drupal\filter\Entity\FilterFormat;
 
 /**
  * Implements hook_install().
