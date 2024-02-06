@@ -6,6 +6,7 @@
  */
 
 use Drupal\filter\Entity\FilterFormat;
+use Drupal\filter\FilterFormatInterface;
 
 /**
  * Implements hook_install().
@@ -30,9 +31,8 @@ function localgov_publications_install() {
 
   // Add heading_id_filter from the auto_heading_ids module to the wysiwyg
   // filter format. This is required for the ToC block to work consistently.
-  /** @var \Drupal\filter\Entity\FilterFormat $wysiwygFormat */
   $wysiwygFormat = FilterFormat::load('wysiwyg');
-  if ($wysiwygFormat) {
+  if ($wysiwygFormat instanceof FilterFormatInterface) {
     $wysiwygFormat->setFilterConfig('heading_id_filter', [
       'status' => TRUE,
     ]);
