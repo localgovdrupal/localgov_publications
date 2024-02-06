@@ -39,6 +39,7 @@ class PublicationCoverPageTest extends BrowserTestBase {
    * @var array
    */
   protected static $modules = [
+    'layout_paragraphs',
     'localgov_publications',
     'field_ui',
   ];

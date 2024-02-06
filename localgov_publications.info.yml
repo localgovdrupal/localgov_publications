@@ -12,4 +12,5 @@ dependencies:
   - pathauto:pathauto
   - localgov_media:localgov_media
   - localgov_paragraphs:localgov_paragraphs
+  - localgov_paragraphs_layout:localgov_paragraphs_layout
   - localgov_services:localgov_services

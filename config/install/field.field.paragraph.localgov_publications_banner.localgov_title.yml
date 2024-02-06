@@ -9,7 +9,7 @@ field_name: localgov_title
 entity_type: paragraph
 bundle: localgov_publications_banner
 label: 'Banner Title'
-description: 'A title for the banner text box - this isn''t the page title.'
+description: "A title for the banner text box - this isn't the page title."
 required: false
 translatable: true
 default_value: {  }

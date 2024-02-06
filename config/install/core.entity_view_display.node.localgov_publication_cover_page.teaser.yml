@@ -3,29 +3,20 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.field.node.localgov_publication_cover_page.body
     - field.field.node.localgov_publication_cover_page.localgov_documents
     - field.field.node.localgov_publication_cover_page.localgov_publication
+    - field.field.node.localgov_publication_cover_page.localgov_publication_content
     - field.field.node.localgov_publication_cover_page.localgov_publications_banner
     - field.field.node.localgov_publication_cover_page.localgov_published_date
     - field.field.node.localgov_publication_cover_page.localgov_updated_date
     - node.type.localgov_publication_cover_page
   module:
-    - text
     - user
 id: node.localgov_publication_cover_page.teaser
 targetEntityType: node
 bundle: localgov_publication_cover_page
 mode: teaser
 content:
-  body:
-    type: text_summary_or_trimmed
-    label: hidden
-    settings:
-      trim_length: 600
-    third_party_settings: {  }
-    weight: 101
-    region: content
   links:
     settings: {  }
     third_party_settings: {  }
@@ -34,6 +25,7 @@ content:
 hidden:
   localgov_documents: true
   localgov_publication: true
+  localgov_publication_content: true
   localgov_publications_banner: true
   localgov_published_date: true
   localgov_updated_date: true
