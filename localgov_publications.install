@@ -32,8 +32,10 @@ function localgov_publications_install() {
   // filter format. This is required for the ToC block to work consistently.
   /** @var \Drupal\filter\Entity\FilterFormat $wysiwygFormat */
   $wysiwygFormat = FilterFormat::load('wysiwyg');
-  $wysiwygFormat->setFilterConfig('heading_id_filter', [
-    'status' => TRUE,
-  ]);
-  $wysiwygFormat->save();
+  if ($wysiwygFormat) {
+    $wysiwygFormat->setFilterConfig('heading_id_filter', [
+      'status' => TRUE,
+    ]);
+    $wysiwygFormat->save();
+  }
 }
