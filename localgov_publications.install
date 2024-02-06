@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\filter\Entity\FilterFormat;
+
 /**
  * @file
  * Install, update and uninstall functions for the LocalGov Publications module.
@@ -9,13 +11,29 @@
  * Implements hook_install().
  */
 function localgov_publications_install() {
+
+  // Add our localgov_publication_page content type to
+  // book.settings.allowed_types. This lets editors create publication pages.
   $config = \Drupal::configFactory()->getEditable('book.settings');
   $allowed_types = $config->get('allowed_types');
   $allowed_types[] = 'localgov_publication_page';
   $config->set('allowed_types', $allowed_types);
   $config->save();
+
+  // Add our localgov-publication-cover-page-alias to
+  // pathauto.settings.safe_tokens. This prevents double escaping in the
+  // resulting URL.
   $path_auto_config = \Drupal::configFactory()->getEditable('pathauto.settings');
   $safe_tokens = $path_auto_config->get('safe_tokens');
   $safe_tokens[] = 'localgov-publication-cover-page-alias';
   $path_auto_config->set('safe_tokens', $safe_tokens)->save();
+
+  // Add heading_id_filter from the auto_heading_ids module to the wysiwyg
+  // filter format. This is required for the ToC block to work consistently.
+  /** @var \Drupal\filter\Entity\FilterFormat $wysiwygFormat */
+  $wysiwygFormat = FilterFormat::load('wysiwyg');
+  $wysiwygFormat->setFilterConfig('heading_id_filter', [
+    'status' => TRUE,
+  ]);
+  $wysiwygFormat->save();
 }
