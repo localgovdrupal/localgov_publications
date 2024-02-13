@@ -48,6 +48,7 @@ class HeadingIdFilter extends FilterBase implements ContainerFactoryPluginInterf
    *   The plugin implementation definition.
    * @param \Drupal\Core\Transliteration\PhpTransliteration $transliteration
    *   The transliteration service instance.
+   *
    * @internal param \Drupal\Core\Entity\EntityManagerInterface $entity_manager An entity manager object.*   An entity manager object.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, PhpTransliteration $transliteration) {
@@ -148,7 +149,7 @@ class HeadingIdFilter extends FilterBase implements ContainerFactoryPluginInterf
       '#title' => 'Keep existing IDs',
       '#type' => 'checkbox',
       '#default_value' => $this->settings['keep_existing_ids'] ?? FALSE,
-      '#description' => 'When this is selected, existing IDs in content will not be changed.',
+      '#description' => $this->t('When this is selected, existing IDs in content will not be changed.'),
     ];
 
     return $form;
