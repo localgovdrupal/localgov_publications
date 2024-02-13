@@ -28,6 +28,7 @@ class TocBlockTest extends BrowserTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'layout_paragraphs',
     'localgov_publications',
   ];
 
@@ -67,7 +68,7 @@ class TocBlockTest extends BrowserTestBase {
     $this->createNode([
       'type' => 'localgov_publication_page',
       'title' => 'Test publication page',
-      'localgov_page_content' => [
+      'localgov_publication_content' => [
         'target_id' => $text_paragraph->id(),
         'target_revision_id' => $text_paragraph->getRevisionId(),
       ],

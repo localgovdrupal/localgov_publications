@@ -2,27 +2,26 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.localgov_publication_cover_page.body
-    - field.field.node.localgov_publication_cover_page.localgov_publications_banner
     - field.field.node.localgov_publication_cover_page.localgov_documents
     - field.field.node.localgov_publication_cover_page.localgov_publication
+    - field.field.node.localgov_publication_cover_page.localgov_publication_content
+    - field.field.node.localgov_publication_cover_page.localgov_publications_banner
     - field.field.node.localgov_publication_cover_page.localgov_published_date
     - field.field.node.localgov_publication_cover_page.localgov_updated_date
     - node.type.localgov_publication_cover_page
   module:
     - datetime
     - field_group
+    - layout_paragraphs
     - media_library
     - paragraphs
     - path
-    - text
 third_party_settings:
   field_group:
     group_tabs:
       children:
         - group_description
         - group_banner
-        - group_page_builder
         - group_documents
       label: Tabs
       region: content
@@ -38,7 +37,7 @@ third_party_settings:
     group_description:
       children:
         - title
-        - body
+        - localgov_publication_content
         - localgov_published_date
         - localgov_updated_date
       label: Description
@@ -75,7 +74,7 @@ third_party_settings:
       label: Documents
       region: content
       parent_name: group_tabs
-      weight: 20
+      weight: 19
       format_type: tab
       format_settings:
         classes: ''
@@ -89,33 +88,11 @@ targetEntityType: node
 bundle: localgov_publication_cover_page
 mode: default
 content:
-  body:
-    type: text_textarea_with_summary
-    weight: 2
-    region: content
-    settings:
-      rows: 9
-      summary_rows: 3
-      placeholder: ''
-      show_summary: false
-    third_party_settings: {  }
   created:
     type: datetime_timestamp
-    weight: 3
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  localgov_publications_banner:
-    type: entity_reference_paragraphs
     weight: 2
     region: content
-    settings:
-      title: Banner
-      title_plural: Banner
-      edit_mode: open
-      add_mode: button
-      form_display_mode: default
-      default_paragraph_type: localgov_publications_banner
+    settings: {  }
     third_party_settings: {  }
   localgov_documents:
     type: media_library_widget
@@ -134,6 +111,28 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  localgov_publication_content:
+    type: layout_paragraphs
+    weight: 2
+    region: content
+    settings:
+      preview_view_mode: default
+      nesting_depth: 0
+      require_layouts: 0
+      empty_message: ''
+    third_party_settings: {  }
+  localgov_publications_banner:
+    type: entity_reference_paragraphs
+    weight: 4
+    region: content
+    settings:
+      title: Banner
+      title_plural: Banner
+      edit_mode: open
+      add_mode: button
+      form_display_mode: default
+      default_paragraph_type: localgov_publications_banner
+    third_party_settings: {  }
   localgov_published_date:
     type: datetime_default
     weight: 4
@@ -148,32 +147,32 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 7
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 5
+    weight: 4
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   simple_sitemap:
-    weight: 4
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 8
+    weight: 7
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 6
+    weight: 5
     region: content
     settings:
       display_label: true
@@ -188,7 +187,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 2
+    weight: 1
     region: content
     settings:
       match_operator: CONTAINS
