@@ -33,8 +33,11 @@ function localgov_publications_install() {
   // filter format. This is required for the ToC block to work consistently.
   $wysiwygFormat = FilterFormat::load('wysiwyg');
   if ($wysiwygFormat instanceof FilterFormatInterface) {
-    $wysiwygFormat->setFilterConfig('heading_id_filter', [
+    $wysiwygFormat->setFilterConfig('localgov_publications_heading_ids', [
       'status' => TRUE,
+      'settings' => [
+        'keep_existing_ids' => TRUE,
+      ],
     ]);
     $wysiwygFormat->save();
   }
