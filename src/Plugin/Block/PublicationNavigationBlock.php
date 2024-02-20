@@ -4,7 +4,9 @@ namespace Drupal\localgov_publications\Plugin\Block;
 
 use Drupal\book\BookManagerInterface;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Theme\ThemeManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -43,6 +45,20 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
   protected $node;
 
   /**
+   * Module handler.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  protected $moduleHandler;
+
+  /**
+   * Theme manager.
+   *
+   * @var \Drupal\Core\Theme\ThemeManagerInterface
+   */
+  protected $themeManager;
+
+  /**
    * Constructs a new BookNavigationBlock instance.
    *
    * @param array $configuration
@@ -53,10 +69,16 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
    *   The plugin implementation definition.
    * @param \Drupal\book\BookManagerInterface $book_manager
    *   The book manager.
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   *   The module handler.
+   * @param \Drupal\Core\Theme\ThemeManagerInterface $theme_manager
+   *   The theme manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, BookManagerInterface $book_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, BookManagerInterface $book_manager, ModuleHandlerInterface $module_handler, ThemeManagerInterface $theme_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->bookManager = $book_manager;
+    $this->moduleHandler = $module_handler;
+    $this->themeManager = $theme_manager;
   }
 
   /**
@@ -67,7 +89,9 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('book.manager')
+      $container->get('book.manager'),
+      $container->get('module_handler'),
+      $container->get('theme.manager')
     );
   }
 
@@ -81,6 +105,17 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
 
     if (!empty($node->book['bid'])) {
       $tree = $this->bookManager->bookTreeAllData($node->book['bid'], $node->book);
+      $this->moduleHandler->alter('localgov_publications_menu_tree', $tree);
+      $this->themeManager->alter('localgov_publications_menu_tree', $tree);
+
+      // If the top level doesn't have any child pages, (IE this is a single
+      // page publication) don't show the menu block, as there isn't anything
+      // else to navigate to.
+      $top = reset($tree);
+      if (empty($top['below'])) {
+        return [];
+      }
+
       $output = $this->bookManager->bookTreeOutput($tree);
       if (!empty($output)) {
         $this->node = $node;
