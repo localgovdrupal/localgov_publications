@@ -1,6 +1,11 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - localgov_publications
+  enforced:
+    module:
+      - localgov_publications
 id: localgov_publications_banner
 label: 'Publications Banner'
 icon_uuid: null

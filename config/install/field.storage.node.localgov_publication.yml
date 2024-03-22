@@ -3,6 +3,10 @@ status: true
 dependencies:
   module:
     - node
+    - localgov_publications
+  enforced:
+    module:
+      - localgov_publications
 id: node.localgov_publication
 field_name: localgov_publication
 entity_type: node
