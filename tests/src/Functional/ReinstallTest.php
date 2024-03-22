@@ -53,12 +53,6 @@ class ReinstallTest extends BrowserTestBase {
 
     // Install module.
     $this->assertTrue($moduleInstaller->install(['localgov_publications']));
-
-    //$this->rebuildContainer();
-    //$moduleHandler = $this->container->get('module_handler');
-
-    // Confirm module has been installed.
-    // $this->assertTrue($moduleHandler->moduleExists('localgov_publications'));
   }
 
 }
