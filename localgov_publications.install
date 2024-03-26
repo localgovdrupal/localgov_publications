@@ -47,7 +47,7 @@ function localgov_publications_install() {
  * Fixes error messages after this module is installed.
  *
  * Remove references to the book content type from the key value store that are
- * left over from book's content type.
+ * left over after book's config is removed.
  */
 function localgov_publications_update_10001() {
 
