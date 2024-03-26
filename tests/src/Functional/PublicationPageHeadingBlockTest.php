@@ -124,11 +124,11 @@ class PublicationPageHeadingBlockTest extends BrowserTestBase {
 
     // Check date updated on the parent page.
     $this->drupalGet('/node/' . $node_parent->id());
-    $this->assertSession()->responseContains('<div><span>Last updated: </span>21 April 2023</div>');
+    $this->assertSession()->responseContains('<span>Last updated: </span>21 April 2023');
 
     // Check date updated on a child page.
     $this->drupalGet('/node/' . $node_child_one->id());
-    $this->assertSession()->responseContains('<div><span>Last updated: </span>21 April 2023</div>');
+    $this->assertSession()->responseContains('<span>Last updated: </span>21 April 2023');
   }
 
 }
