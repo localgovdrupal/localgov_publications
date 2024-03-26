@@ -7,6 +7,10 @@ dependencies:
     - entity_reference_revisions
     - media
     - user
+    - localgov_publications
+  enforced:
+    module:
+      - localgov_publications
 id: documents
 label: Documents
 module: views

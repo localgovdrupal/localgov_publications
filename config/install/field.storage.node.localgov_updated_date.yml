@@ -4,6 +4,10 @@ dependencies:
   module:
     - datetime
     - node
+    - localgov_publications
+  enforced:
+    module:
+      - localgov_publications
 id: node.localgov_updated_date
 field_name: localgov_updated_date
 entity_type: node

@@ -5,6 +5,10 @@ dependencies:
     - entity_reference_revisions
     - node
     - paragraphs
+    - localgov_publications
+  enforced:
+    module:
+      - localgov_publications
 id: node.localgov_publications_banner
 field_name: localgov_publications_banner
 entity_type: node

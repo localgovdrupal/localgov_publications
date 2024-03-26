@@ -3,6 +3,10 @@ status: true
 dependencies:
   module:
     - media
+    - localgov_publications
+  enforced:
+    module:
+      - localgov_publications
 id: media.publication
 label: Publication
 description: ''
