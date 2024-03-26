@@ -88,7 +88,7 @@ class HeadingIdFilter extends FilterBase implements ContainerFactoryPluginInterf
     $output = $text;
     $html_dom = Html::load($text);
     $xpath = new \DOMXPath($html_dom);
-    $heading_tags = '//h2|//h3|//h4|//h5|//h6';
+    $heading_tags = '//body/h2|//body/h3|//body/h4|//body/h5|//body/h6';
     $keep_existing_ids = $this->settings['keep_existing_ids'] ?? FALSE;
 
     // Apply attribute restrictions to headings.
