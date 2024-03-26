@@ -263,6 +263,18 @@ function localgov_publications_modules_installed($modules, $is_syncing) {
       \Drupal::configFactory()->getEditable($config_name)->delete();
     }
     \Drupal::configFactory()->getEditable('node.type.book')->delete();
+
+    // The mapping of fields to bundles is stored in the key-value store. As we
+    // removed the content type and its fields on a config level, we also need
+    // to clear out the book data from here, as it won't be done for us like it
+    // is when you delete a content type via the UI.
+    $kvStore = \Drupal::keyValue('entity.definitions.bundle_field_map');
+    $fieldMap = $kvStore->get('node');
+    unset($fieldMap['body']['bundles']['book']);
+    $kvStore->set('node', $fieldMap);
+
+    // Clear the cache where the full map is stored.
+    \Drupal::cache('discovery')->delete('entity_field_map');
   }
 }
 
