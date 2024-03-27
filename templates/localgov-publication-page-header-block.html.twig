@@ -32,11 +32,11 @@
   </h1>
 
   {% if published_date %}
-    <div class="lgd-page-title-block__published"><span>Published: </span>{{ published_date }}</div>
-  {% endif %}
+  <div class="lgd-page-title-block__published"><span>{{ 'Published: '|t }}</span>{{ published_date }}</div>
+{% endif %}
 
-  {% if last_updated_date %}
-    <div class="lgd-page-title-block__updated"><span>Last updated: </span>{{ last_updated_date }}</div>
-  {% endif %}
+{% if last_updated_date %}
+  <div class="lgd-page-title-block__updated"><span>{{ 'Last updated: '|t }}</span>{{ last_updated_date }}</div>
+{% endif %}
 
 </div>
