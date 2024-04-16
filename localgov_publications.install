@@ -173,3 +173,29 @@ function localgov_publications_install_block_definitions(): array {
 
   return $blocks;
 }
+
+/**
+ * Fixes error messages after this module is installed.
+ *
+ * Remove references to the book content type from the key value store that are
+ * left over after book's config is removed.
+ */
+function localgov_publications_update_10001() {
+
+  // If the book content type is still installed in the site, don't do anything.
+  $entityTypeManager = \Drupal::service('entity_type.manager');
+  $bookType = $entityTypeManager->getStorage('node_type')->load('book');
+  if ($bookType) {
+    return;
+  }
+
+  // See localgov_publications_modules_installed() for what this code does.
+  // It's added here so it runs on existing installs too.
+  $kvStore = \Drupal::keyValue('entity.definitions.bundle_field_map');
+  $fieldMap = $kvStore->get('node');
+  if (isset($fieldMap['body']['bundles']['book'])) {
+    unset($fieldMap['body']['bundles']['book']);
+    $kvStore->set('node', $fieldMap);
+  }
+  \Drupal::cache('discovery')->delete('entity_field_map');
+}
