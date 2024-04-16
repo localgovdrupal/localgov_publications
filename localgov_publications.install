@@ -118,7 +118,7 @@ function localgov_publications_install_block_definitions(): array {
           'localgov_publication_cover_page' => 'localgov_publication_cover_page',
           'localgov_publication_page' => 'localgov_publication_page',
         ],
-      ]
+      ],
     ],
     'weight' => -10,
   ];
@@ -142,7 +142,7 @@ function localgov_publications_install_block_definitions(): array {
         'bundles' => [
           'localgov_publication_page' => 'localgov_publication_page',
         ],
-      ]
+      ],
     ],
     'weight' => 0,
   ];
@@ -166,7 +166,7 @@ function localgov_publications_install_block_definitions(): array {
         'bundles' => [
           'localgov_publication_page' => 'localgov_publication_page',
         ],
-      ]
+      ],
     ],
     'weight' => 0,
   ];
