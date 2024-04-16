@@ -1,57 +1,54 @@
-# LocalGov Publications Alpha
+# LocalGov Publications
 
 This module provides publication content types and configuration for the LocalGov Drupal distribution.
 
-The intention is to support councils to publish publications in accessible html formats rather than in PDF files.
+The intention is to support councils to publish publications in accessible HTML rather than in PDF files.
 
 We use Drupal's book module to provide navigation between hierarchically related pages of a publication.
 
 It is also possible to create a single page publication with inline navigation between headings. 
 
-## Alpha release
+## Content types
 
-Please note that this is an alpha release, intented for testing. 
+The content types this module provides are:
+- Publication cover page
+- Publication page
 
-It is not recommended to deploy to production while in alpha, as we changes to data structure and initial configuration are likely. 
+Publication pages are what make up the publication. They can be arranged in a 
+hierarchy, which will be used to build the navigation inside the publication.
+Use of the hierarchy is optional. Single page publications can be created.
+
+Publication cover pages are intended to act as a link to publications.
+They can reference multiple publications (EG for multiple versions of the same 
+content) and allow documents (Like a PDF) to be uploaded to the cover page for 
+people who don't want to read online. Use of publication cover pages is optional.
+
+## Other features
+
+The module includes two types of navigation, both of which are configured to 
+appear on publication pages when appropriate.
+
+Publication navigation appears when a publication has multiple pages, with links
+to those pages.
+
+In-page navigation appears when a publication page uses h2 headings, and 
+provides jump links inside the page that link to those headings.
 
 ## Installing
 
-Once and alpha release is tagged, you should be able to install with the following composer command.
+You can install this module with the following composer command.
 
 ```
-composer require localgovdrupal/localgov_publications:^1.0.0-alpha1
+composer require localgovdrupal/localgov_publications:^1.0.0
 ```
 
-## Testing
+## Issues
 
-Please do install and test with real publication content and report any issues to Github at https://github.com/localgovdrupal/localgov_publications/issues
-
-## Testing on Gitpod
-
-You should be able to spin up a Gitpod install of LocalGov Drupal by:
-
-1. [Create an account on gitpod.io](https://gitpod.io/login), if you haven't already.
-2. Follow this link to [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/localgovdrupal/localgov_project) 
-
-Once Gitpod is fired up, you should have a command line in VSCode where you can execute commands to download and enable Localgov Pulications.
-
-```
-ddev composer require localgovdrupal/localgov_publications:^1.0.0-alpha1
-ddev drush en localgov_publications
-```
-Then you might want to use drush to generate a one time login link with
-
-```
-ddev drush uli
-```
-
-Control click the link to open in a new tab and you can start to test creating publication content. 
+If you run into issues using this module, please report them at https://github.com/localgovdrupal/localgov_publications/issues
 
 ## Maintainers 
 
-This project is currently maintained by: 
-
+This project is currently maintained by:
  - Finn Lewis https://github.com/finnlewis
  - Justine Pocock https://github.com/justinepocock
  - Rupert Jabelman https://github.com/rupertj
- - You!? let us know :)

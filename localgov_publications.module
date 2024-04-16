@@ -7,6 +7,10 @@
 
 use Drupal\block\Entity\Block;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Config\Entity\ConfigDependencyManager;
+use Drupal\Core\Config\FileStorage;
+use Drupal\Core\Config\InstallStorage;
+use Drupal\Core\Config\StorageInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -231,6 +235,34 @@ function localgov_publications_preprocess_node(&$variables): void {
 
   if ($view_mode === 'full' && localgov_publications_is_publication_type($node->getType())) {
     $variables['content']['#attached']['library'][] = 'localgov_publications/localgov-publications';
+  }
+}
+
+/**
+ * Implements hook_modules_installed().
+ */
+function localgov_publications_modules_installed($modules, $is_syncing) {
+  if (!$is_syncing && in_array('book', $modules)) {
+    // If book module is being installed, prevent the 'book' node type and its
+    // dependencies from being installed from its config (or rather, delete it
+    // -- there's no way to intercept it within the config API).
+    $extension_path = \Drupal::service('extension.path.resolver')->getPath('module', 'book');
+    $optional_install_path = $extension_path . '/' . InstallStorage::CONFIG_OPTIONAL_DIRECTORY;
+
+    // Get all of book module's optional config.
+    $storage = new FileStorage($optional_install_path, StorageInterface::DEFAULT_COLLECTION);
+    $list = $storage->listAll();
+    $config_to_create = $storage->readMultiple($list);
+
+    // Filter this to those config entities that depend on the 'book' node type.
+    $dependency_manager = new ConfigDependencyManager();
+    $dependency_manager->setData($config_to_create);
+    $dependencies = $dependency_manager->getDependentEntities('config', 'node.type.book');
+
+    foreach (array_keys($dependencies) as $config_name) {
+      \Drupal::configFactory()->getEditable($config_name)->delete();
+    }
+    \Drupal::configFactory()->getEditable('node.type.book')->delete();
   }
 }
 

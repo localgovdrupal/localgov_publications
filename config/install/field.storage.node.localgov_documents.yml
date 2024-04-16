@@ -4,6 +4,10 @@ dependencies:
   module:
     - media
     - node
+    - localgov_publications
+  enforced:
+    module:
+      - localgov_publications
 id: node.localgov_documents
 field_name: localgov_documents
 entity_type: node

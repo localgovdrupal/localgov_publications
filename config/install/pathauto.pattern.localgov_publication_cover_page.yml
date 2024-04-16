@@ -3,6 +3,10 @@ status: true
 dependencies:
   module:
     - node
+    - localgov_publications
+  enforced:
+    module:
+      - localgov_publications
 id: localgov_publication_cover_page
 label: 'Publication cover page'
 type: 'canonical_entities:node'
