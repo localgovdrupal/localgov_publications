@@ -120,31 +120,7 @@ function localgov_publications_install_block_definitions(): array {
         ],
       ],
     ],
-    'weight' => -10,
-  ];
-
-  $blocks[] = [
-    'plugin' => 'localgov_publications_toc_block',
-    'region' => 'sidebar_first',
-    'settings' => [
-      'label' => 'On this page',
-      'label_display' => 'visible',
-      'context_mapping' => [
-        'node' => '@node.node_route_context:node',
-      ],
-    ],
-    'visibility' => [
-      'entity_bundle:node' => [
-        'id' => 'entity_bundle:node',
-        'context_mapping' => [
-          'node' => '@node.node_route_context:node',
-        ],
-        'bundles' => [
-          'localgov_publication_page' => 'localgov_publication_page',
-        ],
-      ],
-    ],
-    'weight' => 0,
+    'weight' => -100,
   ];
 
   $blocks[] = [
@@ -169,6 +145,30 @@ function localgov_publications_install_block_definitions(): array {
       ],
     ],
     'weight' => 0,
+  ];
+
+  $blocks[] = [
+    'plugin' => 'localgov_publications_toc_block',
+    'region' => 'sidebar_first',
+    'settings' => [
+      'label' => 'On this page',
+      'label_display' => 'visible',
+      'context_mapping' => [
+        'node' => '@node.node_route_context:node',
+      ],
+    ],
+    'visibility' => [
+      'entity_bundle:node' => [
+        'id' => 'entity_bundle:node',
+        'context_mapping' => [
+          'node' => '@node.node_route_context:node',
+        ],
+        'bundles' => [
+          'localgov_publication_page' => 'localgov_publication_page',
+        ],
+      ],
+    ],
+    'weight' => 1,
   ];
 
   return $blocks;
