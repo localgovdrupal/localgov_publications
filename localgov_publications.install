@@ -70,7 +70,12 @@ function localgov_publications_install_filter(): void {
  * Installs this module's default blocks.
  */
 function localgov_publications_install_blocks(): void {
+
   $activeTheme = \Drupal::service('theme.manager')->getActiveTheme()->getName();
+
+  /** @var \Drupal\Core\Extension\ThemeHandlerInterface $themeHandler */
+  $themeHandler = \Drupal::service('theme_handler');
+
   $themes = ['localgov_base', 'localgov_scarfolk'];
 
   if (!in_array($activeTheme, $themes)) {
@@ -82,13 +87,25 @@ function localgov_publications_install_blocks(): void {
   // Loop over every theme and block definition, so we set up all the blocks in
   // all the relevant themes.
   foreach ($themes as $theme) {
-    foreach ($blocks as $values) {
 
-      $values['id'] = $theme . '_' . $values['plugin'];
-      $values['theme'] = $theme;
+    // Get info about the theme, so we can check we're placing blocks into
+    // regions that actually exist.
+    $themeInfo = $themeHandler->getTheme($theme);
+    if (empty($themeInfo)) {
+      continue;
+    }
+    $regions = array_keys($themeInfo->info['regions']);
 
-      $block = Block::create($values);
-      $block->save();
+    foreach ($blocks as $block) {
+
+      if (!in_array($block['region'], $regions)) {
+        continue;
+      }
+
+      $block['id'] = $theme . '_' . $block['plugin'];
+      $block['theme'] = $theme;
+
+      Block::create($block)->save();
     }
   }
 }
