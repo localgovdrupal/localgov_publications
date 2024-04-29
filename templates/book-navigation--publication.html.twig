@@ -33,6 +33,7 @@
 
 {% if has_links %}
   <nav role="navigation" aria-labelledby="book-label-{{ book_id }}">
+    <div class="visually-hidden" id="book-label-{{ book_id }}">{{ 'Publication navigation'|t }}</div>
     {% if has_links %}
       <ul class="book-navigation--publication">
         {% if prev_url %}
