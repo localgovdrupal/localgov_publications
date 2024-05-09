@@ -17,7 +17,6 @@ jobs:
   build:
     name: Install LocalGov Drupal
     runs-on: ubuntu-latest
-
     strategy:
       fail-fast: false
       matrix:
@@ -28,9 +27,7 @@ jobs:
         php-version:
           - '8.1'
           - '8.2'
-
     steps:
-
       - name: Save git branch and git repo names to env if this is not a pull request
         if: github.event_name != 'pull_request'
         run: |
@@ -101,7 +98,6 @@ jobs:
     name: Coding standards checks
     needs: build
     runs-on: ubuntu-latest
-
     strategy:
       fail-fast: false
       matrix:
@@ -112,9 +108,7 @@ jobs:
         php-version:
           - '8.1'
           - '8.2'
-
     steps:
-
       - name: Cached workspace
         uses: actions/cache@v2
         with:
@@ -191,7 +185,7 @@ jobs:
       - name: Run deprecated code checks
         run: |
           cd html
-          ./bin/phpstan analyse -c ${LOCALGOV_DRUPAL_PROJECT_PATH}/phpstan.neon ${LOCALGOV_DRUPAL_PROJECT_PATH} --memory-limit=4000M
+          ./bin/phpstan analyse -c ${LOCALGOV_DRUPAL_PROJECT_PATH}/phpstan.neon ${LOCALGOV_DRUPAL_PROJECT_PATH} --memory-limit=4000M --no-progress
 
   phpunit:
     name: PHPUnit tests
@@ -208,15 +202,12 @@ jobs:
         php-version:
           - '8.1'
           - '8.2'
-
     steps:
-
       - name: Clone Drupal container
         uses: actions/checkout@v2
         with:
           repository: localgovdrupal/drupal-container
           ref: php${{ matrix.php-version }}
-
       - name: Cached workspace
         uses: actions/cache@v2
         with:
