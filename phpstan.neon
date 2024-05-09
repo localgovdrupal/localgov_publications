@@ -7,8 +7,8 @@ parameters:
     - theme
   level: 5
   scanDirectories:
-    - web/core/lib
-    - web/core/includes
-    - web/core/modules
+    - ../../../web/core/lib
+    - ../../../web/core/includes
+    - ../../../web/core/modules
   ignoreErrors:
     - '#^Unsafe usage of new static#'
