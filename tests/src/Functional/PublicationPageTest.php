@@ -12,12 +12,8 @@ use Drupal\Tests\node\Traits\NodeCreationTrait;
  */
 class PublicationPageTest extends BrowserTestBase {
 
-  use NodeCreationTrait;
-
   /**
-   * Test breadcrumbs in the Standard profile.
-   *
-   * @var string
+   * {@inheritdoc}
    */
   protected $profile = 'localgov';
 
@@ -25,13 +21,6 @@ class PublicationPageTest extends BrowserTestBase {
    * {@inheritdoc}
    */
   protected $defaultTheme = 'localgov_base';
-
-  /**
-   * A user with permission to bypass content access checks.
-   *
-   * @var \Drupal\user\UserInterface
-   */
-  protected $adminUser;
 
   /**
    * Modules to enable.
@@ -45,26 +34,17 @@ class PublicationPageTest extends BrowserTestBase {
   ];
 
   /**
-   * {@inheritdoc}
+   * Verifies basic functionality with all modules.
    */
-  protected function setUp(): void {
-    parent::setUp();
+  public function testPublicationPageFields() {
 
-    $this->adminUser = $this->drupalCreateUser([
+    $adminUser = $this->drupalCreateUser([
       'bypass node access',
       'administer nodes',
       'administer node fields',
     ]);
-    $this->nodeStorage = $this->container
-      ->get('entity_type.manager')
-      ->getStorage('node');
-  }
 
-  /**
-   * Verifies basic functionality with all modules.
-   */
-  public function testPublicationPageFields() {
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($adminUser);
 
     // Check publication page fields.
     $this->drupalGet('/admin/structure/types/manage/localgov_publication_page/fields');
