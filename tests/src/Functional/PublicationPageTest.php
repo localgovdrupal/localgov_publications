@@ -3,7 +3,6 @@
 namespace Drupal\Tests\localgov_publications\Functional;
 
 use Drupal\Tests\BrowserTestBase;
-use Drupal\Tests\node\Traits\NodeCreationTrait;
 
 /**
  * Tests LocalGov Publications page.
@@ -23,9 +22,7 @@ class PublicationPageTest extends BrowserTestBase {
   protected $defaultTheme = 'localgov_base';
 
   /**
-   * Modules to enable.
-   *
-   * @var array
+   * {@inheritdoc}
    */
   protected static $modules = [
     'layout_paragraphs',
