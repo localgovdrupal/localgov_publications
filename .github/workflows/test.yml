@@ -133,11 +133,10 @@ jobs:
           cd html
           ./bin/phpcs -p ${LOCALGOV_DRUPAL_PROJECT_PATH}
 
-  phpstan:
+  phpstan_deprecations:
     name: Deprecated code checks
     needs: build
     runs-on: ubuntu-latest
-
     strategy:
       fail-fast: false
       matrix:
@@ -146,11 +145,8 @@ jobs:
         drupal-version:
           - '~10.0'
         php-version:
-          - '8.1'
           - '8.2'
-
     steps:
-
       - name: Cached workspace
         uses: actions/cache@v2
         with:
@@ -158,16 +154,45 @@ jobs:
           key: localgov-build-${{ matrix.localgov-version }}-${{ matrix.drupal-version }}-${{ matrix.php-version }}-${{ github.run_id }}-${{ secrets.CACHE_VERSION }}
           restore-keys: |
             localgov-build-${{ matrix.localgov-version }}-${{ matrix.drupal-version }}-${{ matrix.php-version }}-
-
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-
       - name: Run deprecated code checks
         run: |
           cd html
           ./bin/phpstan analyse -c ./phpstan.neon ${LOCALGOV_DRUPAL_PROJECT_PATH}
+
+  phpstan_analyse:
+    name: Static analysis
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        localgov-version:
+          - '3.x'
+        drupal-version:
+          - '~10.0'
+        php-version:
+          - '8.2'
+    steps:
+      - name: Cached workspace
+        uses: actions/cache@v2
+        with:
+          path: ./html
+          key: localgov-build-${{ matrix.localgov-version }}-${{ matrix.drupal-version }}-${{ matrix.php-version }}-${{ github.run_id }}-${{ secrets.CACHE_VERSION }}
+          restore-keys: |
+            localgov-build-${{ matrix.localgov-version }}-${{ matrix.drupal-version }}-${{ matrix.php-version }}-
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+      - name: Run deprecated code checks
+        run: |
+          cd html
+          ./bin/phpstan analyse -c ${LOCALGOV_DRUPAL_PROJECT_PATH}/phpstan.neon ${LOCALGOV_DRUPAL_PROJECT_PATH} --memory-limit=4000M
+
   phpunit:
     name: PHPUnit tests
     needs: build

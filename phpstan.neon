@@ -1,0 +1,14 @@
+parameters:
+  fileExtensions:
+    - inc
+    - install
+    - module
+    - php
+    - theme
+  level: 5
+  scanDirectories:
+    - web/core/lib
+    - web/core/includes
+    - web/core/modules
+  ignoreErrors:
+    - '#^Unsafe usage of new static#'
