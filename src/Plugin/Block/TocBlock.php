@@ -19,12 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   context_definitions = {
  *     "node" = @ContextDefinition(
  *       "entity:node",
- *       label = @Translation("Current node"),
- *       constraints = {
- *         "Bundle" = {
- *           "publication"
- *         },
- *       }
+ *       label = @Translation("Current node")
  *     )
  *   }
  * )

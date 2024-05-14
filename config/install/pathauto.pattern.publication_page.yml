@@ -3,6 +3,10 @@ status: true
 dependencies:
   module:
     - node
+    - localgov_publications
+  enforced:
+    module:
+      - localgov_publications
 id: publication_page
 label: 'Publication page'
 type: 'canonical_entities:node'
