@@ -273,8 +273,8 @@ function localgov_publications_modules_installed($modules, $is_syncing) {
     unset($fieldMap['body']['bundles']['book']);
     $kvStore->set('node', $fieldMap);
 
-    // Clear the cache where the full map is stored.
-    \Drupal::cache('discovery')->delete('entity_field_map');
+    // Clear all caches to ensure there are no references to the Book node left.
+    drupal_flush_all_caches();
   }
 }
 
