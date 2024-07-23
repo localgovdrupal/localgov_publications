@@ -31,7 +31,7 @@ function localgov_publications_tokens_alter(array &$replacements, array $context
   }
 
   $node = $context['data']['node'];
-  $bid = $node->book ? $node->book['bid'] : 0;
+  $bid = $node->book['bid'] ?? 0;
 
   if (empty($bid)) {
     return;
