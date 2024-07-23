@@ -1,0 +1,7 @@
+filter_settings.localgov_publications_heading_ids:
+  type: filter
+  label: 'Automatically apply identifiers (anchors) to headings in content'
+  mapping:
+    keep_existing_ids:
+      type: boolean
+      label: 'Keep existing IDs'
