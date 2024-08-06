@@ -12,6 +12,7 @@
         }
     ],
     "require": {
+        "drupal/core": "^10.0.0",
         "localgovdrupal/localgov_core": ">=2.1.10",
         "localgovdrupal/localgov_paragraphs": ">=2.4.0"
     },
