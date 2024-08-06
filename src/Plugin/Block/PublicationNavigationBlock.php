@@ -103,27 +103,28 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getContextValue('node');
 
-    if (!empty($node->book['bid'])) {
-      $tree = $this->bookManager->bookTreeAllData($node->book['bid'], $node->book);
-      $this->moduleHandler->alter('localgov_publications_menu_tree', $tree);
-      $this->themeManager->alter('localgov_publications_menu_tree', $tree);
-
-      // If the top level doesn't have any child pages, (IE this is a single
-      // page publication) don't show the menu block, as there isn't anything
-      // else to navigate to.
-      $top = reset($tree);
-      if (empty($top['below'])) {
-        return [];
-      }
-
-      $output = $this->bookManager->bookTreeOutput($tree);
-      if (!empty($output)) {
-        $this->node = $node;
-        $this->setActiveClass($output['#items']);
-        return $output;
-      }
+    if (!isset($node->book['bid'])) {
+      return [];
     }
-    return [];
+
+    $tree = $this->bookManager->bookTreeAllData($node->book['bid'], $node->book);
+    $this->moduleHandler->alter('localgov_publications_menu_tree', $tree);
+    $this->themeManager->alter('localgov_publications_menu_tree', $tree);
+
+    // If the top level doesn't have any child pages, (IE this is a single
+    // page publication) don't show the menu block, as there isn't anything
+    // else to navigate to.
+    $top = reset($tree);
+    if (!isset($top['below'])) {
+      return [];
+    }
+
+    $output = $this->bookManager->bookTreeOutput($tree);
+    if (count($output)) {
+      $this->node = $node;
+      $this->setActiveClass($output['#items']);
+      return $output;
+    }
   }
 
   /**

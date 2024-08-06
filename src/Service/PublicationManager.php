@@ -64,7 +64,7 @@ class PublicationManager {
       ->accessCheck(FALSE)
       ->execute();
 
-    if (is_array($result) && count($result)) {
+    if (count($result) > 0) {
       $coverPageNid = reset($result);
       return $nodeStorage->load($coverPageNid);
     }
