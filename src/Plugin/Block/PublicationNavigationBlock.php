@@ -137,7 +137,7 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
         $attributes = $item['attributes'];
         $attributes->addClass('active');
       }
-      if (!empty($item['below'])) {
+      if (isset($item['below']) && is_array($item['below'])) {
         $this->setActiveClass($item['below']);
       }
     }

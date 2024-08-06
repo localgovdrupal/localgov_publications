@@ -112,6 +112,8 @@ function localgov_publications_install_blocks(): void {
  */
 function localgov_publications_install_block_definitions(): array {
 
+  $blocks = [];
+
   $blocks[] = [
     'plugin' => 'localgov_publications_page_header_block',
     'region' => 'content_top',

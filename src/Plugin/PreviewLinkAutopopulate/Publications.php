@@ -100,7 +100,7 @@ class Publications extends PreviewLinkAutopopulatePluginBase {
           'localgov_publication' => array_keys($book_links),
         ]);
         foreach ($cover_pages as $cover_page) {
-          if ($cover_page instanceof NodeInterface && !isset($nodes[$cover_page->id()])) {
+          if (!isset($nodes[$cover_page->id()])) {
             $nodes[$cover_page->id()] = $cover_page;
           }
         }

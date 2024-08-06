@@ -224,7 +224,7 @@ function localgov_publications_validate_node_form(&$form, FormStateInterface $fo
  */
 function localgov_publications_node_links_alter(array &$links, NodeInterface $node, array &$context): void {
 
-  if (localgov_publications_is_publication_type($node->getType()) && !empty($links['book']['#links']['book_add_child'])) {
+  if (localgov_publications_is_publication_type($node->getType()) && isset($links['book']['#links']['book_add_child'])) {
     $links['book']['#links']['book_add_child']['url'] = Url::fromRoute('node.add', ['node_type' => 'localgov_publication_page'], ['query' => ['parent' => $node->id()]]);
   }
 }
@@ -246,7 +246,7 @@ function localgov_publications_preprocess_node(&$variables): void {
  * Implements hook_modules_installed().
  */
 function localgov_publications_modules_installed($modules, $is_syncing) {
-  if (!$is_syncing && in_array('book', $modules)) {
+  if (!$is_syncing && in_array('book', $modules, TRUE)) {
     // If book module is being installed, prevent the 'book' node type and its
     // dependencies from being installed from its config (or rather, delete it
     // -- there's no way to intercept it within the config API).
@@ -351,7 +351,7 @@ function localgov_publications_update_path_aliases(NodeInterface $node): void {
     }
   }
 
-  if (empty($publicationPages)) {
+  if (count($publicationPages) === 0) {
     return;
   }
 
