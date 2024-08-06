@@ -137,7 +137,7 @@ function localgov_publications_form_alter(&$form, FormStateInterface $form_state
     'node_localgov_publication_page_edit_form',
   ];
 
-  if (!in_array($form_id, $forms_to_alter)) {
+  if (!in_array($form_id, $forms_to_alter, TRUE)) {
     return;
   }
 
@@ -164,17 +164,14 @@ function localgov_publications_form_alter(&$form, FormStateInterface $form_state
   $form['book']['bid']['#title'] = t('Publication');
 
   // Change "Create new book" to "Create a new publication".
-  if (!empty($form['book']['bid']['#options']['new'])) {
+  if (isset($form['book']['bid']['#options']['new'])) {
     $form['book']['bid']['#options']['new'] = t('- Create a new publication -');
   }
 
   $form['book']['bid']['#description'] = t('Your page will be part of the selected publication');
 
   // Alter "No book selected".
-  if (empty($book_values)) {
-    $form['book']['pid']['#prefix'] = '<div id="edit-book-plid-wrapper"><em>No publication selected.</em>';
-  }
-  else {
+  if (is_array($book_values)) {
     switch ($book_values['bid']) {
       case '0':
         $form['book']['pid']['#prefix'] = '<div id="edit-book-plid-wrapper"><em>No publication selected.</em>';
@@ -192,6 +189,9 @@ function localgov_publications_form_alter(&$form, FormStateInterface $form_state
         );
         break;
     }
+  }
+  else {
+    $form['book']['pid']['#prefix'] = '<div id="edit-book-plid-wrapper"><em>No publication selected.</em>';
   }
 
   if ($form_id == 'node_localgov_publication_page_form' || $form_id == 'node_localgov_publication_page_edit_form') {
@@ -355,9 +355,9 @@ function localgov_publications_update_path_aliases(NodeInterface $node): void {
     return;
   }
 
-  $nodes = Node::loadMultiple($publicationPages);
+  $pageNodes = Node::loadMultiple($publicationPages);
   $pathAutoGenerator = \Drupal::service('pathauto.generator');
-  foreach ($nodes as $node) {
-    $pathAutoGenerator->updateEntityAlias($node, 'update');
+  foreach ($pageNodes as $pageNode) {
+    $pathAutoGenerator->updateEntityAlias($pageNode, 'update');
   }
 }

@@ -78,7 +78,7 @@ function localgov_publications_install_blocks(): void {
 
   $themes = ['localgov_base', 'localgov_scarfolk'];
 
-  if (!in_array($activeTheme, $themes)) {
+  if (!in_array($activeTheme, $themes, TRUE)) {
     $themes[] = $activeTheme;
   }
 
@@ -91,14 +91,11 @@ function localgov_publications_install_blocks(): void {
     // Get info about the theme, so we can check we're placing blocks into
     // regions that actually exist.
     $themeInfo = $themeHandler->getTheme($theme);
-    if (empty($themeInfo)) {
-      continue;
-    }
     $regions = array_keys($themeInfo->info['regions']);
 
     foreach ($blocks as $block) {
 
-      if (!in_array($block['region'], $regions)) {
+      if (!in_array($block['region'], $regions, TRUE)) {
         continue;
       }
 
@@ -202,7 +199,7 @@ function localgov_publications_update_10001() {
   // If the book content type is still installed in the site, don't do anything.
   $entityTypeManager = \Drupal::service('entity_type.manager');
   $bookType = $entityTypeManager->getStorage('node_type')->load('book');
-  if ($bookType) {
+  if (!is_null($bookType)) {
     return;
   }
 
