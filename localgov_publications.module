@@ -141,8 +141,12 @@ function localgov_publications_form_alter(&$form, FormStateInterface $form_state
     return;
   }
 
-  // Get the node.
-  $node = $form_state->getFormObject()->getEntity();
+  /**
+   * Get the node from the form object.
+   * @var \Drupal\Core\Entity\EntityFormInterface $formObject
+   */
+  $formObject = $form_state->getFormObject();
+  $node = $formObject->getEntity();
 
   // Attach JS.
   if ($form['book']['#attached']['library'][0] == 'book/drupal.book') {
@@ -334,7 +338,7 @@ function localgov_publications_update_path_aliases(NodeInterface $node): void {
   /** @var \Drupal\book\BookManager $bookManager */
   $bookManager = \Drupal::service('book.manager');
 
-  /** @var \Drupal\node\NodeInterface[] $publication */
+  /** @var \Drupal\node\NodeInterface[] $publications */
   $publications = $node->get('localgov_publication')->referencedEntities();
 
   $publicationPages = [];
