@@ -22,7 +22,7 @@ function localgov_publications_token_info_alter(&$data) {
  */
 function localgov_publications_tokens_alter(array &$replacements, array $context, BubbleableMetadata $bubbleable_metadata) {
 
-  if ($context['type'] != 'node' || empty($context['data']['node'])) {
+  if ($context['type'] != 'node' || !isset($context['data']['node'])) {
     return;
   }
 
@@ -31,15 +31,14 @@ function localgov_publications_tokens_alter(array &$replacements, array $context
   }
 
   $node = $context['data']['node'];
-  $bid = $node->book['bid'] ?? 0;
+  $bid = (int) $node->book['bid'] ?? 0;
 
-  if (empty($bid)) {
+  if ($bid === 0) {
     return;
   }
 
   /** @var \Drupal\localgov_publications\Service\PublicationManager $publicationManager */
   $publicationManager = \Drupal::service('localgov_publications.publication_manager');
-
   $coverPage = $publicationManager->getCoverPage($bid);
   if (!$coverPage) {
     return;
