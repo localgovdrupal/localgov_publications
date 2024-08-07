@@ -7,6 +7,7 @@
 
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\node\NodeInterface;
+
 /**
  * Implements hook_token_info().
  */
@@ -31,7 +32,7 @@ function localgov_publications_tokens_alter(array &$replacements, array $context
   }
 
   $node = $context['data']['node'];
-  $bid = (int) $node->book['bid'] ?? 0;
+  $bid = (int) ($node->book['bid'] ?? 0);
 
   if ($bid === 0) {
     return;

@@ -120,11 +120,13 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
     }
 
     $output = $this->bookManager->bookTreeOutput($tree);
-    if (count($output)) {
-      $this->node = $node;
-      $this->setActiveClass($output['#items']);
-      return $output;
+    if ($output === []) {
+      return [];
     }
+
+    $this->node = $node;
+    $this->setActiveClass($output['#items']);
+    return $output;
   }
 
   /**
