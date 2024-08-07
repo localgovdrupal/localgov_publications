@@ -11,8 +11,7 @@ on:
 
 jobs:
   tests:
-    uses: localgovdrupal/localgov_shared_workflows/.github/workflows/test-module.yml@feature/1.x/override-phpstan-neon-path
+    uses: localgovdrupal/localgov_shared_workflows/.github/workflows/test-module.yml@1.x
     with:
       project: 'localgovdrupal/localgov_publications'
       project_path: 'web/modules/contrib/localgov_publications'
-      use_module_phpstan_config: true
