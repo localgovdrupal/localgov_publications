@@ -12,3 +12,4 @@ parameters:
     - ../../../core/modules
   ignoreErrors:
     - '#^Unsafe usage of new static#'
+    - '#Dynamic call to static method PHPUnit\\Framework\\.*#'

@@ -64,12 +64,12 @@ class PublicationManager {
       ->accessCheck(FALSE)
       ->execute();
 
-    if (empty($result)) {
-      return NULL;
+    if (count($result) > 0) {
+      $coverPageNid = reset($result);
+      return $nodeStorage->load($coverPageNid);
     }
 
-    $coverPageNid = reset($result);
-    return $nodeStorage->load($coverPageNid);
+    return NULL;
   }
 
 }
