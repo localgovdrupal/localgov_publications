@@ -48,7 +48,7 @@ class PublicationManager {
   /**
    * Given the ID of a publication, returns the cover page node if there is one.
    *
-   * @var int $publicationId
+   * @param int $publicationId
    *   The ID of the root node of the publication.
    *
    * @return ?\Drupal\node\NodeInterface
@@ -64,12 +64,12 @@ class PublicationManager {
       ->accessCheck(FALSE)
       ->execute();
 
-    if (empty($result)) {
-      return NULL;
+    if (count($result) > 0) {
+      $coverPageNid = reset($result);
+      return $nodeStorage->load($coverPageNid);
     }
 
-    $coverPageNid = reset($result);
-    return $nodeStorage->load($coverPageNid);
+    return NULL;
   }
 
 }

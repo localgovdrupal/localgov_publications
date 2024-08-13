@@ -94,14 +94,15 @@ class HeadingIdFilter extends FilterBase implements ContainerFactoryPluginInterf
     // Apply attribute restrictions to headings.
     $headings_found = FALSE;
     foreach ($xpath->query($heading_tags) as $heading_tag) {
+      if ($heading_tag instanceof \DOMElement) {
+        if ($keep_existing_ids && $heading_tag->hasAttribute('id')) {
+          continue;
+        }
 
-      if ($keep_existing_ids && $heading_tag->hasAttribute('id')) {
-        continue;
+        $id = $this->transformHeadingToId($heading_tag->nodeValue);
+        $heading_tag->setAttribute('id', Html::getUniqueId($id));
+        $headings_found = TRUE;
       }
-
-      $id = $this->transformHeadingToId($heading_tag->nodeValue);
-      $heading_tag->setAttribute('id', Html::getUniqueId($id));
-      $headings_found = TRUE;
     }
 
     if ($headings_found) {

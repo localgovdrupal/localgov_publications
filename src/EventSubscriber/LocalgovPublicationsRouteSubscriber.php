@@ -4,6 +4,7 @@ namespace Drupal\localgov_publications\EventSubscriber;
 
 use Drupal\Core\Routing\RouteSubscriberBase;
 use Drupal\Core\Routing\RoutingEvents;
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
@@ -15,7 +16,8 @@ class LocalgovPublicationsRouteSubscriber extends RouteSubscriberBase {
    * {@inheritdoc}
    */
   protected function alterRoutes(RouteCollection $collection) {
-    if ($bookAdminRoute = $collection->get('book.admin')) {
+    $bookAdminRoute = $collection->get('book.admin');
+    if ($bookAdminRoute instanceof Route) {
       $bookAdminRoute->setDefault('_controller', 'Drupal\localgov_publications\Controller\LocalgovPublicationsBookController::build');
     }
   }

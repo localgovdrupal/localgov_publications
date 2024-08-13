@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\node\NodeInterface;
 
 /**
  * Implements hook_token_info().
@@ -22,7 +23,7 @@ function localgov_publications_token_info_alter(&$data) {
  */
 function localgov_publications_tokens_alter(array &$replacements, array $context, BubbleableMetadata $bubbleable_metadata) {
 
-  if ($context['type'] != 'node' || empty($context['data']['node'])) {
+  if ($context['type'] != 'node' || !isset($context['data']['node'])) {
     return;
   }
 
@@ -31,22 +32,18 @@ function localgov_publications_tokens_alter(array &$replacements, array $context
   }
 
   $node = $context['data']['node'];
-  $bid = $node->book['bid'] ?? 0;
+  $bid = (int) ($node->book['bid'] ?? 0);
 
-  if (empty($bid)) {
+  if ($bid === 0) {
     return;
   }
 
   /** @var \Drupal\localgov_publications\Service\PublicationManager $publicationManager */
   $publicationManager = \Drupal::service('localgov_publications.publication_manager');
-
   $coverPage = $publicationManager->getCoverPage($bid);
-  if (!$coverPage) {
-    return;
+  if ($coverPage instanceof NodeInterface) {
+    $bubbleable_metadata->addCacheableDependency($coverPage);
+    $alias = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $coverPage->id());
+    $replacements[$context['tokens']['localgov-publication-cover-page-alias']] = $alias;
   }
-
-  $bubbleable_metadata->addCacheableDependency($coverPage);
-  $alias = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $coverPage->id());
-
-  $replacements[$context['tokens']['localgov-publication-cover-page-alias']] = $alias;
 }

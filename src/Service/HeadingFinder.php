@@ -48,7 +48,7 @@ class HeadingFinder implements HeadingFinderInterface {
       }
 
       // If we didn't find a fragment to link to, don't include this result.
-      if ($fragment) {
+      if (strlen($fragment) > 0) {
         $links[] = Link::fromTextAndUrl($heading['text'], Url::fromUserInput('#' . $fragment));
       }
     }
