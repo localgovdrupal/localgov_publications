@@ -115,7 +115,7 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
     // page publication) don't show the menu block, as there isn't anything
     // else to navigate to.
     $top = reset($tree);
-    if (!isset($top['below'])) {
+    if (!isset($top['below']) || $top['below'] === []) {
       return [];
     }
 
