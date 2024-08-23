@@ -1,0 +1,17 @@
+plugin: localgov_publications_toc_block
+region: sidebar_first
+weight: 1
+settings:
+  label: 'On this page'
+  label_display: visible
+  provider: localgov_publications
+  context_mapping:
+    node: '@node.node_route_context:node'
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      localgov_publication_page: localgov_publication_page
