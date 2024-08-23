@@ -99,7 +99,8 @@ function localgov_publications_update_10001() {
 function localgov_publications_update_10002() {
 
   // Make sure Editors have the new View permission.
-  $role = Role::load('localgov_editor');
+  $entity_type_manager = Drupal::service('entity_type.manager');
+  $role = $entity_type_manager->getStorage('user_role')->load('localgov_editor');
   $role->grantPermission('access publication views');
   $role->save();
 
