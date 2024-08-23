@@ -15,3 +15,4 @@ jobs:
     with:
       project: 'localgovdrupal/localgov_publications'
       project_path: 'web/modules/contrib/localgov_publications'
+      use_module_phpstan_config: true
