@@ -33,7 +33,7 @@ class PublicationPageNavigationTest extends BrowserTestBase {
   ];
 
   /**
-   * Test the 'next page' link on a publication.
+   * Test that links and nav are present on a multi-page publication.
    */
   public function testPreviousNextLinks() {
     $adminUser = $this->drupalCreateUser([], NULL, TRUE);
@@ -93,6 +93,9 @@ class PublicationPageNavigationTest extends BrowserTestBase {
     $this->drupalGet('/node/' . $node_child_one->id());
     $this->assertSession()->responseContains('<a href="/publication-parent-page" rel="prev" title="Go to previous page">');
     $this->assertSession()->responseContains('<a href="/publication-parent-page/publication-child-page-two" rel="next" title="Go to next page">');
+
+    // This is the default title of the publication navigation block.
+    $this->assertSession()->pageTextContains('Publication navigation');
   }
 
   /**
@@ -113,7 +116,10 @@ class PublicationPageNavigationTest extends BrowserTestBase {
       'status' => NodeInterface::PUBLISHED,
     ]);
     $this->drupalGet('/node/' . $node_parent->id());
-    $this->assertSession()->elementNotExists('css', '#block-booknavigation');
+
+    // This is the default title of the publication navigation block.
+    // It shouldn't show on a single page publication.
+    $this->assertSession()->pageTextNotContains('Publication navigation');
   }
 
 }

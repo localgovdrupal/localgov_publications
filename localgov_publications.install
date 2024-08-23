@@ -75,7 +75,7 @@ function localgov_publications_update_10001() {
   // If the book content type is still installed in the site, don't do anything.
   $entityTypeManager = \Drupal::service('entity_type.manager');
   $bookType = $entityTypeManager->getStorage('node_type')->load('book');
-  if ($bookType) {
+  if (!is_null($bookType)) {
     return;
   }
 

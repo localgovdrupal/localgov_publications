@@ -72,7 +72,7 @@ class PublicationPageHeaderBlock extends BlockBase implements ContainerFactoryPl
     // Add published date, if available.
     if ($topLevelNode->hasField('localgov_published_date')) {
       $published_date = $topLevelNode->get('localgov_published_date')->value;
-      if (!empty($published_date)) {
+      if (!is_null($published_date)) {
         $build['#published_date'] = $this->formatDate($published_date);
       }
     }
@@ -80,7 +80,7 @@ class PublicationPageHeaderBlock extends BlockBase implements ContainerFactoryPl
     // Add last updated date, if available.
     if ($topLevelNode->hasField('localgov_updated_date')) {
       $last_updated_date = $topLevelNode->get('localgov_updated_date')->value;
-      if (!empty($last_updated_date)) {
+      if (!is_null($last_updated_date)) {
         $build['#last_updated_date'] = $this->formatDate($last_updated_date);
       }
     }

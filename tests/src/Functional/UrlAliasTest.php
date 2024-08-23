@@ -19,9 +19,7 @@ class UrlAliasTest extends BrowserTestBase {
   use NodeCreationTrait;
 
   /**
-   * Test breadcrumbs in the Standard profile.
-   *
-   * @var string
+   * {@inheritdoc}
    */
   protected $profile = 'localgov';
 
@@ -31,9 +29,7 @@ class UrlAliasTest extends BrowserTestBase {
   protected $defaultTheme = 'localgov_base';
 
   /**
-   * Modules to enable.
-   *
-   * @var array
+   * {@inheritdoc}
    */
   protected static $modules = [
     'layout_paragraphs',

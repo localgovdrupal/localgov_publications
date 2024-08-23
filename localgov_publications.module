@@ -137,12 +137,16 @@ function localgov_publications_form_alter(&$form, FormStateInterface $form_state
     'node_localgov_publication_page_edit_form',
   ];
 
-  if (!in_array($form_id, $forms_to_alter)) {
+  if (!in_array($form_id, $forms_to_alter, TRUE)) {
     return;
   }
 
-  // Get the node.
-  $node = $form_state->getFormObject()->getEntity();
+  /**
+   * Get the node from the form object.
+   * @var \Drupal\Core\Entity\EntityFormInterface $formObject
+   */
+  $formObject = $form_state->getFormObject();
+  $node = $formObject->getEntity();
 
   // Attach JS.
   if ($form['book']['#attached']['library'][0] == 'book/drupal.book') {
@@ -160,17 +164,14 @@ function localgov_publications_form_alter(&$form, FormStateInterface $form_state
   $form['book']['bid']['#title'] = t('Publication');
 
   // Change "Create new book" to "Create a new publication".
-  if (!empty($form['book']['bid']['#options']['new'])) {
+  if (isset($form['book']['bid']['#options']['new'])) {
     $form['book']['bid']['#options']['new'] = t('- Create a new publication -');
   }
 
   $form['book']['bid']['#description'] = t('Your page will be part of the selected publication');
 
   // Alter "No book selected".
-  if (empty($book_values)) {
-    $form['book']['pid']['#prefix'] = '<div id="edit-book-plid-wrapper"><em>No publication selected.</em>';
-  }
-  else {
+  if (is_array($book_values)) {
     switch ($book_values['bid']) {
       case '0':
         $form['book']['pid']['#prefix'] = '<div id="edit-book-plid-wrapper"><em>No publication selected.</em>';
@@ -188,6 +189,9 @@ function localgov_publications_form_alter(&$form, FormStateInterface $form_state
         );
         break;
     }
+  }
+  else {
+    $form['book']['pid']['#prefix'] = '<div id="edit-book-plid-wrapper"><em>No publication selected.</em>';
   }
 
   if ($form_id == 'node_localgov_publication_page_form' || $form_id == 'node_localgov_publication_page_edit_form') {
@@ -220,7 +224,7 @@ function localgov_publications_validate_node_form(&$form, FormStateInterface $fo
  */
 function localgov_publications_node_links_alter(array &$links, NodeInterface $node, array &$context): void {
 
-  if (localgov_publications_is_publication_type($node->getType()) && !empty($links['book']['#links']['book_add_child'])) {
+  if (localgov_publications_is_publication_type($node->getType()) && isset($links['book']['#links']['book_add_child'])) {
     $links['book']['#links']['book_add_child']['url'] = Url::fromRoute('node.add', ['node_type' => 'localgov_publication_page'], ['query' => ['parent' => $node->id()]]);
   }
 }
@@ -242,7 +246,7 @@ function localgov_publications_preprocess_node(&$variables): void {
  * Implements hook_modules_installed().
  */
 function localgov_publications_modules_installed($modules, $is_syncing) {
-  if (!$is_syncing && in_array('book', $modules)) {
+  if (!$is_syncing && in_array('book', $modules, TRUE)) {
     // If book module is being installed, prevent the 'book' node type and its
     // dependencies from being installed from its config (or rather, delete it
     // -- there's no way to intercept it within the config API).
@@ -334,7 +338,7 @@ function localgov_publications_update_path_aliases(NodeInterface $node): void {
   /** @var \Drupal\book\BookManager $bookManager */
   $bookManager = \Drupal::service('book.manager');
 
-  /** @var \Drupal\node\NodeInterface[] $publication */
+  /** @var \Drupal\node\NodeInterface[] $publications */
   $publications = $node->get('localgov_publication')->referencedEntities();
 
   $publicationPages = [];
@@ -347,13 +351,13 @@ function localgov_publications_update_path_aliases(NodeInterface $node): void {
     }
   }
 
-  if (empty($publicationPages)) {
+  if (count($publicationPages) === 0) {
     return;
   }
 
-  $nodes = Node::loadMultiple($publicationPages);
+  $pageNodes = Node::loadMultiple($publicationPages);
   $pathAutoGenerator = \Drupal::service('pathauto.generator');
-  foreach ($nodes as $node) {
-    $pathAutoGenerator->updateEntityAlias($node, 'update');
+  foreach ($pageNodes as $pageNode) {
+    $pathAutoGenerator->updateEntityAlias($pageNode, 'update');
   }
 }
