@@ -89,3 +89,31 @@ function localgov_publications_update_10001() {
   }
   \Drupal::cache('discovery')->delete('entity_field_map');
 }
+
+/**
+ * Expanding Publications permissions.
+ *
+ * Grant 'access publication views' permission to Editor and apply as an access
+ * condition to the publication view.
+ */
+function localgov_publications_update_10002() {
+
+  // Make sure Editors have the new View permission.
+  $role = Role::load('localgov_editor');
+  $role->grantPermission('access publication views');
+  $role->save();
+
+  // Check if the view needs updating to use new permission.
+  $config_factory = Drupal::service('config.factory');
+  if ($editable = $config_factory->getEditable('views.view.publications')) {
+    $display = $editable->get('display');
+    if (isset($display['default']['display_options']['access'])) {
+      $access = $display['default']['display_options']['access'];
+      // Only update if the defaults haven't been changed.
+      if ($access['type'] == 'perm' && $access['options']['perm'] == 'access content') {
+        $display['default']['display_options']['access']['options']['perm'] = 'access publication views';
+        $editable->set('display', $display)->save();
+      }
+    }
+  }
+}
