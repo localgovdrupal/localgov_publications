@@ -145,4 +145,51 @@ class UrlAliasTest extends BrowserTestBase {
     $this->assertSession()->statusCodeEquals(200);
   }
 
+  /**
+   * Check publication page URL alias when the root's alias has been changed.
+   *
+   * (See https://github.com/localgovdrupal/localgov_publications/issues/201).
+   */
+  public function testPublicationPageWithCustomAlias() {
+    $node_parent = $this->createNode([
+      'type' => 'localgov_publication_page',
+      'title' => 'Publication parent page',
+      'body' => [
+        'summary' => '<p>Content</p>',
+        'value' => '<p>Content</p>',
+        'format' => 'wysiwyg',
+      ],
+      'book' => [
+        'bid' => 'new',
+        'weight' => '0',
+      ],
+      'status' => NodeInterface::PUBLISHED,
+      'path' => [
+        'alias' => '/custom-alias/publication-parent-page',
+        'pathauto' => 0,
+      ],
+    ]);
+
+    $this->createNode([
+      'type' => 'localgov_publication_page',
+      'title' => 'Publication child page',
+      'body' => [
+        'summary' => '<p>Content</p>',
+        'value' => '<p>Content</p>',
+        'format' => 'wysiwyg',
+      ],
+      'book' => [
+        'bid' => $node_parent->id(),
+        'pid' => $node_parent->id(),
+        'weight' => '0',
+      ],
+      'status' => NodeInterface::PUBLISHED,
+    ]);
+
+    $this->drupalGet('/custom-alias/publication-parent-page');
+    $this->assertSession()->statusCodeEquals(200);
+    $this->drupalGet('/custom-alias/publication-parent-page/publication-child-page');
+    $this->assertSession()->statusCodeEquals(200);
+  }
+
 }
