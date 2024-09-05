@@ -11,7 +11,11 @@ use Drupal\filter\FilterFormatInterface;
 /**
  * Implements hook_install().
  */
-function localgov_publications_install() {
+function localgov_publications_install($is_syncing) {
+  if ($is_syncing) {
+    return;
+  }
+
   localgov_publications_install_book_settings();
   localgov_publications_install_pathauto_settings();
   localgov_publications_install_filter();
