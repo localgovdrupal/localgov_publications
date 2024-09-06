@@ -70,16 +70,13 @@ class Hooks implements ContainerInjectionInterface {
 
       $pathElements = [];
 
-      $coverPage = $this->publicationManager->getCoverPage($node->book['bid']);
-      if ($coverPage instanceof NodeInterface) {
-        $bubbleable_metadata->addCacheableDependency($coverPage);
-        $coverPageAlias = trim($this->aliasManager->getAliasByPath('/node/' . $coverPage->id()), '/');
-      }
-
       if ($node->book['bid'] === $node->id()) {
         // Add the cover page alias if we are on the root node and there's a
         // cover page.
+        $coverPage = $this->publicationManager->getCoverPage($node->book['bid']);
         if ($coverPage instanceof NodeInterface) {
+          $bubbleable_metadata->addCacheableDependency($coverPage);
+          $coverPageAlias = trim($this->aliasManager->getAliasByPath('/node/' . $coverPage->id()), '/');
           $pathElements[] = $coverPageAlias;
         }
       }
