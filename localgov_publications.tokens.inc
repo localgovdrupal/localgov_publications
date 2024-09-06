@@ -8,8 +8,6 @@
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\localgov_publications\Token\Hooks as TokenHooks;
 
-
-
 /**
  * Implements hook_token_info().
  */
@@ -28,7 +26,7 @@ function localgov_publications_token_info_alter(&$data) {
  * Implements hook_tokens_alter().
  */
 function localgov_publications_tokens_alter(array &$replacements, array $context, BubbleableMetadata $bubbleable_metadata) {
-    \Drupal::service('class_resolver')
-      ->getInstanceFromDefinition(TokenHooks::class)
-      ->tokensAlter($replacements, $context, $bubbleable_metadata);
+  \Drupal::service('class_resolver')
+    ->getInstanceFromDefinition(TokenHooks::class)
+    ->tokensAlter($replacements, $context, $bubbleable_metadata);
 }

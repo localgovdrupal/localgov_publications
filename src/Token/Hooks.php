@@ -3,25 +3,36 @@
 namespace Drupal\localgov_publications\Token;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\localgov_publications\Service\PublicationManager;
-use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Drupal\path_alias\AliasManager;
+use Drupal\path_alias\AliasManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * A class for hook implementations.
+ */
 class Hooks implements ContainerInjectionInterface {
 
+  /**
+   * Constructor.
+   */
   public function __construct(
     private PublicationManager $publicationManager,
-    private AliasManager $aliasManager
+    private AliasManagerInterface $aliasManager,
+    private EntityTypeManagerInterface $entityTypeManager,
   ) {
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('localgov_publications.publication_manager'),
       $container->get('path_alias.manager'),
+      $container->get('entity_type.manager'),
     );
   }
 
@@ -42,6 +53,8 @@ class Hooks implements ContainerInjectionInterface {
     if (!isset($node->book['bid']) || $node->book['bid'] === 0) {
       return;
     }
+
+    $nodeStorage = $this->entityTypeManager->getStorage('node');
 
     if (isset($context['tokens']['localgov-publication-cover-page-alias'])) {
 
@@ -64,14 +77,15 @@ class Hooks implements ContainerInjectionInterface {
       }
 
       if ($node->book['bid'] === $node->id()) {
-        // Add the cover page alias if we are on the root node and there's a cover page.
+        // Add the cover page alias if we are on the root node and there's a
+        // cover page.
         if ($coverPage instanceof NodeInterface) {
           $pathElements[] = $coverPageAlias;
         }
       }
       else {
         // Add the root node's URL alias in if we're not on the root node now:
-        $rootNode = Node::load($node->book['bid']);
+        $rootNode = $nodeStorage->load($node->book['bid']);
         $pathElements[] = $this->aliasManager->getAliasByPath('/node/' . $rootNode->id());
       }
 
@@ -90,8 +104,10 @@ class Hooks implements ContainerInjectionInterface {
    */
   private function bookParents(NodeInterface $argNode) {
 
+    $nodeStorage = $this->entityTypeManager->getStorage('node');
+
     // Re-load the node, to ensure it's got all the book data on it.
-    $node = Node::load($argNode->id());
+    $node = $nodeStorage->load($argNode->id());
 
     if (empty($node->book['nid'])) {
       return [];
@@ -99,9 +115,10 @@ class Hooks implements ContainerInjectionInterface {
 
     $parents = [];
 
-    $i = 2; // Skip the first level of the book, as we add this elsewhere.
+    // Skip the first level of the book, as we add this elsewhere.
+    $i = 2;
     while (isset($node->book["p$i"]) && ($node->book["p$i"] != $node->book['nid'])) {
-      $node = Node::load($node->book["p$i"]);
+      $node = $nodeStorage->load($node->book["p$i"]);
       if ($node instanceof NodeInterface) {
         $parents[] = $node->getTitle();
       }
@@ -110,4 +127,5 @@ class Hooks implements ContainerInjectionInterface {
 
     return $parents;
   }
+
 }
