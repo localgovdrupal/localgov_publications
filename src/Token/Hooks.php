@@ -83,7 +83,9 @@ class Hooks implements ContainerInjectionInterface {
       else {
         // Add the root node's URL alias in if we're not on the root node now:
         $rootNode = $nodeStorage->load($node->book['bid']);
-        $pathElements[] = $this->aliasManager->getAliasByPath('/node/' . $rootNode->id());
+        if ($rootNode instanceof NodeInterface) {
+          $pathElements[] = $this->aliasManager->getAliasByPath('/node/' . $rootNode->id());
+        }
       }
 
       foreach ($this->bookParents($node) as $parent) {
