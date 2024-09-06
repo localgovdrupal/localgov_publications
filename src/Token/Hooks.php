@@ -53,8 +53,6 @@ class Hooks implements ContainerInjectionInterface {
       }
     }
 
-    // Build 'localgov-publication-path'.
-
     if (isset($context['tokens']['localgov-publication-path'])) {
 
       $pathElements = [];
@@ -77,7 +75,7 @@ class Hooks implements ContainerInjectionInterface {
         $pathElements[] = $this->aliasManager->getAliasByPath('/node/' . $rootNode->id());
       }
 
-      foreach ($this->token_book_load_all_parents($node) as $parent) {
+      foreach ($this->bookParents($node) as $parent) {
         $pathElements[] = $parent;
       }
 
@@ -85,64 +83,31 @@ class Hooks implements ContainerInjectionInterface {
     }
   }
 
-    /**
-     * Loads all the parents of the book page.
-     *
-     * @param array $book
-     *   The book data. The 'nid' key points to the current page of the book.
-     *   The 'p1' ... 'p9' keys point to parents of the page, if they exist, with 'p1'
-     *   pointing to the book itself and the last defined pX to the current page.
-     *
-     * @return string[]
-     *   List of node titles of the book parents.
-     */
-    function token_book_load_all_parents(NodeInterface $argNode) {
+  /**
+   * Loads all the parents of the book page.
+   *
+   * Doesn't include the current node or the root node.
+   */
+  private function bookParents(NodeInterface $argNode) {
 
-      // Re-load the node, to ensure it's got all the book data on it.
-      $node = Node::load($argNode->id());
-      $book = $node->book;
+    // Re-load the node, to ensure it's got all the book data on it.
+    $node = Node::load($argNode->id());
 
-      $parents = [];
-
-      if (empty($book['nid'])) {
-        return $parents;
-      }
-
-      $nid = $book['nid'];
-
-      $i = 2; // Skip the first level of the book, as we add this elsewhere.
-      while (isset($book["p$i"]) && ($book["p$i"] != $nid)) {
-        $node = Node::load($book["p$i"]);
-        if ($node instanceof NodeInterface) {
-          $parents[] = $node->getTitle();
-        }
-        $i++;
-      }
-
-      return $parents;
+    if (empty($node->book['nid'])) {
+      return [];
     }
 
-    /**
-     * Cases to cover:
-     *
-     * /something/cover/root/
-     * /something/cover/root/page1
-     *
-     * /something/root
-     * /something/root/page1
-     *
-     * /cover/root
-     * /cover/root/page1
-     *
-     * /root
-     * /root/page1
-     *
-     *
-     *
-     */
+    $parents = [];
 
+    $i = 2; // Skip the first level of the book, as we add this elsewhere.
+    while (isset($node->book["p$i"]) && ($node->book["p$i"] != $node->book['nid'])) {
+      $node = Node::load($node->book["p$i"]);
+      if ($node instanceof NodeInterface) {
+        $parents[] = $node->getTitle();
+      }
+      $i++;
+    }
 
-
-
-
+    return $parents;
+  }
 }
