@@ -90,3 +90,25 @@ function localgov_publications_update_10001() {
   }
   \Drupal::cache('discovery')->delete('entity_field_map');
 }
+
+/**
+ * Set up the new localgov-publication-path token on existing installations.
+ */
+function localgov_publications_update_10002() {
+
+  // Add our new token into pathauto's list of safe tokens.
+  $config = \Drupal::configFactory()->getEditable('pathauto.settings');
+  $safe_tokens = $config->get('safe_tokens');
+  $safe_tokens[] = 'localgov-publication-path';
+  $config->set('safe_tokens', $safe_tokens)->save();
+
+  // Use the new pattern for publication pages if the old default pattern is
+  // currently still in place.
+  $oldPattern = '[node:localgov-publication-cover-page-alias]/[node:book:parents:join-path]/[node:title]';
+  $newPattern = '[node:localgov-publication-path]/[node:title]';
+
+  $config = \Drupal::configFactory()->getEditable('pathauto.pattern.publication_page');
+  if ($config->get('pattern') === $oldPattern) {
+    $config->set('pattern', $newPattern)->save();
+  }
+}
