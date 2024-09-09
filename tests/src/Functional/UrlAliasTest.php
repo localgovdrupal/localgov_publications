@@ -85,6 +85,10 @@ class UrlAliasTest extends BrowserTestBase {
       'status' => NodeInterface::PUBLISHED,
     ]);
     $this->assertSame('/publication-parent-page/publication-child-page', $childNode->toUrl()->toString());
+
+    $this->drupalGet('/publication-parent-page/publication-child-page');
+    $this->assertSession()->responseContains('<a class="breadcrumbs__link" href="/publication-parent-page">Publication parent page</a>');
+    $this->assertCount(2, $this->xpath('//a[@class="breadcrumbs__link"]'));
   }
 
   /**
@@ -124,7 +128,7 @@ class UrlAliasTest extends BrowserTestBase {
 
     $this->createNode([
       'type' => 'localgov_publication_cover_page',
-      'title' => 'Test publication cover page',
+      'title' => 'Publication cover page',
       'status' => NodeInterface::PUBLISHED,
       'localgov_publication' => [
         ['target_id' => $parentNode->id()],
@@ -134,8 +138,17 @@ class UrlAliasTest extends BrowserTestBase {
       ],
     ]);
 
-    $this->assertSame('/publications/test-publication-cover-page/publication-parent-page', $parentNode->toUrl()->toString());
-    $this->assertSame('/publications/test-publication-cover-page/publication-parent-page/publication-child-page', $childNode->toUrl()->toString());
+    $this->assertSame('/publications/publication-cover-page/publication-parent-page', $parentNode->toUrl()->toString());
+    $this->assertSame('/publications/publication-cover-page/publication-parent-page/publication-child-page', $childNode->toUrl()->toString());
+
+    $this->drupalGet('/publications/publication-cover-page/publication-parent-page');
+    $this->assertSession()->responseContains('<a class="breadcrumbs__link" href="/publications/publication-cover-page">Publication cover page</a>');
+    $this->assertCount(2, $this->xpath('//a[@class="breadcrumbs__link"]'));
+
+    $this->drupalGet('/publications/publication-cover-page/publication-parent-page/publication-child-page');
+    $this->assertSession()->responseContains('<a class="breadcrumbs__link" href="/publications/publication-cover-page">Publication cover page</a>');
+    $this->assertSession()->responseContains('<a class="breadcrumbs__link" href="/publications/publication-cover-page/publication-parent-page">Publication parent page</a>');
+    $this->assertCount(3, $this->xpath('//a[@class="breadcrumbs__link"]'));
   }
 
   /**
@@ -144,6 +157,22 @@ class UrlAliasTest extends BrowserTestBase {
    * (See https://github.com/localgovdrupal/localgov_publications/issues/201).
    */
   public function testPublicationPageWithCustomAlias() {
+
+    $this->createNode([
+      'type' => 'service_page',
+      'title' => 'Custom Alias',
+      'body' => [
+        'summary' => '<p>Content</p>',
+        'value' => '<p>Content</p>',
+        'format' => 'wysiwyg',
+      ],
+      'status' => NodeInterface::PUBLISHED,
+      'path' => [
+        'alias' => '/custom-alias',
+        'pathauto' => 0,
+      ],
+    ]);
+
     $parentNode = $this->createNode([
       'type' => 'localgov_publication_page',
       'title' => 'Publication parent page',
@@ -181,6 +210,15 @@ class UrlAliasTest extends BrowserTestBase {
 
     $this->assertSame('/custom-alias/publication-parent-page', $parentNode->toUrl()->toString());
     $this->assertSame('/custom-alias/publication-parent-page/publication-child-page', $childNode->toUrl()->toString());
+
+    $this->drupalGet('/custom-alias/publication-parent-page');
+    $this->assertSession()->responseContains('<a class="breadcrumbs__link" href="/custom-alias">Custom Alias</a>');
+    $this->assertCount(2, $this->xpath('//a[@class="breadcrumbs__link"]'));
+
+    $this->drupalGet('/custom-alias/publication-parent-page/publication-child-page');
+    $this->assertSession()->responseContains('<a class="breadcrumbs__link" href="/custom-alias">Custom Alias</a>');
+    $this->assertSession()->responseContains('<a class="breadcrumbs__link" href="/custom-alias/publication-parent-page">Publication parent page</a>');
+    $this->assertCount(3, $this->xpath('//a[@class="breadcrumbs__link"]'));
   }
 
 }
