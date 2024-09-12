@@ -57,6 +57,7 @@ function localgov_publications_theme($existing, $type, $theme, $path): array {
 function localgov_publications_localgov_roles_default(): array {
   return [
     RolesHelper::EDITOR_ROLE => [
+      'access publication views',
       'add content to books',
       'administer book outlines',
       'create new books',
