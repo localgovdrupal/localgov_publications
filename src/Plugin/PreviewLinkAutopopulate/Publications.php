@@ -2,9 +2,9 @@
 
 namespace Drupal\localgov_publications\Plugin\PreviewLinkAutopopulate;
 
-use Drupal\book\BookManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\book\BookManagerInterface;
 use Drupal\node\NodeInterface;
 use Drupal\preview_link\PreviewLinkAutopopulatePluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
