@@ -5,7 +5,6 @@
  * Module file for the LocalGov Publications module.
  */
 
-use Drupal\block\Entity\Block;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Config\Entity\ConfigDependencyManager;
 use Drupal\Core\Config\FileStorage;
@@ -15,6 +14,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
+use Drupal\block\Entity\Block;
 use Drupal\localgov_roles\RolesHelper;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
