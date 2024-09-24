@@ -8,3 +8,8 @@ services:
   localgov_publications.publication_manager:
     class: Drupal\localgov_publications\Service\PublicationManager
     arguments: ['@entity_type.manager']
+  localgov_publications.breadcrumb:
+    class: Drupal\localgov_publications\Breadcrumb\BreadcrumbBuilder
+    arguments: ['@router.request_context', '@access_manager', '@router', '@path_processor_manager', '@config.factory',  '@title_resolver', '@current_user', '@path.current', '@path.matcher']
+    tags:
+      - { name: breadcrumb_builder, priority: 750 }

@@ -10,7 +10,7 @@ dependencies:
 id: publication_page
 label: 'Publication page'
 type: 'canonical_entities:node'
-pattern: '[node:localgov-publication-cover-page-alias]/[node:book:parents:join-path]/[node:title]'
+pattern: '[node:localgov-publication-path]/[node:title]'
 selection_criteria:
   0c7a2cf6-df20-4fe3-9020-75fbbf4e559b:
     id: 'entity_bundle:node'
