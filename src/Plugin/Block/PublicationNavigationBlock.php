@@ -2,11 +2,11 @@
 
 namespace Drupal\localgov_publications\Plugin\Block;
 
-use Drupal\book\BookManagerInterface;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Theme\ThemeManagerInterface;
+use Drupal\book\BookManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

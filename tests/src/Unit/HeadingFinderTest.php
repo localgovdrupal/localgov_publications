@@ -6,8 +6,8 @@ use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Link;
 use Drupal\Core\Path\PathValidatorInterface;
 use Drupal\Core\Url;
-use Drupal\localgov_publications\Service\HeadingFinder;
 use Drupal\Tests\UnitTestCase;
+use Drupal\localgov_publications\Service\HeadingFinder;
 
 /**
  * Unit tests for the HeadingFinder.
