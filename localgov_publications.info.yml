@@ -2,7 +2,7 @@ name: LocalGov Publications
 type: module
 description: HTML publications for the LocalGovDrupal distribution.
 package: LocalGov Drupal
-core_version_requirement: ">=9"
+core_version_requirement: ^10 || ^11
 
 dependencies:
   - book:book
