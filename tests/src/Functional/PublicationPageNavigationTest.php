@@ -91,8 +91,14 @@ class PublicationPageNavigationTest extends BrowserTestBase {
 
     $this->drupalLogin($adminUser);
     $this->drupalGet('/node/' . $node_child_one->id());
-    $this->assertSession()->responseContains('<a href="/publication-parent-page" rel="prev" title="Go to previous page">');
-    $this->assertSession()->responseContains('<a href="/publication-parent-page/publication-child-page-two" rel="next" title="Go to next page">');
+
+    $prevLinks = $this->xpath('//a[contains(@class, "lgd-prev-next__link--prev")]');
+    $prevLink = reset($prevLinks);
+    $this->assertSame("/publication-parent-page", $prevLink->getAttribute('href'));
+
+    $nextLinks = $this->xpath('//a[contains(@class, "lgd-prev-next__link--next")]');
+    $nextLink = reset($nextLinks);
+    $this->assertSame("/publication-parent-page/publication-child-page-two", $nextLink->getAttribute('href'));
 
     // This is the default title of the publication navigation block.
     $this->assertSession()->pageTextContains('Publication navigation');
