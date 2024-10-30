@@ -2,6 +2,7 @@
 
 namespace Drupal\localgov_publications\Breadcrumb;
 
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\node\NodeInterface;
 use Drupal\system\PathBasedBreadcrumbBuilder;
@@ -21,7 +22,7 @@ class BreadcrumbBuilder extends PathBasedBreadcrumbBuilder {
   /**
    * {@inheritdoc}
    */
-  public function applies(RouteMatchInterface $route_match) {
+  public function applies(RouteMatchInterface $route_match, ?CacheableMetadata $cacheable_metadata = NULL) {
     $node = $route_match->getParameter('node');
     return $node instanceof NodeInterface && localgov_publications_is_publication_type($node->getType());
   }
