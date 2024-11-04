@@ -2,9 +2,9 @@
 
 namespace Drupal\Tests\localgov_publications\Functional;
 
+use Drupal\Tests\BrowserTestBase;
 use Drupal\filter\Entity\FilterFormat;
 use Drupal\filter\FilterFormatInterface;
-use Drupal\Tests\BrowserTestBase;
 
 /**
  * Tests module reinstallation.

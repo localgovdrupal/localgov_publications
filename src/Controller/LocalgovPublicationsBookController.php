@@ -2,9 +2,9 @@
 
 namespace Drupal\localgov_publications\Controller;
 
-use Drupal\book\Controller\BookController;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\book\Controller\BookController;
 
 /**
  * Returns responses for LocalGov Publications routes.

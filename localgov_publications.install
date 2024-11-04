@@ -5,18 +5,20 @@
  * Install, update and uninstall functions for the LocalGov Publications module.
  */
 
-use Drupal\block\Entity\Block;
 use Drupal\filter\Entity\FilterFormat;
 use Drupal\filter\FilterFormatInterface;
 
 /**
  * Implements hook_install().
  */
-function localgov_publications_install() {
+function localgov_publications_install($is_syncing) {
+  if ($is_syncing) {
+    return;
+  }
+
   localgov_publications_install_book_settings();
   localgov_publications_install_pathauto_settings();
   localgov_publications_install_filter();
-  localgov_publications_install_blocks();
 }
 
 /**
@@ -44,6 +46,7 @@ function localgov_publications_install_pathauto_settings(): void {
   $config = \Drupal::configFactory()->getEditable('pathauto.settings');
   $safe_tokens = $config->get('safe_tokens');
   $safe_tokens[] = 'localgov-publication-cover-page-alias';
+  $safe_tokens[] = 'localgov-publication-path';
   $config->set('safe_tokens', $safe_tokens)->save();
 }
 
@@ -64,130 +67,6 @@ function localgov_publications_install_filter(): void {
     ],
   ]);
   $wysiwygFormat->save();
-}
-
-/**
- * Installs this module's default blocks.
- */
-function localgov_publications_install_blocks(): void {
-
-  $activeTheme = \Drupal::service('theme.manager')->getActiveTheme()->getName();
-
-  /** @var \Drupal\Core\Extension\ThemeHandlerInterface $themeHandler */
-  $themeHandler = \Drupal::service('theme_handler');
-
-  $themes = ['localgov_base', 'localgov_scarfolk'];
-
-  if (!in_array($activeTheme, $themes, TRUE)) {
-    $themes[] = $activeTheme;
-  }
-
-  $blocks = localgov_publications_install_block_definitions();
-
-  // Loop over every theme and block definition, so we set up all the blocks in
-  // all the relevant themes.
-  foreach ($themes as $theme) {
-
-    // Get info about the theme, so we can check we're placing blocks into
-    // regions that actually exist.
-    $themeInfo = $themeHandler->getTheme($theme);
-    $regions = array_keys($themeInfo->info['regions']);
-
-    foreach ($blocks as $block) {
-
-      if (!in_array($block['region'], $regions, TRUE)) {
-        continue;
-      }
-
-      $block['id'] = $theme . '_' . $block['plugin'];
-      $block['theme'] = $theme;
-
-      Block::create($block)->save();
-    }
-  }
-}
-
-/**
- * Block definitions for localgov_publications_install_blocks().
- */
-function localgov_publications_install_block_definitions(): array {
-
-  $blocks = [];
-
-  $blocks[] = [
-    'plugin' => 'localgov_publications_page_header_block',
-    'region' => 'content_top',
-    'settings' => [
-      'label' => 'Publications page header block.',
-      'label_display' => '0',
-      'context_mapping' => [
-        'node' => '@node.node_route_context:node',
-      ],
-    ],
-    'visibility' => [
-      'entity_bundle:node' => [
-        'id' => 'entity_bundle:node',
-        'context_mapping' => [
-          'node' => '@node.node_route_context:node',
-        ],
-        'bundles' => [
-          'localgov_publication_cover_page' => 'localgov_publication_cover_page',
-          'localgov_publication_page' => 'localgov_publication_page',
-        ],
-      ],
-    ],
-    'weight' => -100,
-  ];
-
-  $blocks[] = [
-    'plugin' => 'publication_navigation',
-    'region' => 'sidebar_first',
-    'settings' => [
-      'label' => 'Publication navigation',
-      'label_display' => 'visible',
-      'context_mapping' => [
-        'node' => '@node.node_route_context:node',
-      ],
-    ],
-    'visibility' => [
-      'entity_bundle:node' => [
-        'id' => 'entity_bundle:node',
-        'context_mapping' => [
-          'node' => '@node.node_route_context:node',
-        ],
-        'bundles' => [
-          'localgov_publication_page' => 'localgov_publication_page',
-        ],
-      ],
-    ],
-    'weight' => 0,
-  ];
-
-  $blocks[] = [
-    'plugin' => 'localgov_publications_toc_block',
-    'region' => 'sidebar_first',
-    'settings' => [
-      'label' => 'On this page',
-      'label_display' => 'visible',
-      'context_mapping' => [
-        'node' => '@node.node_route_context:node',
-      ],
-    ],
-    'visibility' => [
-      'entity_bundle:node' => [
-        'id' => 'entity_bundle:node',
-        'context_mapping' => [
-          'node' => '@node.node_route_context:node',
-        ],
-        'bundles' => [
-          'localgov_publication_page' => 'localgov_publication_page',
-        ],
-      ],
-    ],
-    'weight' => 1,
-  ];
-
-  return $blocks;
 }
 
 /**
@@ -214,4 +93,26 @@ function localgov_publications_update_10001() {
     $kvStore->set('node', $fieldMap);
   }
   \Drupal::cache('discovery')->delete('entity_field_map');
+}
+
+/**
+ * Set up the new localgov-publication-path token on existing installations.
+ */
+function localgov_publications_update_10002() {
+
+  // Add our new token into pathauto's list of safe tokens.
+  $config = \Drupal::configFactory()->getEditable('pathauto.settings');
+  $safe_tokens = $config->get('safe_tokens');
+  $safe_tokens[] = 'localgov-publication-path';
+  $config->set('safe_tokens', $safe_tokens)->save();
+
+  // Use the new pattern for publication pages if the old default pattern is
+  // currently still in place.
+  $oldPattern = '[node:localgov-publication-cover-page-alias]/[node:book:parents:join-path]/[node:title]';
+  $newPattern = '[node:localgov-publication-path]/[node:title]';
+
+  $config = \Drupal::configFactory()->getEditable('pathauto.pattern.publication_page');
+  if ($config->get('pattern') === $oldPattern) {
+    $config->set('pattern', $newPattern)->save();
+  }
 }
