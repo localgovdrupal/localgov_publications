@@ -35,7 +35,7 @@ class TocBlockTest extends BrowserTestBase {
   /**
    * Data provider for testing the ToC Block.
    */
-  public function contentProvider() {
+  public static function contentProvider() {
     yield [
       'content' => '<h2 id="heading-1">Heading 1</h2><p>Content 1.</p><h2 id="heading-2">Heading 2</h2><p>Content 2.</p>',
       'display' => TRUE,
