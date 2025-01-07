@@ -108,7 +108,7 @@ class Hooks implements ContainerInjectionInterface {
     // Re-load the node, to ensure it's got all the book data on it.
     $node = $nodeStorage->load($argNode->id());
 
-    if (empty($node->book['nid'])) {
+    if (!isset($node->book['nid'])) {
       return [];
     }
 
