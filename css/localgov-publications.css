@@ -4,8 +4,8 @@
 
 .book-navigation--publication {
   display: flex;
-  list-style-type: none;
   padding: 0;
+  list-style-type: none;
 }
 
 .book-navigation--publication--link--label {
@@ -18,7 +18,7 @@
 
 /* Leaving this in the module until it passes Alpha. */
 .lgd-page-title-block__publication-title {
-  font-size: var(--page-title-lede-font-size);
-  color: var(--color-grey-dark);
   display: block;
+  color: var(--color-grey-dark);
+  font-size: var(--page-title-lede-font-size);
 }
