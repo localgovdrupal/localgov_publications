@@ -153,22 +153,22 @@ function localgov_publications_book_to_publication(TranslatableMarkup|string $or
   // TranslatableMarkup(). So we'll do it like this:
   $strings = [
     'Book outline' =>
-      new TranslatableMarkup('Publication outline', $arguments, $options),
+    new TranslatableMarkup('Publication outline', $arguments, $options),
     'Book' =>
-      new TranslatableMarkup('Publication', $arguments, $options),
+    new TranslatableMarkup('Publication', $arguments, $options),
     '- Create a new book -' =>
-      new TranslatableMarkup('- Create a new publication -', $arguments, $options),
+    new TranslatableMarkup('- Create a new publication -', $arguments, $options),
     'Your page will be part of the selected book' =>
-      new TranslatableMarkup('Your page will be part of the selected publication', $arguments, $options),
+    new TranslatableMarkup('Your page will be part of the selected publication', $arguments, $options),
     '<div id="edit-book-plid-wrapper"><em>No book selected.</em>' =>
-      new TranslatableMarkup('<div id="edit-book-plid-wrapper"><em>No publication selected.</em>', $arguments, $options),
+    new TranslatableMarkup('<div id="edit-book-plid-wrapper"><em>No publication selected.</em>', $arguments, $options),
     '<div id="edit-book-plid-wrapper"><em>This will be the top-level page in this book.</em>' =>
-      new TranslatableMarkup('<div id="edit-book-plid-wrapper"><em>This will be the top-level page in this publication.</em>', $arguments, $options),
+    new TranslatableMarkup('<div id="edit-book-plid-wrapper"><em>This will be the top-level page in this publication.</em>', $arguments, $options),
     'The parent page in the book. The maximum depth for a book and all child pages is @maxdepth. Some pages in the selected book may not be available as parents if selecting them would exceed this limit.' =>
-      new TranslatableMarkup('The parent page in the publication. The maximum depth for a publication and all child pages is @maxdepth. Some pages in the selected publication may not be available as parents if selecting them would exceed this limit.', $arguments, $options),
+    new TranslatableMarkup('The parent page in the publication. The maximum depth for a publication and all child pages is @maxdepth. Some pages in the selected publication may not be available as parents if selecting them would exceed this limit.', $arguments, $options),
   ];
 
-  if(isset($strings[$string])) {
+  if (isset($strings[$string])) {
     return $strings[$string];
   }
 
