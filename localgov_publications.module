@@ -148,10 +148,31 @@ function localgov_publications_book_to_publication(TranslatableMarkup|string $or
     $options = [];
   }
 
-  // Replace 'book' with 'publication', keeping the case.
-  $string = str_replace(['Book', 'book'], ['Publication', 'publication'], $string);
+  // We can't just search & replace 'book' with 'publication' in the string, as
+  // that breaks the code style rule about not passing variables to t() or
+  // TranslatableMarkup(). So we'll do it like this:
+  $strings = [
+    'Book outline' =>
+      new TranslatableMarkup('Publication outline', $arguments, $options),
+    'Book' =>
+      new TranslatableMarkup('Publication', $arguments, $options),
+    '- Create a new book -' =>
+      new TranslatableMarkup('- Create a new publication -', $arguments, $options),
+    'Your page will be part of the selected book' =>
+      new TranslatableMarkup('Your page will be part of the selected publication', $arguments, $options),
+    '<div id="edit-book-plid-wrapper"><em>No book selected.</em>' =>
+      new TranslatableMarkup('<div id="edit-book-plid-wrapper"><em>No publication selected.</em>', $arguments, $options),
+    '<div id="edit-book-plid-wrapper"><em>This will be the top-level page in this book.</em>' =>
+      new TranslatableMarkup('<div id="edit-book-plid-wrapper"><em>This will be the top-level page in this publication.</em>', $arguments, $options),
+    'The parent page in the book. The maximum depth for a book and all child pages is @maxdepth. Some pages in the selected book may not be available as parents if selecting them would exceed this limit.' =>
+      new TranslatableMarkup('The parent page in the publication. The maximum depth for a publication and all child pages is @maxdepth. Some pages in the selected publication may not be available as parents if selecting them would exceed this limit.', $arguments, $options),
+  ];
 
-  return new TranslatableMarkup($string, $arguments, $options);
+  if(isset($strings[$string])) {
+    return $strings[$string];
+  }
+
+  return $originalString;
 }
 
 /**
@@ -178,12 +199,14 @@ function localgov_publications_form_alter(&$form, FormStateInterface $form_state
     $form['book']['#attached']['library'][0] = 'localgov_publications/localgov-publications';
   }
 
-  // All these places in the form contain the word 'book'. We want them to say
-  // 'publication' instead.
+  // Attach our validation.
+  $form['#validate'][] = 'localgov_publications_validate_node_form';
+
+  // All these places in the form contain the word 'book'.
+  // We want them to say 'publication' instead.
   $form['book']['#title'] = localgov_publications_book_to_publication($form['book']['#title']);
   $form['book']['bid']['#title'] = localgov_publications_book_to_publication($form['book']['bid']['#title']);
   $form['book']['bid']['#description'] = localgov_publications_book_to_publication($form['book']['bid']['#description']);
-
   if (isset($form['book']['bid']['#options']['new'])) {
     $form['book']['bid']['#options']['new'] = localgov_publications_book_to_publication($form['book']['bid']['#options']['new']);
   }
@@ -193,8 +216,6 @@ function localgov_publications_form_alter(&$form, FormStateInterface $form_state
   if (isset($form['book']['pid']['#description'])) {
     $form['book']['pid']['#description'] = localgov_publications_book_to_publication($form['book']['pid']['#description']);
   }
-
-  $form['#validate'][] = 'localgov_publications_validate_node_form';
 }
 
 /**
