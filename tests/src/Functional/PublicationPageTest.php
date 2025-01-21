@@ -47,7 +47,7 @@ class PublicationPageTest extends BrowserTestBase {
     $this->drupalGet('/admin/structure/types/manage/localgov_publication_page/fields');
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('body');
-    $this->assertSession()->pageTextContains('localgov_page_content');
+    $this->assertSession()->pageTextContains('localgov_publication_content');
     $this->assertSession()->pageTextContains('localgov_published_date');
     $this->assertSession()->pageTextContains('localgov_updated_date');
   }
