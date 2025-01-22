@@ -130,11 +130,10 @@ function localgov_publications_form_book_admin_edit_alter(&$form, FormStateInter
 /**
  * Change 'book' to 'publication' in text.
  *
- * This function can accept either a string or TranslatableMarkup, but always
- * returns a TranslatableMarkup. If a TranslatableMarkup was passed, the
- * arguments and options are preserved.
+ * This function can accept either a string or TranslatableMarkup.
+ * If a TranslatableMarkup was passed, the arguments and options are preserved.
  */
-function localgov_publications_book_to_publication(TranslatableMarkup|string $originalString): TranslatableMarkup {
+function localgov_publications_book_to_publication(TranslatableMarkup|string $originalString): TranslatableMarkup|string {
 
   // Normalise TranslatableMarkup to a string.
   if ($originalString instanceof TranslatableMarkup) {
