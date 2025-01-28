@@ -51,7 +51,7 @@ class PublicationPageNavigationTest extends BrowserTestBase {
     $node_parent = $this->createNode([
       'type' => 'localgov_publication_page',
       'title' => 'Publication parent page',
-      'localgov_page_content' => [
+      'localgov_publication_content' => [
         'target_id' => $text_paragraph->id(),
         'target_revision_id' => $text_paragraph->getRevisionId(),
       ],
@@ -64,7 +64,7 @@ class PublicationPageNavigationTest extends BrowserTestBase {
     $node_child_one = $this->createNode([
       'type' => 'localgov_publication_page',
       'title' => 'Publication child page one',
-      'localgov_page_content' => [
+      'localgov_publication_content' => [
         'target_id' => $text_paragraph->id(),
         'target_revision_id' => $text_paragraph->getRevisionId(),
       ],
@@ -78,7 +78,7 @@ class PublicationPageNavigationTest extends BrowserTestBase {
     $this->createNode([
       'type' => 'localgov_publication_page',
       'title' => 'Publication child page two',
-      'localgov_page_content' => [
+      'localgov_publication_content' => [
         'target_id' => $text_paragraph->id(),
         'target_revision_id' => $text_paragraph->getRevisionId(),
       ],
