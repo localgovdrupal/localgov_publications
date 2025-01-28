@@ -7,6 +7,8 @@
 
 use Drupal\filter\Entity\FilterFormat;
 use Drupal\filter\FilterFormatInterface;
+use Drupal\user\RoleInterface;
+use Drupal\views\ViewEntityInterface;
 
 /**
  * Implements hook_install().
@@ -75,7 +77,7 @@ function localgov_publications_install_filter(): void {
  * Remove references to the book content type from the key value store that are
  * left over after book's config is removed.
  */
-function localgov_publications_update_10001() {
+function localgov_publications_update_10001(): void {
 
   // If the book content type is still installed in the site, don't do anything.
   $entityTypeManager = \Drupal::service('entity_type.manager');
@@ -98,7 +100,7 @@ function localgov_publications_update_10001() {
 /**
  * Set up the new localgov-publication-path token on existing installations.
  */
-function localgov_publications_update_10002() {
+function localgov_publications_update_10002(): void {
 
   // Add our new token into pathauto's list of safe tokens.
   $config = \Drupal::configFactory()->getEditable('pathauto.settings');
@@ -118,29 +120,41 @@ function localgov_publications_update_10002() {
 }
 
 /**
- * Expanding Publications permissions.
- *
- * Grant 'access publication views' permission to Editor and apply as an access
- * condition to the publication view.
+ * Grant new 'access publication views' permission to localgov_editor role.
  */
-function localgov_publications_update_10003() {
+function localgov_publications_update_10003(): void {
   // Make sure Editors have the new View permission.
-  $entity_type_manager = \Drupal::service('entity_type.manager');
-  $role = $entity_type_manager->getStorage('user_role')->load('localgov_editor');
-  $role->grantPermission('access publication views');
-  $role->save();
+  $role = \Drupal::service('entity_type.manager')
+    ->getStorage('user_role')
+    ->load('localgov_editor');
 
-  // Check if the view needs updating to use new permission.
-  $config_factory = \Drupal::service('config.factory');
-  if ($editable = $config_factory->getEditable('views.view.publications')) {
-    $display = $editable->get('display');
-    if (isset($display['default']['display_options']['access'])) {
-      $access = $display['default']['display_options']['access'];
-      // Only update if the defaults haven't been changed.
-      if ($access['type'] == 'perm' && $access['options']['perm'] == 'access content') {
-        $display['default']['display_options']['access']['options']['perm'] = 'access publication views';
-        $editable->set('display', $display)->save();
-      }
+  if ($role instanceof RoleInterface) {
+    $role->grantPermission('access publication views');
+    $role->save();
+  }
+}
+
+/**
+ * Use 'access publication views' permission for the publication view.
+ */
+function localgov_publications_update_10004(): void {
+
+  /** @var ?\Drupal\views\ViewEntityInterface $publicationsView */
+  $publicationsView = \Drupal::service('entity_type.manager')
+    ->getStorage('view')
+    ->load('publications');
+
+  if (!$publicationsView instanceof ViewEntityInterface) {
+    return;
+  }
+
+  $display = $publicationsView->get('display');
+  if (isset($display['default']['display_options']['access'])) {
+    $access = $display['default']['display_options']['access'];
+    // Only update if the defaults haven't been changed.
+    if ($access['type'] === 'perm' && $access['options']['perm'] === 'access content') {
+      $display['default']['display_options']['access']['options']['perm'] = 'access publication views';
+      $publicationsView->set('display', $display)->save();
     }
   }
 }
