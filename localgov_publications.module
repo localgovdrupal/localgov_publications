@@ -13,6 +13,7 @@ use Drupal\Core\Config\StorageInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\block\Entity\Block;
 use Drupal\localgov_roles\RolesHelper;
@@ -127,12 +128,58 @@ function localgov_publications_form_book_admin_edit_alter(&$form, FormStateInter
 }
 
 /**
+ * Change 'book' to 'publication' in text.
+ *
+ * This function can accept either a string or TranslatableMarkup.
+ * If a TranslatableMarkup was passed, the arguments and options are preserved.
+ */
+function localgov_publications_book_to_publication(TranslatableMarkup|string $originalString): TranslatableMarkup|string {
+
+  // Normalise TranslatableMarkup to a string.
+  if ($originalString instanceof TranslatableMarkup) {
+    $string = $originalString->getUntranslatedString();
+    $arguments = $originalString->getArguments();
+    $options = $originalString->getOptions();
+  }
+  else {
+    $string = $originalString;
+    $arguments = [];
+    $options = [];
+  }
+
+  // We can't just search & replace 'book' with 'publication' in the string, as
+  // that breaks the code style rule about not passing variables to t() or
+  // TranslatableMarkup(). So we'll do it like this:
+  $strings = [
+    'Book outline' =>
+    new TranslatableMarkup('Publication outline', $arguments, $options),
+    'Book' =>
+    new TranslatableMarkup('Publication', $arguments, $options),
+    '- Create a new book -' =>
+    new TranslatableMarkup('- Create a new publication -', $arguments, $options),
+    'Your page will be part of the selected book' =>
+    new TranslatableMarkup('Your page will be part of the selected publication', $arguments, $options),
+    '<div id="edit-book-plid-wrapper"><em>No book selected.</em>' =>
+    new TranslatableMarkup('<div id="edit-book-plid-wrapper"><em>No publication selected.</em>', $arguments, $options),
+    '<div id="edit-book-plid-wrapper"><em>This will be the top-level page in this book.</em>' =>
+    new TranslatableMarkup('<div id="edit-book-plid-wrapper"><em>This will be the top-level page in this publication.</em>', $arguments, $options),
+    'The parent page in the book. The maximum depth for a book and all child pages is @maxdepth. Some pages in the selected book may not be available as parents if selecting them would exceed this limit.' =>
+    new TranslatableMarkup('The parent page in the publication. The maximum depth for a publication and all child pages is @maxdepth. Some pages in the selected publication may not be available as parents if selecting them would exceed this limit.', $arguments, $options),
+  ];
+
+  if (isset($strings[$string])) {
+    return $strings[$string];
+  }
+
+  return $originalString;
+}
+
+/**
  * Implements hook_form_alter().
  */
 function localgov_publications_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+
   $forms_to_alter = [
-    'node_localgov_publication_cover_page_form',
-    'node_localgov_publication_cover_page_edit_form',
     'node_localgov_publication_page_form',
     'node_localgov_publication_page_edit_form',
   ];
@@ -141,61 +188,32 @@ function localgov_publications_form_alter(&$form, FormStateInterface $form_state
     return;
   }
 
-  /**
-   * Get the node from the form object.
-   * @var \Drupal\Core\Entity\EntityFormInterface $formObject
-   */
-  $formObject = $form_state->getFormObject();
-  $node = $formObject->getEntity();
+  // If this form element isn't present there's nothing for us to do here.
+  if (!isset($form['book'])) {
+    return;
+  }
 
   // Attach JS.
   if ($form['book']['#attached']['library'][0] == 'book/drupal.book') {
-    unset($form['book']['#attached']['library']);
     $form['book']['#attached']['library'][0] = 'localgov_publications/localgov-publications';
   }
 
-  // Get form state values.
-  $book_values = $form_state->getValue('book');
+  // Attach our validation.
+  $form['#validate'][] = 'localgov_publications_validate_node_form';
 
-  // Alter the book outline form title.
-  $form['book']['#title'] = t('Publication outline');
-
-  // Alter the select element.
-  $form['book']['bid']['#title'] = t('Publication');
-
-  // Change "Create new book" to "Create a new publication".
+  // All these places in the form contain the word 'book'.
+  // We want them to say 'publication' instead.
+  $form['book']['#title'] = localgov_publications_book_to_publication($form['book']['#title']);
+  $form['book']['bid']['#title'] = localgov_publications_book_to_publication($form['book']['bid']['#title']);
+  $form['book']['bid']['#description'] = localgov_publications_book_to_publication($form['book']['bid']['#description']);
   if (isset($form['book']['bid']['#options']['new'])) {
-    $form['book']['bid']['#options']['new'] = t('- Create a new publication -');
+    $form['book']['bid']['#options']['new'] = localgov_publications_book_to_publication($form['book']['bid']['#options']['new']);
   }
-
-  $form['book']['bid']['#description'] = t('Your page will be part of the selected publication');
-
-  // Alter "No book selected".
-  if (is_array($book_values)) {
-    switch ($book_values['bid']) {
-      case '0':
-        $form['book']['pid']['#prefix'] = '<div id="edit-book-plid-wrapper"><em>No publication selected.</em>';
-        break;
-
-      case 'new':
-      case $node->id():
-        $form['book']['pid']['#prefix'] = '<div id="edit-book-plid-wrapper"><em>This will be the top-level page in this publication.</em>';
-        break;
-
-      default:
-        $form['book']['pid']['#description'] = t(
-          'The parent page in the publication. The maximum depth for a publication and all child pages is @maxdepth. Some pages in the selected publication may not be available as parents if selecting them would exceed this limit.',
-          ['@maxdepth' => $form['book']['parent_depth_limit']['#value']],
-        );
-        break;
-    }
+  if (isset($form['book']['pid']['#prefix'])) {
+    $form['book']['pid']['#prefix'] = localgov_publications_book_to_publication($form['book']['pid']['#prefix']);
   }
-  else {
-    $form['book']['pid']['#prefix'] = '<div id="edit-book-plid-wrapper"><em>No publication selected.</em>';
-  }
-
-  if ($form_id == 'node_localgov_publication_page_form' || $form_id == 'node_localgov_publication_page_edit_form') {
-    $form['#validate'][] = 'localgov_publications_validate_node_form';
+  if (isset($form['book']['pid']['#description'])) {
+    $form['book']['pid']['#description'] = localgov_publications_book_to_publication($form['book']['pid']['#description']);
   }
 }
 
