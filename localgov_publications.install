@@ -11,7 +11,11 @@ use Drupal\filter\FilterFormatInterface;
 /**
  * Implements hook_install().
  */
-function localgov_publications_install() {
+function localgov_publications_install($is_syncing) {
+  if ($is_syncing) {
+    return;
+  }
+
   localgov_publications_install_book_settings();
   localgov_publications_install_pathauto_settings();
   localgov_publications_install_filter();
@@ -42,6 +46,7 @@ function localgov_publications_install_pathauto_settings(): void {
   $config = \Drupal::configFactory()->getEditable('pathauto.settings');
   $safe_tokens = $config->get('safe_tokens');
   $safe_tokens[] = 'localgov-publication-cover-page-alias';
+  $safe_tokens[] = 'localgov-publication-path';
   $config->set('safe_tokens', $safe_tokens)->save();
 }
 
@@ -91,12 +96,34 @@ function localgov_publications_update_10001() {
 }
 
 /**
+ * Set up the new localgov-publication-path token on existing installations.
+ */
+function localgov_publications_update_10002() {
+
+  // Add our new token into pathauto's list of safe tokens.
+  $config = \Drupal::configFactory()->getEditable('pathauto.settings');
+  $safe_tokens = $config->get('safe_tokens');
+  $safe_tokens[] = 'localgov-publication-path';
+  $config->set('safe_tokens', $safe_tokens)->save();
+
+  // Use the new pattern for publication pages if the old default pattern is
+  // currently still in place.
+  $oldPattern = '[node:localgov-publication-cover-page-alias]/[node:book:parents:join-path]/[node:title]';
+  $newPattern = '[node:localgov-publication-path]/[node:title]';
+
+  $config = \Drupal::configFactory()->getEditable('pathauto.pattern.publication_page');
+  if ($config->get('pattern') === $oldPattern) {
+    $config->set('pattern', $newPattern)->save();
+  }
+}
+
+/**
  * Expanding Publications permissions.
  *
  * Grant 'access publication views' permission to Editor and apply as an access
  * condition to the publication view.
  */
-function localgov_publications_update_10002($is_syncing) {
+function localgov_publications_update_10003($is_syncing) {
   if (!$is_syncing) {
     // Make sure Editors have the new View permission.
     $entity_type_manager = Drupal::service('entity_type.manager');
