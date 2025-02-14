@@ -216,6 +216,57 @@ function localgov_publications_form_alter(&$form, FormStateInterface $form_state
   if (isset($form['book']['pid']['#description'])) {
     $form['book']['pid']['#description'] = localgov_publications_book_to_publication($form['book']['pid']['#description']);
   }
+
+  $bids = array_filter(array_keys($form['book']['bid']['#options']), function ($item) {
+    return (is_numeric($item) && $item != 0);
+  });
+
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+  $valid_bids = $node_storage->getQuery()->condition('type', 'localgov_publication_page')->condition('nid', $bids, 'IN')->accessCheck(TRUE)->execute();
+  $form['book']['bid']['#options'] = array_filter($form['book']['bid']['#options'], function ($option) use ($valid_bids) {
+    return (in_array($option, $valid_bids) || $option == 0 || !is_numeric($option));
+  }, ARRAY_FILTER_USE_KEY);
+
+}
+
+/**
+ * Implements hook_form_BASE_ID_alter().
+ */
+function localgov_publications_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+
+  // If this form element isn't present there's nothing for us to do here.
+  if (!isset($form['book'])) {
+    return;
+  }
+
+  $publication_node_forms = [
+    'node_localgov_publication_page_form',
+    'node_localgov_publication_page_edit_form',
+  ];
+
+  // Publications alter logic goes here.
+  if (in_array($form_id, $publication_node_forms, TRUE)) {
+    return;
+  }
+
+  // Else, strip out publications from any books.
+  $bids = array_filter(array_keys($form['book']['bid']['#options']), function ($item) {
+    return (is_numeric($item) && $item != 0);
+  });
+
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+  $valid_bids = $node_storage->getQuery()->condition('type', 'localgov_publication_page')->condition('nid', $bids, 'IN')->accessCheck(TRUE)->execute();
+  $form['book']['bid']['#options'] = array_filter($form['book']['bid']['#options'], function ($option) use ($valid_bids) {
+    return (!in_array($option, $valid_bids) || $option == 0 || !is_numeric($option));
+  }, ARRAY_FILTER_USE_KEY);
+
+}
+
+/**
+ * Implements hook_form_BASE_ID_alter().
+ */
+function localgov_publications_form_node_edit_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  localgov_publications_form_node_form_alter($form, $form_state, $form_id);
 }
 
 /**
