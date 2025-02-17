@@ -176,63 +176,21 @@ function localgov_publications_book_to_publication(TranslatableMarkup|string $or
 }
 
 /**
- * Implements hook_form_alter().
+ * Alter the node forms (add and edit)
+ *
+ * This function is called from both
+ *   localgov_publications_form_node_form_alter (/node/add)
+ * and
+ *   localgov_publications_form_node_edit_form_alter (/node/x/edit)
+ *
+ * @param array $form
+ *   Form elements.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state object.
+ * @param string $form_id
+ *   Form ID string.
  */
-function localgov_publications_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
-
-  $forms_to_alter = [
-    'node_localgov_publication_page_form',
-    'node_localgov_publication_page_edit_form',
-  ];
-
-  if (!in_array($form_id, $forms_to_alter, TRUE)) {
-    return;
-  }
-
-  // If this form element isn't present there's nothing for us to do here.
-  if (!isset($form['book'])) {
-    return;
-  }
-
-  // Attach JS.
-  if ($form['book']['#attached']['library'][0] == 'book/drupal.book') {
-    $form['book']['#attached']['library'][0] = 'localgov_publications/localgov-publications';
-  }
-
-  // Attach our validation.
-  $form['#validate'][] = 'localgov_publications_validate_node_form';
-
-  // All these places in the form contain the word 'book'.
-  // We want them to say 'publication' instead.
-  $form['book']['#title'] = localgov_publications_book_to_publication($form['book']['#title']);
-  $form['book']['bid']['#title'] = localgov_publications_book_to_publication($form['book']['bid']['#title']);
-  $form['book']['bid']['#description'] = localgov_publications_book_to_publication($form['book']['bid']['#description']);
-  if (isset($form['book']['bid']['#options']['new'])) {
-    $form['book']['bid']['#options']['new'] = localgov_publications_book_to_publication($form['book']['bid']['#options']['new']);
-  }
-  if (isset($form['book']['pid']['#prefix'])) {
-    $form['book']['pid']['#prefix'] = localgov_publications_book_to_publication($form['book']['pid']['#prefix']);
-  }
-  if (isset($form['book']['pid']['#description'])) {
-    $form['book']['pid']['#description'] = localgov_publications_book_to_publication($form['book']['pid']['#description']);
-  }
-
-  $bids = array_filter(array_keys($form['book']['bid']['#options']), function ($item) {
-    return (is_numeric($item) && $item != 0);
-  });
-
-  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
-  $valid_bids = $node_storage->getQuery()->condition('type', 'localgov_publication_page')->condition('nid', $bids, 'IN')->accessCheck(TRUE)->execute();
-  $form['book']['bid']['#options'] = array_filter($form['book']['bid']['#options'], function ($option) use ($valid_bids) {
-    return (in_array($option, $valid_bids, TRUE) || $option == 0 || !is_numeric($option));
-  }, ARRAY_FILTER_USE_KEY);
-
-}
-
-/**
- * Implements hook_form_BASE_ID_alter().
- */
-function localgov_publications_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+function _localgov_publications_node_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
 
   // If this form element isn't present there's nothing for us to do here.
   if (!isset($form['book'])) {
@@ -244,29 +202,76 @@ function localgov_publications_form_node_form_alter(&$form, FormStateInterface $
     'node_localgov_publication_page_edit_form',
   ];
 
-  // Publications alter logic goes here.
+  // Alter the publications node forms.
   if (in_array($form_id, $publication_node_forms, TRUE)) {
-    return;
+
+    // Attach JS.
+    if ($form['book']['#attached']['library'][0] == 'book/drupal.book') {
+      $form['book']['#attached']['library'][0] = 'localgov_publications/localgov-publications';
+    }
+
+    // Attach our validation.
+    $form['#validate'][] = 'localgov_publications_validate_node_form';
+
+    // All these places in the form contain the word 'book'.
+    // We want them to say 'publication' instead.
+    $form['book']['#title'] = localgov_publications_book_to_publication($form['book']['#title']);
+    $form['book']['bid']['#title'] = localgov_publications_book_to_publication($form['book']['bid']['#title']);
+    $form['book']['bid']['#description'] = localgov_publications_book_to_publication($form['book']['bid']['#description']);
+    if (isset($form['book']['bid']['#options']['new'])) {
+      $form['book']['bid']['#options']['new'] = localgov_publications_book_to_publication($form['book']['bid']['#options']['new']);
+    }
+    if (isset($form['book']['pid']['#prefix'])) {
+      $form['book']['pid']['#prefix'] = localgov_publications_book_to_publication($form['book']['pid']['#prefix']);
+    }
+    if (isset($form['book']['pid']['#description'])) {
+      $form['book']['pid']['#description'] = localgov_publications_book_to_publication($form['book']['pid']['#description']);
+    }
+
+    $bids = array_filter(array_keys($form['book']['bid']['#options']), function ($item) {
+      return (is_numeric($item) && $item != 0);
+    });
+
+    // Filter non publications from book selector.
+    $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+    $valid_bids = $node_storage->getQuery()->condition('type', 'localgov_publication_page')->condition('nid', $bids, 'IN')->accessCheck(TRUE)->execute();
+    $form['book']['bid']['#options'] = array_filter($form['book']['bid']['#options'], function ($option) use ($valid_bids) {
+
+      // Use non strict type check because $option will be int and $valid_bids
+      // will contrain strings.
+      return (in_array($option, $valid_bids, FALSE) || $option == 0 || !is_numeric($option));
+    }, ARRAY_FILTER_USE_KEY);
   }
 
   // Else, strip out publications from any books.
-  $bids = array_filter(array_keys($form['book']['bid']['#options']), function ($item) {
-    return (is_numeric($item) && $item != 0);
-  });
+  else {
+    $bids = array_filter(array_keys($form['book']['bid']['#options']), function ($item) {
+      return (is_numeric($item) && $item != 0);
+    });
 
-  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
-  $valid_bids = $node_storage->getQuery()->condition('type', 'localgov_publication_page')->condition('nid', $bids, 'IN')->accessCheck(TRUE)->execute();
-  $form['book']['bid']['#options'] = array_filter($form['book']['bid']['#options'], function ($option) use ($valid_bids) {
-    return (!in_array($option, $valid_bids, TRUE) || $option == 0 || !is_numeric($option));
-  }, ARRAY_FILTER_USE_KEY);
+    $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+    $valid_bids = $node_storage->getQuery()->condition('type', 'localgov_publication_page')->condition('nid', $bids, 'IN')->accessCheck(TRUE)->execute();
+    $form['book']['bid']['#options'] = array_filter($form['book']['bid']['#options'], function ($option) use ($valid_bids) {
 
+      // Use non strict type check because $option will be int and $valid_bids
+      // will contrain strings.
+      return (!in_array($option, $valid_bids, FALSE) || $option == 0 || !is_numeric($option));
+    }, ARRAY_FILTER_USE_KEY);
+  }
+}
+
+/**
+ * Implements hook_form_BASE_ID_alter().
+ */
+function localgov_publications_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  _localgov_publications_node_form_alter($form, $form_state, $form_id);
 }
 
 /**
  * Implements hook_form_BASE_ID_alter().
  */
 function localgov_publications_form_node_edit_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
-  localgov_publications_form_node_form_alter($form, $form_state, $form_id);
+  _localgov_publications_node_form_alter($form, $form_state, $form_id);
 }
 
 /**
