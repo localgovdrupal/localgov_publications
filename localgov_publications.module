@@ -221,6 +221,13 @@ function _localgov_publications_node_form_alter(array &$form, FormStateInterface
     if (isset($form['book']['bid']['#options']['new'])) {
       $form['book']['bid']['#options']['new'] = localgov_publications_book_to_publication($form['book']['bid']['#options']['new']);
     }
+
+    // New book will be the node ID oin the edit page.
+    $nid = $form_state->getFormObject()->getEntity()->id();
+    if (isset($form['book']['bid']['#options'][$nid])) {
+      $form['book']['bid']['#options'][$nid] = localgov_publications_book_to_publication($form['book']['bid']['#options'][$nid]);
+    }
+
     if (isset($form['book']['pid']['#prefix'])) {
       $form['book']['pid']['#prefix'] = localgov_publications_book_to_publication($form['book']['pid']['#prefix']);
     }
