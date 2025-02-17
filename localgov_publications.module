@@ -224,7 +224,7 @@ function localgov_publications_form_alter(&$form, FormStateInterface $form_state
   $node_storage = \Drupal::entityTypeManager()->getStorage('node');
   $valid_bids = $node_storage->getQuery()->condition('type', 'localgov_publication_page')->condition('nid', $bids, 'IN')->accessCheck(TRUE)->execute();
   $form['book']['bid']['#options'] = array_filter($form['book']['bid']['#options'], function ($option) use ($valid_bids) {
-    return (in_array($option, $valid_bids) || $option == 0 || !is_numeric($option));
+    return (in_array($option, $valid_bids, TRUE) || $option == 0 || !is_numeric($option));
   }, ARRAY_FILTER_USE_KEY);
 
 }
@@ -257,7 +257,7 @@ function localgov_publications_form_node_form_alter(&$form, FormStateInterface $
   $node_storage = \Drupal::entityTypeManager()->getStorage('node');
   $valid_bids = $node_storage->getQuery()->condition('type', 'localgov_publication_page')->condition('nid', $bids, 'IN')->accessCheck(TRUE)->execute();
   $form['book']['bid']['#options'] = array_filter($form['book']['bid']['#options'], function ($option) use ($valid_bids) {
-    return (!in_array($option, $valid_bids) || $option == 0 || !is_numeric($option));
+    return (!in_array($option, $valid_bids, TRUE) || $option == 0 || !is_numeric($option));
   }, ARRAY_FILTER_USE_KEY);
 
 }
