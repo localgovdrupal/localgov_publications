@@ -233,13 +233,9 @@ function _localgov_publications_node_form_alter(array &$form, FormStateInterface
     });
 
     // Filter non publications from book selector.
-    $node_storage = \Drupal::entityTypeManager()->getStorage('node');
-    $valid_bids = $node_storage->getQuery()->condition('type', 'localgov_publication_page')->condition('nid', $bids, 'IN')->accessCheck(TRUE)->execute();
+    $valid_bids = _localgov_publications_valid_bids($bids);
     $form['book']['bid']['#options'] = array_filter($form['book']['bid']['#options'], function ($option) use ($valid_bids) {
-
-      // Use non strict type check because $option will be int and $valid_bids
-      // will contrain strings.
-      return (in_array($option, $valid_bids, FALSE) || $option == 0 || !is_numeric($option));
+      return (in_array($option, $valid_bids, TRUE) || $option == 0 || !is_numeric($option));
     }, ARRAY_FILTER_USE_KEY);
   }
 
@@ -249,15 +245,33 @@ function _localgov_publications_node_form_alter(array &$form, FormStateInterface
       return (is_numeric($item) && $item != 0);
     });
 
-    $node_storage = \Drupal::entityTypeManager()->getStorage('node');
-    $valid_bids = $node_storage->getQuery()->condition('type', 'localgov_publication_page')->condition('nid', $bids, 'IN')->accessCheck(TRUE)->execute();
+    $valid_bids = _localgov_publications_valid_bids($bids);
     $form['book']['bid']['#options'] = array_filter($form['book']['bid']['#options'], function ($option) use ($valid_bids) {
-
-      // Use non strict type check because $option will be int and $valid_bids
-      // will contrain strings.
-      return (!in_array($option, $valid_bids, FALSE) || $option == 0 || !is_numeric($option));
+      return (!in_array($option, $valid_bids, TRUE) || $option == 0 || !is_numeric($option));
     }, ARRAY_FILTER_USE_KEY);
   }
+}
+
+/**
+ * Get valid publication book bids.
+ *
+ * @param array $bids
+ *   Book ids on the node edit form.
+ *
+ * @return array
+ *   Array of top level book page node ids, converted to integers.
+ */
+function _localgov_publications_valid_bids(array $bids) :array {
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+  $valid_bids = $node_storage->getQuery()
+    ->condition('type', 'localgov_publication_page')
+    ->condition('nid', $bids, 'IN')
+    ->accessCheck(TRUE)
+    ->execute();
+
+  // Convert arrray to integers for comparision with option values.
+  $valid_bids = array_map(fn($valid_bid) => (int) $valid_bid, $valid_bids);
+  return $valid_bids;
 }
 
 /**
