@@ -78,6 +78,11 @@ class TocBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getContextValue('node');
+
+    // Don't render on new nodes (/node/add form).
+    if ($node->isNew()) {
+      return [];
+    }
     $build = $this->entityTypeManager->getViewBuilder('node')->view($node, 'full');
 
     // Call this so the render we're about to do has the same IDs as the page.
