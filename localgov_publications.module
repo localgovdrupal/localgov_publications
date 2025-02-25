@@ -222,7 +222,7 @@ function _localgov_publications_node_form_alter(array &$form, FormStateInterface
       $form['book']['bid']['#options']['new'] = localgov_publications_book_to_publication($form['book']['bid']['#options']['new']);
     }
 
-    // New book will be the node ID oin the edit page.
+    // New book will be the node ID on the edit page.
     $nid = $form_state->getFormObject()->getEntity()->id();
     if (isset($form['book']['bid']['#options'][$nid])) {
       $form['book']['bid']['#options'][$nid] = localgov_publications_book_to_publication($form['book']['bid']['#options'][$nid]);
@@ -268,7 +268,7 @@ function _localgov_publications_node_form_alter(array &$form, FormStateInterface
  * @return array
  *   Array of top level book page node ids, converted to integers.
  */
-function _localgov_publications_valid_bids(array $bids) :array {
+function _localgov_publications_valid_bids(array $bids): array {
   $node_storage = \Drupal::entityTypeManager()->getStorage('node');
   $valid_bids = $node_storage->getQuery()
     ->condition('type', 'localgov_publication_page')
