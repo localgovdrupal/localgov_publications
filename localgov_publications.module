@@ -268,16 +268,21 @@ function _localgov_publications_node_form_alter(array &$form, FormStateInterface
  * @return array
  *   Array of top level book page node ids, converted to integers.
  */
-function _localgov_publications_valid_bids(array $bids): array {
-  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
-  $valid_bids = $node_storage->getQuery()
-    ->condition('type', 'localgov_publication_page')
-    ->condition('nid', $bids, 'IN')
-    ->accessCheck(TRUE)
-    ->execute();
+function _localgov_publications_valid_bids(array $bids) :array {
+  $valid_bids = [];
 
-  // Convert arrray to integers for comparision with option values.
-  $valid_bids = array_map(fn($valid_bid) => (int) $valid_bid, $valid_bids);
+  // Only search for valid books if $bids has values.
+  if (count($bids) !== 0) {
+    $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+    $valid_bids = $node_storage->getQuery()
+      ->condition('type', 'localgov_publication_page')
+      ->condition('nid', $bids, 'IN')
+      ->accessCheck(TRUE)
+      ->execute();
+
+    // Convert arrray to integers for comparision with option values.
+    $valid_bids = array_map(fn($valid_bid) => (int) $valid_bid, $valid_bids);
+  }
   return $valid_bids;
 }
 

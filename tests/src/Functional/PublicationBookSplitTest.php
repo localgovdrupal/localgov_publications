@@ -6,6 +6,7 @@ use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\node\NodeInterface;
 use Drupal\Tests\node\Traits\ContentTypeCreationTrait;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Tests LocalGov Publications books are split from Drupal books.
@@ -30,6 +31,24 @@ class PublicationBookSplitTest extends BrowserTestBase {
     'layout_paragraphs',
     'localgov_publications',
   ];
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setUp() :void {
+    parent::setUp();
+
+    // Set up a book administrator.
+    $bookAdministrator = $this->createUser([
+      'administer book outlines',
+      'bypass node access',
+      'administer nodes',
+      'create new books',
+      'add content to books',
+    ]);
+
+    $this->drupalLogin($bookAdministrator);
+  }
 
   /**
    * Test the book selection dropdown filters books and publications.
@@ -61,16 +80,6 @@ class PublicationBookSplitTest extends BrowserTestBase {
         'bid' => 'new',
       ],
     ]);
-
-    // Set up a book administrator.
-    $bookAdministrator = $this->createUser([
-      'administer book outlines',
-      'bypass node access',
-      'administer nodes',
-      'create new books',
-      'add content to books',
-    ]);
-    $this->drupalLogin($bookAdministrator);
 
     // Create a publication node and check books are filtered.
     $this->drupalGet('/node/add/localgov_publication_page');
@@ -156,6 +165,19 @@ class PublicationBookSplitTest extends BrowserTestBase {
 
     $this->assertEquals($expected, $options);
 
+  }
+
+  /**
+   * Test that publication pages can be created when there are no books.
+   */
+  public function testPublicationNodeAddPageWithoutExistingBooks() :void {
+
+    // Go to publication page.
+    $this->drupalGet('/node/add/localgov_publication_page');
+
+    // Test /node/add/localgov_publication_page is able to be displayed.
+    // @See https://github.com/localgovdrupal/localgov_publications/issues/236
+    $this->assertSession()->statusCodeEquals(Response::HTTP_OK);
   }
 
 }
