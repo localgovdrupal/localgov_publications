@@ -35,7 +35,7 @@ class HeadingFinder implements HeadingFinderInterface {
     foreach ($headings as $heading) {
       $attributes = explode(' ', $heading['attributes']);
 
-      $fragment = NULL;
+      $fragment = '';
 
       // Find the id attribute if there is one.
       foreach ($attributes as $attribute) {
