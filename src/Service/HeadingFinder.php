@@ -13,7 +13,7 @@ class HeadingFinder implements HeadingFinderInterface {
   /**
    * {@inheritDoc}
    */
-  public function searchMarkup(string $markup): array {
+  public function searchMarkup(string $markup, $pageUrl = ''): array {
 
     $links = [];
     $headings = [];
@@ -49,7 +49,7 @@ class HeadingFinder implements HeadingFinderInterface {
 
       // If we didn't find a fragment to link to, don't include this result.
       if (strlen($fragment) > 0) {
-        $links[] = Link::fromTextAndUrl($heading['text'], Url::fromUserInput('#' . $fragment));
+        $links[] = Link::fromTextAndUrl($heading['text'], Url::fromUserInput($pageUrl . '#' . $fragment));
       }
     }
 

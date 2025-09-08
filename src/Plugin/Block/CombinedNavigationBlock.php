@@ -80,14 +80,13 @@ class CombinedNavigationBlock extends BlockBase implements ContainerFactoryPlugi
    */
   public function build() {
 
-    /** @var \Drupal\node\NodeInterface $node */
-    $node = $this->getContextValue('node');
+    $this->node = $this->getContextValue('node');
 
-    if (!isset($node->book['bid'])) {
+    if (!isset($this->node->book['bid'])) {
       return [];
     }
 
-    $tree = $this->bookManager->bookTreeAllData($node->book['bid'], $node->book);
+    $tree = $this->bookManager->bookTreeAllData($this->node->book['bid'], $this->node->book);
     $this->moduleHandler->alter('localgov_publications_menu_tree', $tree);
     $this->themeManager->alter('localgov_publications_menu_tree', $tree);
 
@@ -110,8 +109,8 @@ class CombinedNavigationBlock extends BlockBase implements ContainerFactoryPlugi
       foreach ($item['below'] as $nid => $subItem) {
         // Generate the on-page nav and put it in $subItem['below'];
 
-        $node = $nodeStorage->load($nid);
-        $toc = $this->buildToc($node);
+        $pageNode = $nodeStorage->load($nid);
+        $toc = $this->buildToc($pageNode);
 
         foreach ($toc as $i => $tocLink) {
           $toc[$i]['original_link'] = $subItem['original_link'];
@@ -121,15 +120,15 @@ class CombinedNavigationBlock extends BlockBase implements ContainerFactoryPlugi
       }
     }
 
-    $this->node = $node;
     $this->setActiveClass($output['#items']);
+
     return $output;
   }
 
   /**
    * Sets 'active' class on menu items that are in the active trail.
    */
-  protected function setActiveClass($items) {
+  protected function setActiveClass(array $items) {
     foreach ($items as $item) {
       $original_link_id = $item['original_link']['nid'] ?? NULL;
       if ($original_link_id && ($original_link_id == $this->node->id())) {
@@ -147,9 +146,6 @@ class CombinedNavigationBlock extends BlockBase implements ContainerFactoryPlugi
    * {@inheritdoc}
    */
   public function buildToc(NodeInterface $node) {
-
-    /** @var \Drupal\node\NodeInterface $node */
-    //$node = $this->getContextValue('node');
 
     // Don't render on new nodes (/node/add form).
     if ($node->isNew()) {
