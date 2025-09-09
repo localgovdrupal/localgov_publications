@@ -40,7 +40,7 @@ third_party_settings:
         - localgov_publication_content
         - localgov_published_date
         - localgov_updated_date
-      label: Description
+      label: Content
       region: content
       parent_name: group_tabs
       weight: 17
