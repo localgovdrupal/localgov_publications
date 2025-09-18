@@ -1,8 +1,8 @@
 {
-    "name": "localgovdrupal/localgov_publications",
+    "name": "drupal/localgov_publications",
     "description": "HTML publications for the LocalGovDrupal distribution.",
     "type": "drupal-module",
-    "homepage": "https://github.com/localgovdrupal/localgov_publications",
+    "homepage": "https://www.drupal.org/project/localgov_publications",
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",
     "repositories": [
@@ -13,8 +13,8 @@
     ],
     "require": {
         "drupal/book": "^1.0.0",
-        "localgovdrupal/localgov_core": ">=2.1.10",
-        "localgovdrupal/localgov_paragraphs": ">=2.4.0"
+        "drupal/localgov_core": ">=2.1.10",
+        "drupal/localgov_paragraphs": ">=2.4.0"
     },
     "require-dev": {
         "drupal/coder": "*"
