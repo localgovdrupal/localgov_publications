@@ -1,5 +1,7 @@
 # LocalGov Publications
 
+![Tests](https://github.com/localgovdrupal/localgov_publications/actions/workflows/test.yml/badge.svg)
+
 This module provides publication content types and configuration for the LocalGov Drupal distribution.
 
 The intention is to support councils to publish publications in accessible HTML rather than in PDF files.
