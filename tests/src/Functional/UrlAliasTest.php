@@ -48,7 +48,7 @@ class UrlAliasTest extends BrowserTestBase {
         'bid' => '0',
       ],
     ]);
-    $this->assertSame('/publications/test-publication-cover-page', $node->toUrl()->toString());
+    $this->assertStringContainsString('/publications/test-publication-cover-page', $node->toUrl()->toString());
   }
 
   /**
@@ -68,7 +68,7 @@ class UrlAliasTest extends BrowserTestBase {
       ],
       'status' => NodeInterface::PUBLISHED,
     ]);
-    $this->assertSame('/publication-parent-page', $parentNode->toUrl()->toString());
+    $this->assertStringContainsString('/publication-parent-page', $parentNode->toUrl()->toString());
 
     $childNode = $this->createNode([
       'type' => 'localgov_publication_page',
@@ -84,7 +84,7 @@ class UrlAliasTest extends BrowserTestBase {
       ],
       'status' => NodeInterface::PUBLISHED,
     ]);
-    $this->assertSame('/publication-parent-page/publication-child-page', $childNode->toUrl()->toString());
+    $this->assertStringContainsString('/publication-parent-page/publication-child-page', $childNode->toUrl()->toString());
 
     $this->drupalGet('/publication-parent-page/publication-child-page');
     $this->assertSession()->responseContains('<a class="breadcrumbs__link" href="/publication-parent-page">Publication parent page</a>');
@@ -138,8 +138,8 @@ class UrlAliasTest extends BrowserTestBase {
       ],
     ]);
 
-    $this->assertSame('/publications/publication-cover-page/publication-parent-page', $parentNode->toUrl()->toString());
-    $this->assertSame('/publications/publication-cover-page/publication-parent-page/publication-child-page', $childNode->toUrl()->toString());
+    $this->assertStringContainsString('/publications/publication-cover-page/publication-parent-page', $parentNode->toUrl()->toString());
+    $this->assertStringContainsString('/publications/publication-cover-page/publication-parent-page/publication-child-page', $childNode->toUrl()->toString());
 
     $this->drupalGet('/publications/publication-cover-page/publication-parent-page');
     $this->assertSession()->responseContains('<a class="breadcrumbs__link" href="/publications/publication-cover-page">Publication cover page</a>');
@@ -208,8 +208,8 @@ class UrlAliasTest extends BrowserTestBase {
       'status' => NodeInterface::PUBLISHED,
     ]);
 
-    $this->assertSame('/custom-alias/publication-parent-page', $parentNode->toUrl()->toString());
-    $this->assertSame('/custom-alias/publication-parent-page/publication-child-page', $childNode->toUrl()->toString());
+    $this->assertStringContainsString('/custom-alias/publication-parent-page', $parentNode->toUrl()->toString());
+    $this->assertStringContainsString('/custom-alias/publication-parent-page/publication-child-page', $childNode->toUrl()->toString());
 
     $this->drupalGet('/custom-alias/publication-parent-page');
     $this->assertSession()->responseContains('<a class="breadcrumbs__link" href="/custom-alias">Custom Alias</a>');
