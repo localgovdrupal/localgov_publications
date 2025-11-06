@@ -6,6 +6,7 @@ use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\Core\Url;
 
 /**
  * Functional tests for our link modifications.
@@ -64,7 +65,10 @@ class ChildLinkTest extends BrowserTestBase {
 
     $this->drupalLogin($adminUser);
     $this->drupalGet('/node/' . $node->id());
-    $this->assertSession()->responseContains('<a href="/node/add/localgov_publication_page?parent=1">Add child page</a>');
+    $this->assertSession()->responseContains('Add child page');
+    $publication_add_path = Url::fromUserInput('/node/add/localgov_publication_page')->toString();
+    $this->assertSession()->linkByHrefExists( $publication_add_path . '?parent=' . $node->id());
+
   }
 
 }
