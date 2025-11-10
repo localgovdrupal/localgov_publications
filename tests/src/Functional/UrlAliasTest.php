@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\localgov_publications\Functional;
 
+use Drupal\Core\Url;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\node\NodeInterface;
@@ -85,9 +86,9 @@ class UrlAliasTest extends BrowserTestBase {
       'status' => NodeInterface::PUBLISHED,
     ]);
     $this->assertStringContainsString('/publication-parent-page/publication-child-page', $childNode->toUrl()->toString());
-
     $this->drupalGet('/publication-parent-page/publication-child-page');
-    $this->assertSession()->responseContains('<a class="breadcrumbs__link" href="/publication-parent-page">Publication parent page</a>');
+    $parentPath = Url::fromUserInput('/publication-parent-page')->toString();
+    $this->assertSession()->linkByHrefExists($parentPath);
     $this->assertCount(2, $this->xpath('//a[@class="breadcrumbs__link"]'));
   }
 
@@ -142,12 +143,14 @@ class UrlAliasTest extends BrowserTestBase {
     $this->assertStringContainsString('/publications/publication-cover-page/publication-parent-page/publication-child-page', $childNode->toUrl()->toString());
 
     $this->drupalGet('/publications/publication-cover-page/publication-parent-page');
-    $this->assertSession()->responseContains('<a class="breadcrumbs__link" href="/publications/publication-cover-page">Publication cover page</a>');
+    $coverPagePath = Url::fromUserInput('/publications/publication-cover-page')->toString();
+    $this->assertSession()->linkByHrefExists($coverPagePath);
     $this->assertCount(2, $this->xpath('//a[@class="breadcrumbs__link"]'));
 
     $this->drupalGet('/publications/publication-cover-page/publication-parent-page/publication-child-page');
-    $this->assertSession()->responseContains('<a class="breadcrumbs__link" href="/publications/publication-cover-page">Publication cover page</a>');
-    $this->assertSession()->responseContains('<a class="breadcrumbs__link" href="/publications/publication-cover-page/publication-parent-page">Publication parent page</a>');
+    $parentPagePath= Url::fromUserInput('/publications/publication-cover-page/publication-parent-page')->toString();
+    $this->assertSession()->linkByHrefExists($parentPagePath);
+    $this->assertSession()->linkByHrefExists($coverPagePath);
     $this->assertCount(3, $this->xpath('//a[@class="breadcrumbs__link"]'));
   }
 
@@ -212,12 +215,14 @@ class UrlAliasTest extends BrowserTestBase {
     $this->assertStringContainsString('/custom-alias/publication-parent-page/publication-child-page', $childNode->toUrl()->toString());
 
     $this->drupalGet('/custom-alias/publication-parent-page');
-    $this->assertSession()->responseContains('<a class="breadcrumbs__link" href="/custom-alias">Custom Alias</a>');
+    $customAliasPath = Url::fromUserInput('/custom-alias')->toString();
+    $this->assertSession()->linkByHrefExists($customAliasPath);
     $this->assertCount(2, $this->xpath('//a[@class="breadcrumbs__link"]'));
 
     $this->drupalGet('/custom-alias/publication-parent-page/publication-child-page');
-    $this->assertSession()->responseContains('<a class="breadcrumbs__link" href="/custom-alias">Custom Alias</a>');
-    $this->assertSession()->responseContains('<a class="breadcrumbs__link" href="/custom-alias/publication-parent-page">Publication parent page</a>');
+    $publicationParentPath = Url::fromUserInput('/custom-alias/publication-parent-page')->toString();
+    $this->assertSession()->linkByHrefExists($customAliasPath);
+    $this->assertSession()->linkByHrefExists($publicationParentPath);
     $this->assertCount(3, $this->xpath('//a[@class="breadcrumbs__link"]'));
   }
 

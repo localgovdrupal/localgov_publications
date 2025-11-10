@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\localgov_publications\Functional;
 
+use Drupal\Core\Url;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\node\NodeInterface;
@@ -94,11 +95,13 @@ class PublicationPageNavigationTest extends BrowserTestBase {
 
     $prevLinks = $this->xpath('//a[contains(@class, "lgd-prev-next__link--prev")]');
     $prevLink = reset($prevLinks);
-    $this->assertSame("/publication-parent-page", $prevLink->getAttribute('href'));
+    $prevLinkPath = Url::fromUserInput('/publication-parent-page')->toString();
+    $this->assertSame($prevLinkPath , $prevLink->getAttribute('href'));
 
     $nextLinks = $this->xpath('//a[contains(@class, "lgd-prev-next__link--next")]');
     $nextLink = reset($nextLinks);
-    $this->assertSame("/publication-parent-page/publication-child-page-two", $nextLink->getAttribute('href'));
+    $nextLinkPath = Url::fromUserInput('/publication-parent-page/publication-child-page-two')->toString();
+    $this->assertSame($nextLinkPath, $nextLink->getAttribute('href'));
 
     // This is the default title of the publication navigation block.
     $this->assertSession()->pageTextContains('Publication navigation');
