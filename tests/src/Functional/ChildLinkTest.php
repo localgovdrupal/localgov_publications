@@ -67,7 +67,7 @@ class ChildLinkTest extends BrowserTestBase {
     $this->drupalGet('/node/' . $node->id());
     $this->assertSession()->responseContains('Add child page');
     $publication_add_path = Url::fromUserInput('/node/add/localgov_publication_page')->toString();
-    $this->assertSession()->linkByHrefExists( $publication_add_path . '?parent=' . $node->id());
+    $this->assertSession()->linkByHrefExists($publication_add_path . '?parent=' . $node->id());
 
   }
 

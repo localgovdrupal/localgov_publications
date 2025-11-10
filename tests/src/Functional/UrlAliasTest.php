@@ -148,7 +148,7 @@ class UrlAliasTest extends BrowserTestBase {
     $this->assertCount(2, $this->xpath('//a[@class="breadcrumbs__link"]'));
 
     $this->drupalGet('/publications/publication-cover-page/publication-parent-page/publication-child-page');
-    $parentPagePath= Url::fromUserInput('/publications/publication-cover-page/publication-parent-page')->toString();
+    $parentPagePath = Url::fromUserInput('/publications/publication-cover-page/publication-parent-page')->toString();
     $this->assertSession()->linkByHrefExists($parentPagePath);
     $this->assertSession()->linkByHrefExists($coverPagePath);
     $this->assertCount(3, $this->xpath('//a[@class="breadcrumbs__link"]'));

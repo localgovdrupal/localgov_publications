@@ -96,7 +96,7 @@ class PublicationPageNavigationTest extends BrowserTestBase {
     $prevLinks = $this->xpath('//a[contains(@class, "lgd-prev-next__link--prev")]');
     $prevLink = reset($prevLinks);
     $prevLinkPath = Url::fromUserInput('/publication-parent-page')->toString();
-    $this->assertSame($prevLinkPath , $prevLink->getAttribute('href'));
+    $this->assertSame($prevLinkPath, $prevLink->getAttribute('href'));
 
     $nextLinks = $this->xpath('//a[contains(@class, "lgd-prev-next__link--next")]');
     $nextLink = reset($nextLinks);
