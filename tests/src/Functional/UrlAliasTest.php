@@ -49,7 +49,8 @@ class UrlAliasTest extends BrowserTestBase {
         'bid' => '0',
       ],
     ]);
-    $this->assertStringContainsString('/publications/test-publication-cover-page', $node->toUrl()->toString());
+    $nodePath = Url::fromUserInput('/publications/test-publication-cover-page')->toString();
+    $this->assertSame($nodePath, $node->toUrl()->toString());
   }
 
   /**
@@ -69,7 +70,8 @@ class UrlAliasTest extends BrowserTestBase {
       ],
       'status' => NodeInterface::PUBLISHED,
     ]);
-    $this->assertStringContainsString('/publication-parent-page', $parentNode->toUrl()->toString());
+    $parentNodePath = Url::fromUserInput('/publication-parent-page')->toString();
+    $this->assertSame($parentNodePath, $parentNode->toUrl()->toString());
 
     $childNode = $this->createNode([
       'type' => 'localgov_publication_page',
@@ -85,11 +87,12 @@ class UrlAliasTest extends BrowserTestBase {
       ],
       'status' => NodeInterface::PUBLISHED,
     ]);
-    $this->assertStringContainsString('/publication-parent-page/publication-child-page', $childNode->toUrl()->toString());
+    $childNodePath = Url::fromUserInput('/publication-parent-page/publication-child-page')->toString();
+    $this->assertSame($childNodePath, $childNode->toUrl()->toString());
     $this->drupalGet('/publication-parent-page/publication-child-page');
-    $parentPath = Url::fromUserInput('/publication-parent-page')->toString();
-    $this->assertSession()->linkByHrefExists($parentPath);
     $this->assertCount(2, $this->xpath('//a[@class="breadcrumbs__link"]'));
+    $this->assertSession()->linkByHrefExists($childNodePath);
+    $this->assertSession()->linkByHrefExists($parentNodePath);
   }
 
   /**
@@ -139,8 +142,10 @@ class UrlAliasTest extends BrowserTestBase {
       ],
     ]);
 
-    $this->assertStringContainsString('/publications/publication-cover-page/publication-parent-page', $parentNode->toUrl()->toString());
-    $this->assertStringContainsString('/publications/publication-cover-page/publication-parent-page/publication-child-page', $childNode->toUrl()->toString());
+    $parentNodePath = Url::fromUserInput('/publications/publication-cover-page/publication-parent-page')->toString();
+    $this->assertSame($parentNodePath, $parentNode->toUrl()->toString());
+    $childNodePath = Url::fromUserInput('/publications/publication-cover-page/publication-parent-page/publication-child-page')->toString();
+    $this->assertSame($childNodePath, $childNode->toUrl()->toString());
 
     $this->drupalGet('/publications/publication-cover-page/publication-parent-page');
     $coverPagePath = Url::fromUserInput('/publications/publication-cover-page')->toString();
@@ -148,7 +153,7 @@ class UrlAliasTest extends BrowserTestBase {
     $this->assertCount(2, $this->xpath('//a[@class="breadcrumbs__link"]'));
 
     $this->drupalGet('/publications/publication-cover-page/publication-parent-page/publication-child-page');
-    $parentPagePath= Url::fromUserInput('/publications/publication-cover-page/publication-parent-page')->toString();
+    $parentPagePath = Url::fromUserInput('/publications/publication-cover-page/publication-parent-page')->toString();
     $this->assertSession()->linkByHrefExists($parentPagePath);
     $this->assertSession()->linkByHrefExists($coverPagePath);
     $this->assertCount(3, $this->xpath('//a[@class="breadcrumbs__link"]'));
@@ -211,8 +216,10 @@ class UrlAliasTest extends BrowserTestBase {
       'status' => NodeInterface::PUBLISHED,
     ]);
 
-    $this->assertStringContainsString('/custom-alias/publication-parent-page', $parentNode->toUrl()->toString());
-    $this->assertStringContainsString('/custom-alias/publication-parent-page/publication-child-page', $childNode->toUrl()->toString());
+    $parentNodePath = Url::fromUserInput('/custom-alias/publication-parent-page')->toString();
+    $this->assertSame($parentNodePath, $parentNode->toUrl()->toString());
+    $childNodePath = Url::fromUserInput('/custom-alias/publication-parent-page/publication-child-page')->toString();
+    $this->assertSame($childNodePath, $childNode->toUrl()->toString());
 
     $this->drupalGet('/custom-alias/publication-parent-page');
     $customAliasPath = Url::fromUserInput('/custom-alias')->toString();
