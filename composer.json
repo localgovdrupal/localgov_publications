@@ -17,7 +17,8 @@
         "localgovdrupal/localgov_paragraphs": ">=2.4.0"
     },
     "require-dev": {
-        "drupal/coder": "*"
+        "drupal/coder": "*",
+        "drupal/localgov": "^3.0"
     },
     "extra": {
         "installer-paths": {
