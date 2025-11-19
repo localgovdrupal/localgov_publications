@@ -6,7 +6,7 @@ filter_settings.localgov_publications_heading_ids:
       type: boolean
       label: 'Keep existing IDs'
 
-block.settings.localgov_base_publication_navigation:
+block.settings.publication_navigation:*:
   type: block_settings
   label: 'Publication navigation block'
   mapping:
@@ -14,5 +14,5 @@ block.settings.localgov_base_publication_navigation:
       type: boolean
       label: 'Collapsible'
     collapse_width:
-      type: int
+      type: integer
       label: 'Collapse width '
