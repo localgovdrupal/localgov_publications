@@ -3,6 +3,10 @@ status: true
 dependencies:
   module:
     - paragraphs
+    - localgov_publications
+  enforced:
+    module:
+      - localgov_publications
 id: paragraph.localgov_publications_text
 field_name: localgov_publications_text
 entity_type: paragraph

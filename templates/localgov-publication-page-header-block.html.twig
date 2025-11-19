@@ -19,24 +19,32 @@
 
   <h1 class="lgd-page-title-block__title">
    {% if node_title %}
-    <span role="text" class="lgd-page-title-block__publication-title">{{ title }}</span>
+    <span class="lgd-page-title-block__publication-title">{{ title }}</span>
     <span>
       <span class="visually-hidden"> - </span>
       {{ node_title }}
     </span>
      
     {% else %}
-      <span role="text">{{ title }}</span>
+      <span>{{ title }}</span>
     {% endif %}
      
   </h1>
 
   {% if published_date %}
-    <div><span>Published: </span>{{ published_date }}</div>
-  {% endif %}
+  <div class="lgd-page-title-block__published">
+    {% trans %}
+      <span>Published:</span> {{ published_date }}
+    {% endtrans %}
+  </div>
+{% endif %}
 
-  {% if last_updated_date %}
-    <div><span>Last updated: </span>{{ last_updated_date }}</div>
-  {% endif %}
+{% if last_updated_date %}
+  <div class="lgd-page-title-block__updated">
+    {% trans %}
+      <span>Last updated:</span> {{ last_updated_date }}
+    {% endtrans %}
+  </div>
+{% endif %}
 
 </div>

@@ -2,10 +2,10 @@
 
 namespace Drupal\Tests\localgov_publications\Functional;
 
-use Drupal\node\NodeInterface;
-use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
+use Drupal\node\NodeInterface;
+use Drupal\paragraphs\Entity\Paragraph;
 
 /**
  * Publication navigation tests.
@@ -33,7 +33,7 @@ class PublicationPageNavigationTest extends BrowserTestBase {
   ];
 
   /**
-   * Test the 'next page' link on a publication.
+   * Test that links and nav are present on a multi-page publication.
    */
   public function testPreviousNextLinks() {
     $adminUser = $this->drupalCreateUser([], NULL, TRUE);
@@ -51,7 +51,7 @@ class PublicationPageNavigationTest extends BrowserTestBase {
     $node_parent = $this->createNode([
       'type' => 'localgov_publication_page',
       'title' => 'Publication parent page',
-      'localgov_page_content' => [
+      'localgov_publication_content' => [
         'target_id' => $text_paragraph->id(),
         'target_revision_id' => $text_paragraph->getRevisionId(),
       ],
@@ -64,7 +64,7 @@ class PublicationPageNavigationTest extends BrowserTestBase {
     $node_child_one = $this->createNode([
       'type' => 'localgov_publication_page',
       'title' => 'Publication child page one',
-      'localgov_page_content' => [
+      'localgov_publication_content' => [
         'target_id' => $text_paragraph->id(),
         'target_revision_id' => $text_paragraph->getRevisionId(),
       ],
@@ -78,7 +78,7 @@ class PublicationPageNavigationTest extends BrowserTestBase {
     $this->createNode([
       'type' => 'localgov_publication_page',
       'title' => 'Publication child page two',
-      'localgov_page_content' => [
+      'localgov_publication_content' => [
         'target_id' => $text_paragraph->id(),
         'target_revision_id' => $text_paragraph->getRevisionId(),
       ],
@@ -91,8 +91,17 @@ class PublicationPageNavigationTest extends BrowserTestBase {
 
     $this->drupalLogin($adminUser);
     $this->drupalGet('/node/' . $node_child_one->id());
-    $this->assertSession()->responseContains('<a href="/publication-parent-page" rel="prev" title="Go to previous page">');
-    $this->assertSession()->responseContains('<a href="/publication-parent-page/publication-child-page-two" rel="next" title="Go to next page">');
+
+    $prevLinks = $this->xpath('//a[contains(@class, "lgd-prev-next__link--prev")]');
+    $prevLink = reset($prevLinks);
+    $this->assertSame("/publication-parent-page", $prevLink->getAttribute('href'));
+
+    $nextLinks = $this->xpath('//a[contains(@class, "lgd-prev-next__link--next")]');
+    $nextLink = reset($nextLinks);
+    $this->assertSame("/publication-parent-page/publication-child-page-two", $nextLink->getAttribute('href'));
+
+    // This is the default title of the publication navigation block.
+    $this->assertSession()->pageTextContains('Publication navigation');
   }
 
   /**
@@ -113,7 +122,10 @@ class PublicationPageNavigationTest extends BrowserTestBase {
       'status' => NodeInterface::PUBLISHED,
     ]);
     $this->drupalGet('/node/' . $node_parent->id());
-    $this->assertSession()->elementNotExists('css', '#block-booknavigation');
+
+    // This is the default title of the publication navigation block.
+    // It shouldn't show on a single page publication.
+    $this->assertSession()->pageTextNotContains('Publication navigation');
   }
 
 }

@@ -1,0 +1,15 @@
+parameters:
+  fileExtensions:
+    - inc
+    - install
+    - module
+    - php
+    - theme
+  level: 5
+  scanDirectories:
+    - ../../../core/lib
+    - ../../../core/includes
+    - ../../../core/modules
+  ignoreErrors:
+    - '#^Unsafe usage of new static#'
+    - '#Dynamic call to static method PHPUnit\\Framework\\.*#'

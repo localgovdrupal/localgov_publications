@@ -19,12 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   context_definitions = {
  *     "node" = @ContextDefinition(
  *       "entity:node",
- *       label = @Translation("Current node"),
- *       constraints = {
- *         "Bundle" = {
- *           "publication"
- *         },
- *       }
+ *       label = @Translation("Current node")
  *     )
  *   }
  * )
@@ -83,6 +78,11 @@ class TocBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
     /** @var \Drupal\node\NodeInterface $node */
     $node = $this->getContextValue('node');
+
+    // Don't render on new nodes (/node/add form).
+    if ($node->isNew()) {
+      return [];
+    }
     $build = $this->entityTypeManager->getViewBuilder('node')->view($node, 'full');
 
     // Call this so the render we're about to do has the same IDs as the page.
@@ -92,7 +92,7 @@ class TocBlock extends BlockBase implements ContainerFactoryPluginInterface {
     $nodeHtml = $this->renderer->renderRoot($build)->__toString();
     $links = $this->headingFinder->searchMarkup($nodeHtml);
 
-    if (empty($links)) {
+    if (count($links) === 0) {
       return [];
     }
 

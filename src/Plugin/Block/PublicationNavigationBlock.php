@@ -2,12 +2,12 @@
 
 namespace Drupal\localgov_publications\Plugin\Block;
 
-use Drupal\book\BookManagerInterface;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Theme\ThemeManagerInterface;
+use Drupal\book\BookManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -149,10 +149,14 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
   public function build() {
 
     /** @var \Drupal\node\NodeInterface $node */
-    $node = $this->getContextValue('node');
+    $this->node = $this->getContextValue('node');
 
-    if (!empty($node->book['bid'])) {
-      $tree = $this->bookManager->bookTreeAllData($node->book['bid'], $node->book);
+    if (!isset($this->node->book['bid'])) {
+      return [];
+    }
+
+    if (!empty($this->node->book['bid'])) {
+      $tree = $this->bookManager->bookTreeAllData($this->node->book['bid'], $this->node->book);
       $this->moduleHandler->alter('localgov_publications_menu_tree', $tree);
       $this->themeManager->alter('localgov_publications_menu_tree', $tree);
 
@@ -166,7 +170,6 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
 
       $output = $this->bookManager->bookTreeOutput($tree);
       if (!empty($output)) {
-        $this->node = $node;
         $this->setActiveClass($output['#items']);
 
         // TODO: block instance identifier?
@@ -180,7 +183,26 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
         return $output;
       }
     }
-    return [];
+
+    $tree = $this->bookManager->bookTreeAllData($this->node->book['bid'], $this->node->book);
+    $this->moduleHandler->alter('localgov_publications_menu_tree', $tree);
+    $this->themeManager->alter('localgov_publications_menu_tree', $tree);
+
+    // If the top level doesn't have any child pages, (IE this is a single
+    // page publication) don't show the menu block, as there isn't anything
+    // else to navigate to.
+    $top = reset($tree);
+    if (!isset($top['below']) || $top['below'] === []) {
+      return [];
+    }
+
+    $output = $this->bookManager->bookTreeOutput($tree);
+    if ($output === []) {
+      return [];
+    }
+
+    $this->setActiveClass($output['#items']);
+    return $output;
   }
 
   /**
@@ -194,7 +216,7 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
         $attributes = $item['attributes'];
         $attributes->addClass('active');
       }
-      if (!empty($item['below'])) {
+      if (isset($item['below']) && is_array($item['below'])) {
         $this->setActiveClass($item['below']);
       }
     }

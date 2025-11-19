@@ -271,7 +271,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'access content'
+          perm: 'access publication views'
       cache:
         type: tag
         options: {  }

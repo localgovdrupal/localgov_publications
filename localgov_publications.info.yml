@@ -1,15 +1,15 @@
 name: LocalGov Publications
 type: module
-description: Provides additional functionality for the site.
+description: HTML publications for the LocalGovDrupal distribution.
 package: LocalGov Drupal
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 
 dependencies:
-  - drupal:book
+  - book:book
   - drupal:menu_ui
   - drupal:views
   - pathauto:pathauto
-  - localgov_media:localgov_media
+  - localgov_core:localgov_media
   - localgov_paragraphs:localgov_paragraphs
-  - localgov_paragraphs_layout:localgov_paragraphs_layout
+  - localgov_paragraphs:localgov_paragraphs_layout
   - localgov_services:localgov_services

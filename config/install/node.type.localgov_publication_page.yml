@@ -3,6 +3,10 @@ status: true
 dependencies:
   module:
     - menu_ui
+    - localgov_publications
+  enforced:
+    module:
+      - localgov_publications
 third_party_settings:
   menu_ui:
     available_menus:

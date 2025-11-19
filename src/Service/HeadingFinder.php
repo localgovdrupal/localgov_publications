@@ -35,7 +35,7 @@ class HeadingFinder implements HeadingFinderInterface {
     foreach ($headings as $heading) {
       $attributes = explode(' ', $heading['attributes']);
 
-      $fragment = NULL;
+      $fragment = '';
 
       // Find the id attribute if there is one.
       foreach ($attributes as $attribute) {
@@ -48,7 +48,7 @@ class HeadingFinder implements HeadingFinderInterface {
       }
 
       // If we didn't find a fragment to link to, don't include this result.
-      if ($fragment) {
+      if (strlen($fragment) > 0) {
         $links[] = Link::fromTextAndUrl($heading['text'], Url::fromUserInput('#' . $fragment));
       }
     }

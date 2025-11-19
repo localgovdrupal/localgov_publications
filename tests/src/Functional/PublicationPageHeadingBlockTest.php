@@ -2,10 +2,10 @@
 
 namespace Drupal\Tests\localgov_publications\Functional;
 
-use Drupal\node\Entity\Node;
-use Drupal\node\NodeInterface;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
+use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
 
 /**
  * Publication navigation tests.
@@ -98,22 +98,22 @@ class PublicationPageHeadingBlockTest extends BrowserTestBase {
     // Top level parent page.
     $this->drupalGet('/node/' . $node_parent->id());
     $this->assertSession()->responseContains('Publication parent page');
-    $this->assertSession()->responseContains('<span>Published: </span>16 April 2023');
-    $this->assertSession()->responseContains('<span>Last updated: </span>20 April 2023');
+    $this->assertSession()->responseContains('<span>Published:</span> 16 April 2023');
+    $this->assertSession()->responseContains('<span>Last updated:</span> 20 April 2023');
 
     // Child page one.
     $this->drupalGet('/node/' . $node_child_one->id());
     $this->assertSession()->responseContains('Publication parent page');
     $this->assertSession()->responseContains('Publication child page one');
-    $this->assertSession()->responseContains('<span>Published: </span>16 April 2023');
-    $this->assertSession()->responseContains('<span>Last updated: </span>20 April 2023');
+    $this->assertSession()->responseContains('<span>Published:</span> 16 April 2023');
+    $this->assertSession()->responseContains('<span>Last updated:</span> 20 April 2023');
 
     // Child page two.
     $this->drupalGet('/node/' . $node_child_two->id());
     $this->assertSession()->responseContains('Publication parent page');
     $this->assertSession()->responseContains('Publication child page two');
-    $this->assertSession()->responseContains('<span>Published: </span>16 April 2023');
-    $this->assertSession()->responseContains('<span>Last updated: </span>20 April 2023');
+    $this->assertSession()->responseContains('<span>Published:</span> 16 April 2023');
+    $this->assertSession()->responseContains('<span>Last updated:</span> 20 April 2023');
 
     // Reload the node so it's fully populated.
     $node_parent = Node::load($node_parent->id());
@@ -124,11 +124,11 @@ class PublicationPageHeadingBlockTest extends BrowserTestBase {
 
     // Check date updated on the parent page.
     $this->drupalGet('/node/' . $node_parent->id());
-    $this->assertSession()->responseContains('<div><span>Last updated: </span>21 April 2023</div>');
+    $this->assertSession()->responseContains('<span>Last updated:</span> 21 April 2023');
 
     // Check date updated on a child page.
     $this->drupalGet('/node/' . $node_child_one->id());
-    $this->assertSession()->responseContains('<div><span>Last updated: </span>21 April 2023</div>');
+    $this->assertSession()->responseContains('<span>Last updated:</span> 21 April 2023');
   }
 
 }

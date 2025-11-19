@@ -2,10 +2,11 @@
 
 namespace Drupal\Tests\localgov_publications\Functional;
 
-use Drupal\node\NodeInterface;
-use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
+use Drupal\node\NodeInterface;
+use Drupal\paragraphs\Entity\Paragraph;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Functional tests for the TocBlock.
@@ -35,7 +36,7 @@ class TocBlockTest extends BrowserTestBase {
   /**
    * Data provider for testing the ToC Block.
    */
-  public function contentProvider() {
+  public static function contentProvider() {
     yield [
       'content' => '<h2 id="heading-1">Heading 1</h2><p>Content 1.</p><h2 id="heading-2">Heading 2</h2><p>Content 2.</p>',
       'display' => TRUE,
@@ -87,6 +88,24 @@ class TocBlockTest extends BrowserTestBase {
     foreach ($expectedIDs as $expectedID) {
       $this->assertSession()->responseContains($expectedID);
     }
+  }
+
+  /**
+   * Test the TOC block does not interfere with the create publication page.
+   */
+  public function testTocBlockIsNotDisplayedOnNodeAddPage() :void {
+
+    $user = $this->createUser([
+      'bypass node access',
+    ]);
+    $this->drupalLogin($user);
+
+    $this->drupalGet('/node/add/localgov_publication_page');
+    $this->assertSession()->responseNotContains('On this page');
+
+    // Test node/add/localgov_publication_page still functions.
+    // @See https://github.com/localgovdrupal/localgov_publications/issues/230
+    $this->assertSession()->statusCodeEquals(Response::HTTP_OK);
   }
 
 }

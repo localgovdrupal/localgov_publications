@@ -6,8 +6,8 @@ use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Link;
 use Drupal\Core\Path\PathValidatorInterface;
 use Drupal\Core\Url;
-use Drupal\localgov_publications\Service\HeadingFinder;
 use Drupal\Tests\UnitTestCase;
+use Drupal\localgov_publications\Service\HeadingFinder;
 
 /**
  * Unit tests for the HeadingFinder.
@@ -30,7 +30,7 @@ class HeadingFinderTest extends UnitTestCase {
   /**
    * Data provider for ::searchMarkup.
    */
-  public function contentProvider() {
+  public static function contentProvider() {
     // Check multiple headings can be found.
     yield [
       'markup' => '<h2 id="heading-1">Heading 1</h2><p>Content 1.</p><h2 id="heading-2">Heading 2</h2><p>Content 2.</p>',

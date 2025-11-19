@@ -5,7 +5,6 @@
  * Module file for the LocalGov Publications module.
  */
 
-use Drupal\block\Entity\Block;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Config\Entity\ConfigDependencyManager;
 use Drupal\Core\Config\FileStorage;
@@ -14,7 +13,9 @@ use Drupal\Core\Config\StorageInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
+use Drupal\block\Entity\Block;
 use Drupal\localgov_roles\RolesHelper;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
@@ -57,6 +58,7 @@ function localgov_publications_theme($existing, $type, $theme, $path): array {
 function localgov_publications_localgov_roles_default(): array {
   return [
     RolesHelper::EDITOR_ROLE => [
+      'access publication views',
       'add content to books',
       'administer book outlines',
       'create new books',
@@ -96,7 +98,7 @@ function localgov_publications_theme_suggestions_book_navigation(array $variable
   // Only add suggestion on publication pages and publication cover pages.
   $node = \Drupal::routeMatch()->getParameter('node');
   if (localgov_publications_is_publication_type($node->getType())) {
-    $suggestions[] = $variables['theme_hook_original'] . '__' . 'publication';
+    $suggestions[] = $variables['theme_hook_original'] . '__publication';
   }
 
   return $suggestions;
@@ -127,72 +129,175 @@ function localgov_publications_form_book_admin_edit_alter(&$form, FormStateInter
 }
 
 /**
- * Implements hook_form_alter().
+ * Change 'book' to 'publication' in text.
+ *
+ * This function can accept either a string or TranslatableMarkup.
+ * If a TranslatableMarkup was passed, the arguments and options are preserved.
  */
-function localgov_publications_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
-  $forms_to_alter = [
-    'node_localgov_publication_cover_page_form',
-    'node_localgov_publication_cover_page_edit_form',
+function localgov_publications_book_to_publication(TranslatableMarkup|string $originalString): TranslatableMarkup|string {
+
+  // Normalise TranslatableMarkup to a string.
+  if ($originalString instanceof TranslatableMarkup) {
+    $string = $originalString->getUntranslatedString();
+    $arguments = $originalString->getArguments();
+    $options = $originalString->getOptions();
+  }
+  else {
+    $string = $originalString;
+    $arguments = [];
+    $options = [];
+  }
+
+  // We can't just search & replace 'book' with 'publication' in the string, as
+  // that breaks the code style rule about not passing variables to t() or
+  // TranslatableMarkup(). So we'll do it like this:
+  $strings = [
+    'Book outline' =>
+    new TranslatableMarkup('Publication outline', $arguments, $options),
+    'Book' =>
+    new TranslatableMarkup('Publication', $arguments, $options),
+    '- Create a new book -' =>
+    new TranslatableMarkup('- Create a new publication -', $arguments, $options),
+    'Your page will be part of the selected book' =>
+    new TranslatableMarkup('Your page will be part of the selected publication', $arguments, $options),
+    '<div id="edit-book-plid-wrapper"><em>No book selected.</em>' =>
+    new TranslatableMarkup('<div id="edit-book-plid-wrapper"><em>No publication selected.</em>', $arguments, $options),
+    '<div id="edit-book-plid-wrapper"><em>This will be the top-level page in this book.</em>' =>
+    new TranslatableMarkup('<div id="edit-book-plid-wrapper"><em>This will be the top-level page in this publication.</em>', $arguments, $options),
+    'The parent page in the book. The maximum depth for a book and all child pages is @maxdepth. Some pages in the selected book may not be available as parents if selecting them would exceed this limit.' =>
+    new TranslatableMarkup('The parent page in the publication. The maximum depth for a publication and all child pages is @maxdepth. Some pages in the selected publication may not be available as parents if selecting them would exceed this limit.', $arguments, $options),
+  ];
+
+  if (isset($strings[$string])) {
+    return $strings[$string];
+  }
+
+  return $originalString;
+}
+
+/**
+ * Alter the node forms (add and edit)
+ *
+ * This function is called from both
+ *   localgov_publications_form_node_form_alter (/node/add)
+ * and
+ *   localgov_publications_form_node_edit_form_alter (/node/x/edit)
+ *
+ * @param array $form
+ *   Form elements.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state object.
+ * @param string $form_id
+ *   Form ID string.
+ */
+function _localgov_publications_node_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+
+  // If this form element isn't present there's nothing for us to do here.
+  if (!isset($form['book'])) {
+    return;
+  }
+
+  $publication_node_forms = [
     'node_localgov_publication_page_form',
     'node_localgov_publication_page_edit_form',
   ];
 
-  if (!in_array($form_id, $forms_to_alter)) {
-    return;
-  }
+  // Alter the publications node forms.
+  if (in_array($form_id, $publication_node_forms, TRUE)) {
 
-  // Get the node.
-  $node = $form_state->getFormObject()->getEntity();
-
-  // Attach JS.
-  if ($form['book']['#attached']['library'][0] == 'book/drupal.book') {
-    unset($form['book']['#attached']['library']);
-    $form['book']['#attached']['library'][0] = 'localgov_publications/localgov-publications';
-  }
-
-  // Get form state values.
-  $book_values = $form_state->getValue('book');
-
-  // Alter the book outline form title.
-  $form['book']['#title'] = t('Publication outline');
-
-  // Alter the select element.
-  $form['book']['bid']['#title'] = t('Publication');
-
-  // Change "Create new book" to "Create a new publication".
-  if (!empty($form['book']['bid']['#options']['new'])) {
-    $form['book']['bid']['#options']['new'] = t('- Create a new publication -');
-  }
-
-  $form['book']['bid']['#description'] = t('Your page will be part of the selected publication');
-
-  // Alter "No book selected".
-  if (empty($book_values)) {
-    $form['book']['pid']['#prefix'] = '<div id="edit-book-plid-wrapper"><em>No publication selected.</em>';
-  }
-  else {
-    switch ($book_values['bid']) {
-      case '0':
-        $form['book']['pid']['#prefix'] = '<div id="edit-book-plid-wrapper"><em>No publication selected.</em>';
-        break;
-
-      case 'new':
-      case $node->id():
-        $form['book']['pid']['#prefix'] = '<div id="edit-book-plid-wrapper"><em>This will be the top-level page in this publication.</em>';
-        break;
-
-      default:
-        $form['book']['pid']['#description'] = t(
-          'The parent page in the publication. The maximum depth for a publication and all child pages is @maxdepth. Some pages in the selected publication may not be available as parents if selecting them would exceed this limit.',
-          ['@maxdepth' => $form['book']['parent_depth_limit']['#value']],
-        );
-        break;
+    // Attach JS.
+    if ($form['book']['#attached']['library'][0] == 'book/drupal.book') {
+      $form['book']['#attached']['library'][0] = 'localgov_publications/localgov-publications';
     }
+
+    // Attach our validation.
+    $form['#validate'][] = 'localgov_publications_validate_node_form';
+
+    // All these places in the form contain the word 'book'.
+    // We want them to say 'publication' instead.
+    $form['book']['#title'] = localgov_publications_book_to_publication($form['book']['#title']);
+    $form['book']['bid']['#title'] = localgov_publications_book_to_publication($form['book']['bid']['#title']);
+    $form['book']['bid']['#description'] = localgov_publications_book_to_publication($form['book']['bid']['#description']);
+    if (isset($form['book']['bid']['#options']['new'])) {
+      $form['book']['bid']['#options']['new'] = localgov_publications_book_to_publication($form['book']['bid']['#options']['new']);
+    }
+
+    // New book will be the node ID on the edit page.
+    $nid = $form_state->getFormObject()->getEntity()->id();
+    if (isset($form['book']['bid']['#options'][$nid])) {
+      $form['book']['bid']['#options'][$nid] = localgov_publications_book_to_publication($form['book']['bid']['#options'][$nid]);
+    }
+
+    if (isset($form['book']['pid']['#prefix'])) {
+      $form['book']['pid']['#prefix'] = localgov_publications_book_to_publication($form['book']['pid']['#prefix']);
+    }
+    if (isset($form['book']['pid']['#description'])) {
+      $form['book']['pid']['#description'] = localgov_publications_book_to_publication($form['book']['pid']['#description']);
+    }
+
+    $bids = array_filter(array_keys($form['book']['bid']['#options']), function ($item) {
+      return (is_numeric($item) && $item != 0);
+    });
+
+    // Filter non publications from book selector.
+    $valid_bids = _localgov_publications_valid_bids($bids);
+    $form['book']['bid']['#options'] = array_filter($form['book']['bid']['#options'], function ($option) use ($valid_bids) {
+      return (in_array($option, $valid_bids, TRUE) || $option == 0 || !is_numeric($option));
+    }, ARRAY_FILTER_USE_KEY);
   }
 
-  if ($form_id == 'node_localgov_publication_page_form' || $form_id == 'node_localgov_publication_page_edit_form') {
-    $form['#validate'][] = 'localgov_publications_validate_node_form';
+  // Else, strip out publications from any books.
+  else {
+    $bids = array_filter(array_keys($form['book']['bid']['#options']), function ($item) {
+      return (is_numeric($item) && $item != 0);
+    });
+
+    $valid_bids = _localgov_publications_valid_bids($bids);
+    $form['book']['bid']['#options'] = array_filter($form['book']['bid']['#options'], function ($option) use ($valid_bids) {
+      return (!in_array($option, $valid_bids, TRUE) || $option == 0 || !is_numeric($option));
+    }, ARRAY_FILTER_USE_KEY);
   }
+}
+
+/**
+ * Get valid publication book bids.
+ *
+ * @param array $bids
+ *   Book ids on the node edit form.
+ *
+ * @return array
+ *   Array of top level book page node ids, converted to integers.
+ */
+function _localgov_publications_valid_bids(array $bids) :array {
+  $valid_bids = [];
+
+  // Only search for valid books if $bids has values.
+  if (count($bids) !== 0) {
+    $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+    $valid_bids = $node_storage->getQuery()
+      ->condition('type', 'localgov_publication_page')
+      ->condition('nid', $bids, 'IN')
+      ->accessCheck(TRUE)
+      ->execute();
+
+    // Convert arrray to integers for comparision with option values.
+    $valid_bids = array_map(fn($valid_bid) => (int) $valid_bid, $valid_bids);
+  }
+  return $valid_bids;
+}
+
+/**
+ * Implements hook_form_BASE_ID_alter().
+ */
+function localgov_publications_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  _localgov_publications_node_form_alter($form, $form_state, $form_id);
+}
+
+/**
+ * Implements hook_form_BASE_ID_alter().
+ */
+function localgov_publications_form_node_edit_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  _localgov_publications_node_form_alter($form, $form_state, $form_id);
 }
 
 /**
@@ -220,7 +325,7 @@ function localgov_publications_validate_node_form(&$form, FormStateInterface $fo
  */
 function localgov_publications_node_links_alter(array &$links, NodeInterface $node, array &$context): void {
 
-  if (localgov_publications_is_publication_type($node->getType()) && !empty($links['book']['#links']['book_add_child'])) {
+  if (localgov_publications_is_publication_type($node->getType()) && isset($links['book']['#links']['book_add_child'])) {
     $links['book']['#links']['book_add_child']['url'] = Url::fromRoute('node.add', ['node_type' => 'localgov_publication_page'], ['query' => ['parent' => $node->id()]]);
   }
 }
@@ -242,7 +347,7 @@ function localgov_publications_preprocess_node(&$variables): void {
  * Implements hook_modules_installed().
  */
 function localgov_publications_modules_installed($modules, $is_syncing) {
-  if (!$is_syncing && in_array('book', $modules)) {
+  if (!$is_syncing && in_array('book', $modules, TRUE)) {
     // If book module is being installed, prevent the 'book' node type and its
     // dependencies from being installed from its config (or rather, delete it
     // -- there's no way to intercept it within the config API).
@@ -263,6 +368,18 @@ function localgov_publications_modules_installed($modules, $is_syncing) {
       \Drupal::configFactory()->getEditable($config_name)->delete();
     }
     \Drupal::configFactory()->getEditable('node.type.book')->delete();
+
+    // The mapping of fields to bundles is stored in the key-value store. As we
+    // removed the content type and its fields on a config level, we also need
+    // to clear out the book data from here, as it won't be done for us like it
+    // is when you delete a content type via the UI.
+    $kvStore = \Drupal::keyValue('entity.definitions.bundle_field_map');
+    $fieldMap = $kvStore->get('node');
+    unset($fieldMap['body']['bundles']['book']);
+    $kvStore->set('node', $fieldMap);
+
+    // Clear all caches to ensure there are no references to the Book node left.
+    drupal_flush_all_caches();
   }
 }
 
@@ -322,7 +439,7 @@ function localgov_publications_update_path_aliases(NodeInterface $node): void {
   /** @var \Drupal\book\BookManager $bookManager */
   $bookManager = \Drupal::service('book.manager');
 
-  /** @var \Drupal\node\NodeInterface[] $publication */
+  /** @var \Drupal\node\NodeInterface[] $publications */
   $publications = $node->get('localgov_publication')->referencedEntities();
 
   $publicationPages = [];
@@ -335,13 +452,13 @@ function localgov_publications_update_path_aliases(NodeInterface $node): void {
     }
   }
 
-  if (empty($publicationPages)) {
+  if (count($publicationPages) === 0) {
     return;
   }
 
-  $nodes = Node::loadMultiple($publicationPages);
+  $pageNodes = Node::loadMultiple($publicationPages);
   $pathAutoGenerator = \Drupal::service('pathauto.generator');
-  foreach ($nodes as $node) {
-    $pathAutoGenerator->updateEntityAlias($node, 'update');
+  foreach ($pageNodes as $pageNode) {
+    $pathAutoGenerator->updateEntityAlias($pageNode, 'update');
   }
 }
