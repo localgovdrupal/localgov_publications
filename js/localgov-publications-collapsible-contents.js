@@ -1,21 +1,19 @@
-(function ($, Drupal, drupalSettings) {
+(($, Drupal, drupalSettings) => {
   /**
    * Collapseable menu for Publication page
    *
    * @param {object} context
    */
   Drupal.behaviors.publicationMenuToggle = {
-    attach: function (context) {
-
+    "attach": (context) => {
       if (!drupalSettings.hasOwnProperty('localgov_publications')) {
         return;
       }
-
-      var headers = [
+      const headers = [
         $('.lgd-publication-navigation__content-header', context),
         $('.lgd-publication-tableofcontent__content-header', context)
       ];
-      var menus = [
+      const menus = [
         $('#block-lgd-publicationnavigation ul.list--no-style', context),
         $('#block-lgd-publicationstableofcontentsblock .publication-content-block', context)
       ];
@@ -40,11 +38,11 @@
           }
           previousWidth = window.innerWidth;
 
-          headers.forEach(function (header, index) {
+          headers.forEach((header, index) => {
             menus[index].toggleClass('is-hidden', newCollapseState);
             header.toggleClass('up-icon', !newCollapseState).toggleClass('down-icon', newCollapseState);
           });
-          headers.forEach(function (header, index) {
+          headers.forEach((header, index) => {
             if (!header.data('menuToggleAttached')) {
               toggleMenuVisibilityAndIcon(header, menus[index]);
               header.data('menuToggleAttached', true);
