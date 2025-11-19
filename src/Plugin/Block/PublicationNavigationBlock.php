@@ -96,7 +96,6 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
     );
   }
 
-
   /**
    * {@inheritdoc}
    */
@@ -172,8 +171,7 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
       if (!empty($output)) {
         $this->setActiveClass($output['#items']);
 
-        // TODO: block instance identifier?
-        $output['#attached']['drupalSettings']['localgov_publications']['foo'] = [
+        $output['#attached']['drupalSettings']['localgov_publications'][$this->pluginId] = [
           'collapsible' => $this->configuration['collapsible'],
           'collapse_width' => $this->configuration['collapse_width'],
         ];

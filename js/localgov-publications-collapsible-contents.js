@@ -1,65 +1,64 @@
 (function ($, Drupal, drupalSettings) {
   /**
- * Collapse able menu for Publication page
- *
- * @param {object} context
- */
-Drupal.behaviors.publicationMenuToggle = {
-    attach: function(context) {
+   * Collapseable menu for Publication page
+   *
+   * @param {object} context
+   */
+  Drupal.behaviors.publicationMenuToggle = {
+    attach: function (context) {
 
       if (!drupalSettings.hasOwnProperty('localgov_publications')) {
         return;
       }
 
-        var headers = [
-            $('.lgd-publication-navigation__content-header', context),
-            $('.lgd-publication-tableofcontent__content-header', context)
-        ];
-        var menus = [
-            $('#block-lgd-publicationnavigation ul.list--no-style', context),
-            $('#block-lgd-publicationstableofcontentsblock .publication-content-block', context)
-        ];
-        function toggleMenuVisibilityAndIcon(header, menu) {
-            header.on('click', function () {
-                menu.toggleClass('is-hidden');
-                header.toggleClass('up-icon down-icon');
-            });
-        }
+      var headers = [
+        $('.lgd-publication-navigation__content-header', context),
+        $('.lgd-publication-tableofcontent__content-header', context)
+      ];
+      var menus = [
+        $('#block-lgd-publicationnavigation ul.list--no-style', context),
+        $('#block-lgd-publicationstableofcontentsblock .publication-content-block', context)
+      ];
 
-        let previousWidth = -1;
+      function toggleMenuVisibilityAndIcon(header, menu) {
+        header.on('click', function () {
+          menu.toggleClass('is-hidden');
+          header.toggleClass('up-icon down-icon');
+        });
+      }
 
-        function initializeStateForMenus(menuCollapseBreakpoint) {
+      let previousWidth = -1;
 
-          return function () {
-            const previousCollapseState = previousWidth < menuCollapseBreakpoint;
-            const newCollapseState = window.innerWidth < menuCollapseBreakpoint;
+      function initializeStateForMenus(menuCollapseBreakpoint) {
 
-            if (previousCollapseState === newCollapseState && !(previousWidth === -1)) {
-              return;
-            }
-            previousWidth = window.innerWidth;
+        return function () {
+          const previousCollapseState = previousWidth < menuCollapseBreakpoint;
+          const newCollapseState = window.innerWidth < menuCollapseBreakpoint;
 
-            headers.forEach(function (header, index) {
-              menus[index].toggleClass('is-hidden', newCollapseState);
-              header.toggleClass('up-icon', !newCollapseState).toggleClass('down-icon', newCollapseState);
-            });
-            headers.forEach(function (header, index) {
-              if (!header.data('menuToggleAttached')) {
-                toggleMenuVisibilityAndIcon(header, menus[index]);
-                header.data('menuToggleAttached', true);
-              }
-            });
-
+          if (previousCollapseState === newCollapseState && !(previousWidth === -1)) {
+            return;
           }
-        }
+          previousWidth = window.innerWidth;
 
-        const resizeCallback = initializeStateForMenus(drupalSettings.localgov_publications.foo.collapse_width);
+          headers.forEach(function (header, index) {
+            menus[index].toggleClass('is-hidden', newCollapseState);
+            header.toggleClass('up-icon', !newCollapseState).toggleClass('down-icon', newCollapseState);
+          });
+          headers.forEach(function (header, index) {
+            if (!header.data('menuToggleAttached')) {
+              toggleMenuVisibilityAndIcon(header, menus[index]);
+              header.data('menuToggleAttached', true);
+            }
+          });
+        }
+      }
+
+      const resizeCallback = initializeStateForMenus(drupalSettings.localgov_publications.foo.collapse_width);
 
       if (drupalSettings.localgov_publications.foo.collapsible) {
         resizeCallback();
         $(window).resize(resizeCallback);
       }
-
     }
-};
+  };
 })(jQuery, Drupal, drupalSettings);
