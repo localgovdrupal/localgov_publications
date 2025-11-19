@@ -16,7 +16,6 @@ include:
 ################
 variables:
   SKIP_CSPELL: "1"
-  SKIP_TEST_ONLY_CHANGES: 1
   OPT_IN_TEST_MAX_PHP: 0
   OPT_IN_TEST_PREVIOUS_MAJOR: 0
   OPT_IN_TEST_NEXT_MAJOR: 0
