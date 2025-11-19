@@ -137,7 +137,7 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
   /**
    * {@inheritdoc}
    */
-  public function blockSubmit($form, FormStateInterface $form_state) {
+  public function blockSubmit($form, FormStateInterface $form_state): void {
     $this->configuration['collapsible'] = $form_state->getValue('collapsible');
     $this->configuration['collapse_width'] = $form_state->getValue('collapse_width');
   }
