@@ -1,62 +1,70 @@
 (($, Drupal, drupalSettings) => {
+
   /**
-   * Collapseable menu for Publication page
-   *
-   * @param {object} context
+   * Collapsible menu for Publication page
    */
   Drupal.behaviors.publicationMenuToggle = {
     "attach": (context) => {
       if (!drupalSettings.hasOwnProperty('localgov_publications')) {
         return;
       }
-      const headers = [
-        $('.lgd-publication-navigation__content-header', context),
-        $('.lgd-publication-tableofcontent__content-header', context)
-      ];
-      const menus = [
-        $('#block-lgd-publicationnavigation ul.list--no-style', context),
-        $('#block-lgd-publicationstableofcontentsblock .publication-content-block', context)
-      ];
 
-      function toggleMenuVisibilityAndIcon(header, menu) {
-        header.on('click', function () {
-          menu.toggleClass('is-hidden');
-          header.toggleClass('up-icon down-icon');
-        });
-      }
-
-      let previousWidth = -1;
-
-      function initializeStateForMenus(menuCollapseBreakpoint) {
-
-        return function () {
-          const previousCollapseState = previousWidth < menuCollapseBreakpoint;
-          const newCollapseState = window.innerWidth < menuCollapseBreakpoint;
-
-          if (previousCollapseState === newCollapseState && !(previousWidth === -1)) {
-            return;
-          }
-          previousWidth = window.innerWidth;
-
-          headers.forEach((header, index) => {
-            menus[index].toggleClass('is-hidden', newCollapseState);
-            header.toggleClass('up-icon', !newCollapseState).toggleClass('down-icon', newCollapseState);
-          });
-          headers.forEach((header, index) => {
-            if (!header.data('menuToggleAttached')) {
-              toggleMenuVisibilityAndIcon(header, menus[index]);
-              header.data('menuToggleAttached', true);
-            }
-          });
+      for (const [blockPluginID, values] of Object.entries(drupalSettings.localgov_publications)) {
+        const blockID = 'block-' + blockPluginID.replaceAll('_', '-');
+        if (values.collapsible) {
+          setUpBlock(context, blockID, values.collapse_width);
         }
       }
-
-      const resizeCallback = initializeStateForMenus(drupalSettings.localgov_publications.foo.collapse_width);
-
-      if (drupalSettings.localgov_publications.foo.collapsible) {
-        resizeCallback();
-        $(window).resize(resizeCallback);
-      }
-    }
+    },
   };
+
+  /**
+   * Handles window resize.
+   */
+  function handleResize($title, $content, menuCollapseBreakpoint) {
+    // Default the menus to hidden if we're below the mobile breakpoint width.
+    if (window.innerWidth > menuCollapseBreakpoint) {
+      $title.removeClass('expand collapse');
+      $content.show();
+    }
+    else {
+      $title.addClass('expand');
+      $content.hide();
+    }
+  }
+
+  /**
+   * Sets up a single block to be collapsible.
+   */
+  function setUpBlock(context, blockID, collapseWidth) {
+
+    const $block = $('.' + blockID, context);
+    const $title = $block.find('h2').first();
+    const $content = $block.find('ul').first();
+
+    handleResize($title, $content, collapseWidth);
+
+    $title.on('click', function () {
+
+      if (window.innerWidth > collapseWidth) {
+        return;
+      }
+
+      if ($title.hasClass('collapse')) {
+        $content.hide();
+      }
+      else {
+        $content.show();
+      }
+
+      $title
+        .toggleClass('expand')
+        .toggleClass('collapse');
+    });
+
+    $(window).resize(() => {
+      handleResize($title, $content, collapseWidth);
+    });
+  }
+
 })(jQuery, Drupal, drupalSettings);
