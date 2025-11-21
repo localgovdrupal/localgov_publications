@@ -37,6 +37,6 @@
 }
 
 .block-publication-navigation h2.collapse::after {
-  transform: rotate(270deg);
   content: "\203A" / "";
+  transform: rotate(270deg);
 }
