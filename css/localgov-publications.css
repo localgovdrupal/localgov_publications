@@ -22,3 +22,21 @@
   color: var(--color-grey-dark);
   font-size: var(--page-title-lede-font-size);
 }
+
+.block-publication-navigation h2::after {
+  display: inline-block;
+  margin-inline-start: var(--spacing);
+  content: "";
+  transition: var(--transition-time);
+  transform: rotate(90deg);
+  font-size: var(--font-size-larger);
+}
+
+.block-publication-navigation h2.expand::after {
+  content: "\203A" / "";
+}
+
+.block-publication-navigation h2.collapse::after {
+  transform: rotate(270deg);
+  content: "\203A" / "";
+}
