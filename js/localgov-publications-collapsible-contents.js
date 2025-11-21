@@ -1,10 +1,9 @@
 (($, Drupal, drupalSettings) => {
-
   /**
    * Collapsible menu for Publication page
    */
   Drupal.behaviors.publicationMenuToggle = {
-    "attach": (context) => {
+    attach: (context) => {
       if (!drupalSettings.hasOwnProperty('localgov_publications')) {
         return;
       }

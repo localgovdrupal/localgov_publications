@@ -31,12 +31,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
-  /**
-   * The book manager.
-   *
-   * @var \Drupal\book\BookManagerInterface
-   */
-  protected $bookManager;
+  use CollapsibleTrait;
 
   /**
    * Current node.
@@ -44,20 +39,6 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
    * @var \Drupal\node\NodeInterface
    */
   protected $node;
-
-  /**
-   * Module handler.
-   *
-   * @var \Drupal\Core\Extension\ModuleHandlerInterface
-   */
-  protected $moduleHandler;
-
-  /**
-   * Theme manager.
-   *
-   * @var \Drupal\Core\Theme\ThemeManagerInterface
-   */
-  protected $themeManager;
 
   /**
    * Constructs a new BookNavigationBlock instance.
@@ -75,11 +56,15 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
    * @param \Drupal\Core\Theme\ThemeManagerInterface $theme_manager
    *   The theme manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, BookManagerInterface $book_manager, ModuleHandlerInterface $module_handler, ThemeManagerInterface $theme_manager) {
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    protected BookManagerInterface $bookManager,
+    protected ModuleHandlerInterface $moduleHandler,
+    protected ThemeManagerInterface $themeManager
+  ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->bookManager = $book_manager;
-    $this->moduleHandler = $module_handler;
-    $this->themeManager = $theme_manager;
   }
 
   /**
@@ -109,43 +94,7 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
   /**
    * {@inheritdoc}
    */
-  public function blockForm($form, FormStateInterface $form_state) {
-
-    $form['collapsible'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Collapsible'),
-      '#description' => $this->t('<insert description>'),
-      '#default_value' => $this->configuration['collapsible'],
-
-    ];
-
-    $form['collapse_width'] = [
-      '#type' => 'number',
-      '#title' => $this->t('Auto-collapse window width (px)'),
-      '#description' => $this->t('<insert description>'),
-      '#states' => [
-        'visible' => [
-          ':input[name="settings[collapsible]"]' => ['checked' => TRUE],
-        ],
-      ],
-      '#default_value' => $this->configuration['collapse_width'],
-    ];
-
-    return $form;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function blockSubmit($form, FormStateInterface $form_state): void {
-    $this->configuration['collapsible'] = $form_state->getValue('collapsible');
-    $this->configuration['collapse_width'] = $form_state->getValue('collapse_width');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function build() {
+  public function build(): array {
 
     /** @var \Drupal\node\NodeInterface $node */
     $this->node = $this->getContextValue('node');
@@ -170,14 +119,7 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
       $output = $this->bookManager->bookTreeOutput($tree);
       if (!empty($output)) {
         $this->setActiveClass($output['#items']);
-
-        $output['#attached']['drupalSettings']['localgov_publications'][$this->pluginId] = [
-          'collapsible' => $this->configuration['collapsible'],
-          'collapse_width' => $this->configuration['collapse_width'],
-        ];
-
-        $output['#attached']['library'][] = 'localgov_publications/localgov-publications-blocks';
-
+        $this->addCollabsibleData($output);
         return $output;
       }
     }
@@ -206,7 +148,7 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
   /**
    * Sets 'active' class on menu items that are in the active trail.
    */
-  protected function setActiveClass($items) {
+  protected function setActiveClass($items): void {
     foreach ($items as $item) {
       $original_link_id = $item['original_link']['nid'] ?? NULL;
       if ($original_link_id && ($original_link_id == $this->node->id())) {
@@ -225,7 +167,7 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
    *
    * @todo Make cacheable in https://www.drupal.org/node/2483181
    */
-  public function getCacheMaxAge() {
+  public function getCacheMaxAge(): int {
     return 0;
   }
 
