@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.localgov_publication_summary
+    - node.type.localgov_publication_cover_page
+  module:
+    - text
+id: node.localgov_publication_cover_page.localgov_publication_summary
+field_name: localgov_publication_summary
+entity_type: node
+bundle: localgov_publication_cover_page
+label: Summary
+description: 'A brief summary of this publication.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

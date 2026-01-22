@@ -6,12 +6,14 @@ dependencies:
     - field.field.node.localgov_publication_cover_page.localgov_publication
     - field.field.node.localgov_publication_cover_page.localgov_publication_content
     - field.field.node.localgov_publication_cover_page.localgov_publications_banner
+    - field.field.node.localgov_publication_cover_page.localgov_publication_summary
     - field.field.node.localgov_publication_cover_page.localgov_published_date
     - field.field.node.localgov_publication_cover_page.localgov_updated_date
     - node.type.localgov_publication_cover_page
   module:
     - entity_reference_revisions
     - field_group
+    - text
     - user
 third_party_settings:
   field_group:
@@ -75,6 +77,13 @@ content:
       link: ''
     third_party_settings: {  }
     weight: 4
+    region: content
+  localgov_publication_summary:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
     region: content
 hidden:
   localgov_publications_banner: true

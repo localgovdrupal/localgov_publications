@@ -7,10 +7,12 @@ dependencies:
     - field.field.node.localgov_publication_cover_page.localgov_publication
     - field.field.node.localgov_publication_cover_page.localgov_publication_content
     - field.field.node.localgov_publication_cover_page.localgov_publications_banner
+    - field.field.node.localgov_publication_cover_page.localgov_publication_summary
     - field.field.node.localgov_publication_cover_page.localgov_published_date
     - field.field.node.localgov_publication_cover_page.localgov_updated_date
     - node.type.localgov_publication_cover_page
   module:
+    - text
     - user
 id: node.localgov_publication_cover_page.teaser
 targetEntityType: node
@@ -21,6 +23,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 100
+    region: content
+  localgov_publication_summary:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
     region: content
 hidden:
   localgov_documents: true

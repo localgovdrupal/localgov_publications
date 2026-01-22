@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.localgov_publication_cover_page.localgov_publication
     - field.field.node.localgov_publication_cover_page.localgov_publication_content
     - field.field.node.localgov_publication_cover_page.localgov_publications_banner
+    - field.field.node.localgov_publication_cover_page.localgov_publication_summary
     - field.field.node.localgov_publication_cover_page.localgov_published_date
     - field.field.node.localgov_publication_cover_page.localgov_updated_date
     - node.type.localgov_publication_cover_page
@@ -16,6 +17,7 @@ dependencies:
     - media_library
     - paragraphs
     - path
+    - text
 third_party_settings:
   field_group:
     group_tabs:
@@ -37,6 +39,7 @@ third_party_settings:
     group_description:
       children:
         - title
+        - localgov_publication_summary
         - localgov_publication_content
         - localgov_published_date
         - localgov_updated_date
@@ -138,6 +141,14 @@ content:
     weight: 4
     region: content
     settings: {  }
+    third_party_settings: {  }
+  localgov_publication_summary:
+    type: text_textarea
+    weight: 3
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
     third_party_settings: {  }
   localgov_updated_date:
     type: datetime_default
