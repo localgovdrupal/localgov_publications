@@ -5,6 +5,7 @@
     "homepage": "https://github.com/localgovdrupal/localgov_publications",
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",
+    "abandoned": "drupal/localgov_publications",
     "repositories": [
         {
             "type": "composer",
