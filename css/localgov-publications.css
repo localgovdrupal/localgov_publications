@@ -22,3 +22,21 @@
   color: var(--color-grey-dark);
   font-size: var(--page-title-lede-font-size);
 }
+
+.block-localgov-publications h2::after {
+  display: inline-block;
+  margin-inline-start: var(--spacing);
+  content: "";
+  transition: var(--transition-time);
+  transform: rotate(90deg);
+  font-size: var(--font-size-larger);
+}
+
+.block-localgov-publications h2.expand::after {
+  content: "\203A" / "";
+}
+
+.block-localgov-publications h2.collapse::after {
+  content: "\203A" / "";
+  transform: rotate(270deg);
+}

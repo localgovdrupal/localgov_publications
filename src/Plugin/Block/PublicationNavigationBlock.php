@@ -4,6 +4,7 @@ namespace Drupal\localgov_publications\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Theme\ThemeManagerInterface;
 use Drupal\book\BookManagerInterface;
@@ -30,12 +31,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
-  /**
-   * The book manager.
-   *
-   * @var \Drupal\book\BookManagerInterface
-   */
-  protected $bookManager;
+  use CollapsibleTrait;
 
   /**
    * Current node.
@@ -43,20 +39,6 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
    * @var \Drupal\node\NodeInterface
    */
   protected $node;
-
-  /**
-   * Module handler.
-   *
-   * @var \Drupal\Core\Extension\ModuleHandlerInterface
-   */
-  protected $moduleHandler;
-
-  /**
-   * Theme manager.
-   *
-   * @var \Drupal\Core\Theme\ThemeManagerInterface
-   */
-  protected $themeManager;
 
   /**
    * Constructs a new BookNavigationBlock instance.
@@ -74,11 +56,15 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
    * @param \Drupal\Core\Theme\ThemeManagerInterface $theme_manager
    *   The theme manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, BookManagerInterface $book_manager, ModuleHandlerInterface $module_handler, ThemeManagerInterface $theme_manager) {
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    protected BookManagerInterface $bookManager,
+    protected ModuleHandlerInterface $moduleHandler,
+    protected ThemeManagerInterface $themeManager
+  ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->bookManager = $book_manager;
-    $this->moduleHandler = $module_handler;
-    $this->themeManager = $theme_manager;
   }
 
   /**
@@ -98,16 +84,47 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
   /**
    * {@inheritdoc}
    */
-  public function build() {
+  public function defaultConfiguration() {
+    return [
+      'collapsible' => TRUE,
+      'collapse_width' => '768',
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function build(): array {
 
     /** @var \Drupal\node\NodeInterface $node */
-    $node = $this->getContextValue('node');
+    $this->node = $this->getContextValue('node');
 
-    if (!isset($node->book['bid'])) {
+    if (!isset($this->node->book['bid'])) {
       return [];
     }
 
-    $tree = $this->bookManager->bookTreeAllData($node->book['bid'], $node->book);
+    if (!empty($this->node->book['bid'])) {
+      $tree = $this->bookManager->bookTreeAllData($this->node->book['bid'], $this->node->book);
+      $this->moduleHandler->alter('localgov_publications_menu_tree', $tree);
+      $this->themeManager->alter('localgov_publications_menu_tree', $tree);
+
+      // If the top level doesn't have any child pages, (IE this is a single
+      // page publication) don't show the menu block, as there isn't anything
+      // else to navigate to.
+      $top = reset($tree);
+      if (empty($top['below'])) {
+        return [];
+      }
+
+      $output = $this->bookManager->bookTreeOutput($tree);
+      if (!empty($output)) {
+        $this->setActiveClass($output['#items']);
+        $this->addCollabsibleData($output);
+        return $output;
+      }
+    }
+
+    $tree = $this->bookManager->bookTreeAllData($this->node->book['bid'], $this->node->book);
     $this->moduleHandler->alter('localgov_publications_menu_tree', $tree);
     $this->themeManager->alter('localgov_publications_menu_tree', $tree);
 
@@ -124,7 +141,6 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
       return [];
     }
 
-    $this->node = $node;
     $this->setActiveClass($output['#items']);
     return $output;
   }
@@ -132,7 +148,7 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
   /**
    * Sets 'active' class on menu items that are in the active trail.
    */
-  protected function setActiveClass($items) {
+  protected function setActiveClass($items): void {
     foreach ($items as $item) {
       $original_link_id = $item['original_link']['nid'] ?? NULL;
       if ($original_link_id && ($original_link_id == $this->node->id())) {
@@ -151,7 +167,7 @@ class PublicationNavigationBlock extends BlockBase implements ContainerFactoryPl
    *
    * @todo Make cacheable in https://www.drupal.org/node/2483181
    */
-  public function getCacheMaxAge() {
+  public function getCacheMaxAge(): int {
     return 0;
   }
 

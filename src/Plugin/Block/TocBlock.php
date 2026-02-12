@@ -26,26 +26,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class TocBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
-  /**
-   * The renderer.
-   *
-   * @var \Drupal\Core\Render\RendererInterface
-   */
-  protected $renderer;
-
-  /**
-   * The entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
-   * The heading finder.
-   *
-   * @var \Drupal\localgov_publications\Service\HeadingFinderInterface
-   */
-  protected $headingFinder;
+  use CollapsibleTrait;
 
   /**
    * {@inheritdoc}
@@ -64,11 +45,13 @@ class TocBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * Table of contents block constructor.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, RendererInterface $renderer, EntityTypeManagerInterface $entityTypeManager, HeadingFinderInterface $headingFinder) {
+  public function __construct(
+    array $configuration, $plugin_id, $plugin_definition,
+    protected RendererInterface $renderer,
+    protected EntityTypeManagerInterface $entityTypeManager,
+    protected HeadingFinderInterface $headingFinder
+  ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->renderer = $renderer;
-    $this->entityTypeManager = $entityTypeManager;
-    $this->headingFinder = $headingFinder;
   }
 
   /**
@@ -96,11 +79,16 @@ class TocBlock extends BlockBase implements ContainerFactoryPluginInterface {
       return [];
     }
 
-    return [
+    $output = [
       '#theme' => 'item_list',
       '#list_type' => 'ul',
       '#items' => $links,
     ];
+
+    $this->addCollabsibleData($output);
+
+    return $output;
+
   }
 
 }

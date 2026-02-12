@@ -9,6 +9,14 @@ localgov-publications:
     - core/drupal
     - core/drupal.form
 
+localgov-publications-blocks:
+  js:
+    js/localgov-publications-collapsible-contents.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+
 localgov-publications-icons:
   css:
     theme:
